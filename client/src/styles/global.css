@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --max-width: 1000px;
+
+  /* --main-color: rgb(50, 67, 218); */
+  /* --pane-padding: 5px 42px; */
+}
+
+body {
+  /* padding: 4rem; */
+  background-color: rgb(34, 76, 168);
+}

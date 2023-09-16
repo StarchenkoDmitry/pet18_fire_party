@@ -1,0 +1,48 @@
+{
+    "compilerOptions": {
+        "allowJs":true,
+
+        // "esModuleInterop": true,
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "target": "ES2020",
+        "sourceMap": true,
+
+        "rootDir": "./src",
+        "outDir": "./build",
+        
+        // "removeComments": true,
+    },
+    "include": ["./src/**/*"],
+    "exclude": ["node_modules"],
+    "ts-node": {
+        "esm": true, //enabling ESM for ts-node
+    },
+}
+
+
+// "module": "commonjs",
+// "esModuleInterop": true,
+// "target": "es6",
+// "moduleResolution": "node",
+// "sourceMap": true,
+// "outDir": "dist"
+
+
+// "esModuleInterop": true,
+// "module": "ES2022",   
+// "target": "ES2020",
+// "moduleResolution": "node",
+
+// "lib":["ES2020"],
+
+// "removeComments": true,
+
+// "sourceMap": true, //"sourceMap": false,
+// "rootDir": "./src",
+// "outDir": "./build",
+
+// "allowJs":true,
+// "strict": true,
+// "noImplicitAny": true,    
+
