@@ -1,0 +1,19 @@
+.wrapper{
+  position: relative;
+  display: block;
+
+  // width: 72px;
+  height: 100vh;
+
+  background-color: rgb(48, 45, 61);
+}
+
+.me_panel{
+  display: flex;
+  flex-direction: column;
+  // min-width: 180px
+  width: 200px;
+  // padding-top: 1em;
+  // width: 160px;
+}
+
