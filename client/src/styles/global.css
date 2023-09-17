@@ -9,6 +9,10 @@
   /* --pane-padding: 5px 42px; */
 }
 
+html{
+  font-family: "gg sans", "Noto Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
 body {
   /* padding: 4rem; */
   background-color: rgb(55 51 67);
