@@ -1,13 +1,10 @@
+Name Project: telegramer
+
 48px;  8 margine 
 
 
 
 
-
-
-
-
-   + " fireui_scrollbar_novisibl"
 
 
 
@@ -19,8 +16,6 @@ overflow: auto;
   over: 0;  
   // scrollbar-width: thin;          /* "auto" or "thin" */
   scrollbar-color: blue orange; 
-
-
 
 
 ::-webkit-scrollbar {
