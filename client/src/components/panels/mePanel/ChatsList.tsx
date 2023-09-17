@@ -36,12 +36,10 @@ export default function ChatsList() {
     const onChangeEv = (event: ChangeEvent<HTMLInputElement>)=>{
         console.log(event.target.value);
         setValue(event.target.value);
-    }
-    
+    }    
 
     return (
         <>
-        {/* <div className={styles.chats_list}> */}
             <input onChange={onChangeEv} className={styles.inputer} type="text" placeholder="Поиск" value={value}/>
 
             <button onClick={()=>{console.log("Click.")}} className={styles.btn_frineds} >Друзья</button>
@@ -51,7 +49,6 @@ export default function ChatsList() {
                 <img className={styles.chat_img} src={c.img}/>
                 <span className={styles.chat_name} >{c.name}</span>
             </div>)}
-        {/* </div> */}
         </>
     );
 }

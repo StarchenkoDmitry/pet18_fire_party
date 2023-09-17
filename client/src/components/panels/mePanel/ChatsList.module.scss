@@ -1,16 +1,11 @@
-.chats_list {
-  display: flex;
-  flex-direction: column;
-
-  // height: 100%;
-}
-
 .chat {
+  flex: none;
   display: flex;
   align-items: center;
 
   margin: 0.2em;
   padding-left: 0.4em;
+
   height: 42px;
 
   border-radius: 0.2em;
@@ -19,6 +14,7 @@
 .chat:hover {
   background-color: rgb(57 104 159);
 }
+
 
 .chat_img {
   width: 32px;
@@ -30,10 +26,11 @@
 .chat_name {
   margin-left: 0.4em;
   font-family: "gg sans", "Noto Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-//   font-weight:500;
   color: aliceblue;
   cursor: default;
 }
+
+
 
 .inputer {
   margin: 1em;

@@ -3,6 +3,7 @@ import styles from  "./page.module.scss";
 
 import MainLayout from "@/components/layout/MainLayout";
 import MePanel from "@/components/panels/mePanel/MePanel";
+import Chat from "@/components/panels/mePanel/Chat/Chat";
 
 
 export default function Main() {
@@ -12,7 +13,16 @@ export default function Main() {
       <div className={styles.main_container}>
         <MainSidePanel/>
         <MePanel/>
-        <div>fdfdf</div>
+        <Chat/>
+        <div className={styles.test1}>
+          
+          <div>fdfdf</div>
+          <div>fdfdf</div>
+          <div>fdfdtyrtyrtyf</div>
+          <div>fdfdf</div>
+          <div>fdfdf</div>
+          <div>fdfdf</div>
+        </div>
       </div>
     </MainLayout>
   );

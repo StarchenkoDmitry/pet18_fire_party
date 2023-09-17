@@ -1,17 +1,12 @@
-.wrapper{
-  position: relative;
-  display: block;
-  height: 100vh;
-  
-  background-color: rgb(37, 34, 48);
-}
-
 .main_side_panel{
+  flex: none;
   padding-top: 1em;
   height: 100%;
 
   overflow: auto;
   overflow-x: auto;
+
+  background-color: rgb(37, 34, 48);
 }
 
 
