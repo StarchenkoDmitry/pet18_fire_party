@@ -1,15 +1,17 @@
 .wrapper{
   position: relative;
   display: block;
-
-  // width: 72px;
   height: 100vh;
-
+  
   background-color: rgb(37, 34, 48);
 }
 
 .main_side_panel{
   padding-top: 1em;
+  height: 100%;
+
+  overflow: auto;
+  overflow-x: auto;
 }
 
 
@@ -31,3 +33,4 @@
   border-radius: 1.5em;
   transform: scale(1.1);
 }
+

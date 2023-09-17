@@ -1,8 +1,10 @@
 .chats_list {
   display: flex;
   flex-direction: column;
+  height: 100%;
 
-  // height: 100%;
+  overflow: scroll;
+  // overflow-y: scroll;
 }
 
 .chat {
@@ -50,21 +52,4 @@
 }
 .inputer:focus{
     // border: 1px solid #fff;
-}
-
-
-
-
-
-.btn_frineds{
-  display: flex;
-  align-items: center;
-
-  margin: 0.2em;
-  padding-left: 0.4em;
-  height: 42px;
-
-  border-radius: 0.2em;
-  background-color: #373247;
-  user-select: none;
 }

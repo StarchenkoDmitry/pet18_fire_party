@@ -13,3 +13,14 @@ body {
   /* padding: 4rem; */
   background-color: rgb(55 51 67);
 }
+
+
+
+
+
+
+
+.fireui_scrollbar_novisibl::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
