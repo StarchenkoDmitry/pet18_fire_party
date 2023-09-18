@@ -4,6 +4,7 @@ import styles from "./page.module.scss"
 import axios from "axios";
 
 
+
 const url = "http://localhost:3000/auth";
 
 export default function AuthPage() {
@@ -16,18 +17,9 @@ export default function AuthPage() {
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     setSending(true)
- 
+
+    const formData = new FormData(event.currentTarget);
     try {
-      const formData = new FormData(event.currentTarget)
-      console.log("Targets: ",event.currentTarget)
-      formData.append("dsdfds","dgfdgfdg");
-      console.log("formData: ",formData.keys)
-
-      const data34643 = {
-        login:"sdfdsfdsf",
-        password:"dgfdsf4534346346"
-      }
-
       const res = await axios.post(url,formData,{
         withCredentials:true
       });
@@ -44,9 +36,21 @@ export default function AuthPage() {
     <div className={styles.container+" flex flex-col items-center justify-center"}>
       <div className="flex flex-col p-4 bg-slate-400 rounded-2xl">
         <span>Авторизация</span>
-        <form className="flex flex-col" onSubmit={onSubmit}>
-          <label htmlFor="login">Логин.</label>
-          <input name="login" id="login" type="text"/>
+        {/* <form className="flex flex-col" onSubmit={onSubmit}>
+          <label htmlFor="email">Email</label>
+          <input name="email" id="email" type="email"/>
+
+          <label htmlFor="password">Пароль</label>
+          <input name="password" id="password" type="password"/>
+
+          <button disabled={sending} type="submit" className="">Войти</button>
+          <button type="submit">Войти(Submit)</button>
+        </form> */}
+
+        <form onSubmit={onSubmit} className="flex flex-col" method="post">
+
+          <label htmlFor="email">Email</label>
+          <input name="email" id="email"  type="email"/>
 
           <label htmlFor="password">Пароль</label>
           <input name="password" id="password" type="password"/>
