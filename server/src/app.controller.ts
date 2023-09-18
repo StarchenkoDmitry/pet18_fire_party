@@ -18,11 +18,18 @@ export class AppController {
   // }
 
 
-  @Post('')
+  // @Post('loginform')
+  // @UseInterceptors(FileInterceptor(''))
+  // signup(@UploadedFile() file, @Body() body) {
+  //   // console.log(file);
+  //   console.log(body);
+  // }
+
+  @Post('loginform')
   @UseInterceptors(FileInterceptor(''))
-  signup(@UploadedFile() file, @Body() body) {
-    console.log(file);
-    console.log(body);
+  signup(@Body('email') email) {
+    // console.log(file);
+    console.log(email);
   }
   
 

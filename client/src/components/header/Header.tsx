@@ -7,10 +7,8 @@ export default function Header() {
     return (
         <header className={styles.header} >
             <a href="/">Online Chat</a>
-            <nav>
-                <Link href='/home'>Home</Link>
-                <Link href='/profile'>Profile</Link>
-            </nav>
+            <Link href='/home'>Home</Link>
+            <Link href='/profile'>Profile</Link>
         </header>
     );
 }
