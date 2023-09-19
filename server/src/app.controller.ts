@@ -1,29 +1,16 @@
-import { Body, Controller, Get, Param, Post, RawBodyRequest, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, RawBodyRequest, Req, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AppService } from './app.service';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { Request, Response } from 'express';
+import { JwtAuthGuard } from './auth/jwt/jwt.auth.guard';
+import { AuthService } from './auth/auth.service';
+import { LoggingInterceptor } from './logging.interceptor';
 
+
+// @UseInterceptors(LoggingInterceptor)
 @Controller('auth')
 export class AppController {
-  constructor(private readonly appService: AppService) {}
-
-  // @Get()
-  // getHello(): string {
-  //   return this.appService.getHello();
-  // }
-  
-  // @Post()
-  // async login(@Body("login") login:string,@Body("password") password:string) {
-  //   console.log(`login-> (${login},${password})`);
-  //   return true;
-  // }
-
-
-  // @Post('loginform')
-  // @UseInterceptors(FileInterceptor(''))
-  // signup(@UploadedFile() file, @Body() body) {
-  //   // console.log(file);
-  //   console.log(body);
-  // }
+  constructor(private readonly authService: AuthService) {}
 
   @Post('loginform')
   @UseInterceptors(FileInterceptor(''))
@@ -34,30 +21,39 @@ export class AppController {
   
 
 
-  // @Post()
-  // async login(@Body() body) {
-  //   console.log(`login-> `,body)
-  //   return true; 
-  // }
-  
-  // @Post()
-  // async login(@UploadedFile() flefsdf) {
-  //   console.log(`flefsdf -> `,flefsdf)
-  //   return true; 
-  // }
-
-  //this is work.
-  // @Post()
-  // @UseInterceptors(FileInterceptor('file'))
-  // async login(@Body('login') body) {
-  //   console.log(`login-> `,body)
-  //   return true; 
-  // }
+  @Get('users')
+  async getUsers(@Req() request: Request) {
+    // console.log(request.cookies('foo'));
+    // res.
+    console.log(request.headers.cookie)
+    return ['user1','user2'];
+  }
 
 
-  // @Post()
-  // create(@Req() req: RawBodyRequest<Request>) {
-  //   const raw = req.rawBody; // returns a `Buffer`.
-  //   console.log(`raw -> `,raw)
+  @UseGuards(JwtAuthGuard)
+  @Post('jwtlogin')
+  async login(@Req() req) {
+    // return this.authService.login(req.user);
+    console.log("JwtLogin user: ",req.user);
+    if(req.user)
+      return this.authService.login(req.user);
+    else{
+      return {message:"LOL"};
+    }  
+  }
+
+
+  // @Post('login2')
+  // async login2() {
+  //   console.log("login2=>");
+  //   return {message:"LOL2222"};
   // }
+
+
+  @Post('login2')
+  async login2(@Req() request: Request) {
+    console.log("login2=>");
+    console.log("l: ",request.cookies)
+    return {message:"LOL2222"};
+  }
 }
