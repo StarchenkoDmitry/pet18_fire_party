@@ -1,16 +1,9 @@
-import Header from "@/components/header/Header";
-
 import styles from "./page.module.scss"
+import MainScreen from "@/components/screens/MainScreen";
 
-export default function Main() {
-  console.log("Render Main");
-  return (
-    <div>
-      <Header/>
-      <div className={styles.container}>
 
-      </div>
-    </div>
-  );
+
+export default function Main() {  
+  return (<MainScreen/>);
 }
 
