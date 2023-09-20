@@ -7,8 +7,10 @@ export default function Header() {
     return (
         <header className={styles.header} >
             <a href="/">Online Chat</a>
-            <Link href='/home'>Home</Link>
-            <Link href='/profile'>Profile</Link>
+            <Link href='/'>Root</Link>
+            <Link href='/lenta'>Lenta</Link>
+            {/* <Link href='/home'>Home</Link>
+            <Link href='/profile'>Profile</Link> */}
         </header>
     );
 }

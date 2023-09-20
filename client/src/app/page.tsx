@@ -1,29 +1,16 @@
-import MainSidePanel from "@/components/panels/mainSidePanel/MainSidePanel";
-import styles from  "./page.module.scss";
+import Header from "@/components/header/Header";
 
-import MainLayout from "@/components/layout/MainLayout";
-import MePanel from "@/components/panels/mePanel/MePanel";
-import Chat from "@/components/panels/mePanel/Chat/Chat";
-
+import styles from "./page.module.scss"
 
 export default function Main() {
-  console.log("testrender.");
+  console.log("Render Main");
   return (
-    <MainLayout>
-      <div className={styles.main_container}>
-        <MainSidePanel/>
-        <MePanel/>
-        <Chat/>
-        <div className={styles.test1}>
-          
-          <div>fdfdf</div>
-          <div>fdfdf</div>
-          <div>fdfdtyrtyrtyf</div>
-          <div>fdfdf</div>
-          <div>fdfdf</div>
-          <div>fdfdf</div>
-        </div>
+    <div>
+      <Header/>
+      <div className={styles.container}>
+
       </div>
-    </MainLayout>
+    </div>
   );
 }
+

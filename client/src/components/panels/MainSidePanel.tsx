@@ -1,7 +1,5 @@
 import styles from "./MainSidePanel.module.scss";
 
-
-
 export default function MainSidePanel() {
     
     return (

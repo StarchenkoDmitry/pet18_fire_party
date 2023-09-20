@@ -1,12 +1,6 @@
-.main_container{
-    display: flex;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-}
+.container{
+  width: 100vw;
+  height: 100vh;
 
-
-.test1{
-    // flex: none
-    // overflow: scroll;
+  background-color: darkslategrey;
 }
