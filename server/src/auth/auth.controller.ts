@@ -1,5 +1,6 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get, Post, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { Request } from 'express';
 
 
 
@@ -8,8 +9,11 @@ export class AuthController {
     constructor(readonly authService: AuthService){}
 
     @Post('login')
-    async login(){
+    async login(@Req() req:Request){
+        console.log("Login ",req.cookies);
+        
 
+        return Math.random().toString();
     }
 
     @Get('logout')

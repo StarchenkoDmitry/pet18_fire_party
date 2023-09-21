@@ -12,11 +12,11 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
   imports: [AuthModule],
   controllers: [AppController],
   providers: [
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: LoggingInterceptor,
-    },
-    AppService,],
+    // {
+    //   provide: APP_INTERCEPTOR,
+    //   useClass: LoggingInterceptor,
+    // },
+    AppService],
 })
 export class AppModule {}
  

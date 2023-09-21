@@ -2,13 +2,13 @@ import { Body, Controller, Get, Param, Post, RawBodyRequest, Req, Res, UploadedF
 import { AppService } from './app.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Request, Response } from 'express';
-import { JwtAuthGuard } from './auth/jwt/jwt.auth.guard';
+// import { JwtAuthGuard } from './auth/jwt/jwt.auth.guard';
 import { AuthService } from './auth/auth.service';
 import { LoggingInterceptor } from './logging.interceptor';
 
 
 // @UseInterceptors(LoggingInterceptor)
-@Controller()
+@Controller('app')
 export class AppController {
   constructor(private readonly authService: AuthService) {}
 
@@ -30,7 +30,7 @@ export class AppController {
   }
 
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Post('jwtlogin')
   async login(@Req() req) {
     // return this.authService.login(req.user);

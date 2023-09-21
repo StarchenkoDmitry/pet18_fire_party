@@ -14,7 +14,7 @@ const users = [{
 @Injectable()
 export class AuthService {
   constructor(
-    private jwtService: JwtService
+    // private jwtService: JwtService
   ) {}
 
   async validateUser(username: string, pass: string): Promise<any> {
@@ -35,7 +35,7 @@ export class AuthService {
         sub: user.userId 
     };
     return {
-        access_token: this.jwtService.sign(payload),
+        // access_token: this.jwtService.sign(payload),
     };
   }
 }

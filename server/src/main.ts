@@ -10,10 +10,9 @@ import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors({origin:true,credentials:true})
   app.setGlobalPrefix("api");
   app.use(cookieParser());
-
-  app.enableCors({origin:true,credentials:true})
   
 
   const config = new DocumentBuilder()
@@ -28,7 +27,6 @@ async function bootstrap() {
 
   await app.listen(3000);
   console.log("Server started.");
-
 }
 bootstrap();
 
