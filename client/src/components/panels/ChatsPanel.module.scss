@@ -1,6 +1,10 @@
 .chats_panel{
   display: grid;
   width: 15em;
+
+  //todo: Доделать grid и flex
+  flex: none;
+  grid-template-rows: min-content;
 }
 
 

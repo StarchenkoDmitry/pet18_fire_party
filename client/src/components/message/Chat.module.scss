@@ -1,0 +1,83 @@
+.chat{
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  
+  max-height: 100%;
+}
+
+.header{
+  display: flex;
+  align-items: center;
+  padding: 0 1em;
+  height: 3.5em;
+  background-color: #fff;
+}
+
+.img{
+  max-width: 2.625em;
+  max-height: 2.625em;
+  border-radius: 2em;
+  overflow: hidden;
+}
+
+.name{
+  margin-left: 1em;
+  // padding: .5em;
+
+  font-size: 1em;
+  font-weight: 500;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  line-height: 21px;
+
+  // unicode-bidi: plaintext;
+  user-select: none;
+}
+
+
+.messages{
+  flex: 1;
+  overflow: scroll;
+}
+
+.messages p{
+  display: block;
+  margin: 1em;
+  padding: .2em;
+  max-width: 500px;
+  background-color: aquamarine;
+}
+
+
+
+
+.container_inputer{
+
+}
+
+.block_command_input{
+  display: flex;
+  margin: .4em;
+  padding: .4em;
+  border-radius: .5em ;
+  background-color: bisque;
+}
+
+
+.input{
+  flex: 1;
+  padding: .4em;
+  // width: 70%;
+  border-radius: .4em;
+  white-space: pre-wrap;
+}
+
+
+.btn_send{
+  margin-left: .5em;
+  padding: .5em;
+  border-radius: .4em;
+  background-color: #587ae7;
+}

@@ -1,3 +1,4 @@
+'use client'
 import styles from "./ChatList.module.scss";
 
 const list = [{
@@ -7,13 +8,13 @@ const list = [{
     type: "friend",
     img:"/imgraw/users/eugene.png", 
 },{
-    id:"1243536",
+    id:"786779",
     name:"DuckGame",
     lastMessage:"",
     type: "kanal",
     img:"/imgraw/users/squezee.png",
 },{
-    id:"768578568",
+    id:"78678678548",
     name:"Daddy",
     lastMessage:"",
     type: "kanal",
@@ -21,14 +22,15 @@ const list = [{
 }];
 
 export default function MassageList() {
-    const randerList = list.map(e=><div id={e.id} className={styles.message_item}>
+    console.log("Render ChatList")
+    const randerList = list.map(e=><div key={e.id} className={styles.message_item}>
         <img className={styles.img} src={e.img} alt=""/>
         <div className={styles.block_right}>
             <div className={styles.name} >{e.name}</div>
             <div>{e.lastMessage}</div>
         </div>
     </div>)
-
+    
     return (
         <div className={styles.message_list + " "}>
             {randerList}
@@ -37,9 +39,10 @@ export default function MassageList() {
 }
 
 
-list.push(...list,...list);
-list.push(...list,...list);
+// list.push(...list,...list);
+// list.push(...list,...list);
 
-list.forEach(e=>{
-    e.id+= Math.random().toString();
-});
+// list.forEach(e=>{
+//     e.id+= Math.random().toString();
+//     console.log("Eid: ",e.id);
+// });

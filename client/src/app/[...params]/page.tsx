@@ -4,7 +4,6 @@ import styles from "./page.module.scss"
 import MainScreen from "@/components/screens/MainScreen";
 
 import { cookies } from 'next/headers'
-
 import { useParams } from 'next/navigation'
 
 
