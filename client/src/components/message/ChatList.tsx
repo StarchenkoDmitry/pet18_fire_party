@@ -39,3 +39,7 @@ export default function MassageList() {
 
 list.push(...list,...list);
 list.push(...list,...list);
+
+list.forEach(e=>{
+    e.id+= Math.random().toString();
+});
