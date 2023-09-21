@@ -16,6 +16,7 @@ export default function Page({ params }:any) {
   //   console.log(`[${cookie.name}]: ${cookie.value}`)
   // });
 
+  
   return (<MainScreen/>);
 }
 

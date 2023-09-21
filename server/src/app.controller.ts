@@ -8,7 +8,7 @@ import { LoggingInterceptor } from './logging.interceptor';
 
 
 // @UseInterceptors(LoggingInterceptor)
-@Controller('auth')
+@Controller()
 export class AppController {
   constructor(private readonly authService: AuthService) {}
 

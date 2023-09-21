@@ -4,12 +4,13 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as cookieParser from 'cookie-parser';
 
 
-var JwtStrategy = require('passport-jwt').Strategy,
-ExtractJwt = require('passport-jwt').ExtractJwt;
+// var JwtStrategy = require('passport-jwt').Strategy,
+// ExtractJwt = require('passport-jwt').ExtractJwt;
 
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix("api");
   app.use(cookieParser());
 
   app.enableCors({origin:true,credentials:true})
@@ -22,7 +23,8 @@ async function bootstrap() {
     .addTag('cats')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('swagger', app, document);
+
 
   await app.listen(3000);
   console.log("Server started.");
