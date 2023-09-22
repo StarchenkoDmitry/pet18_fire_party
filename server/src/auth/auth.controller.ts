@@ -11,13 +11,10 @@ export class AuthController {
     constructor(private readonly userService: UserService) {}
 
 
-    //TODO: Доделать волидацию данных проверить длину password и логина.
     @Post('register')
     @UsePipes(new ValidationPipe())
     async register(@Body() dto:SignUpDto){
         const {password, ...ob} = dto;
-
-        //TODO: седлать проверку на существование login в базе и *email
 
         this.userService.create({
             ...ob,
