@@ -4,12 +4,9 @@ import { UserService } from 'src/user/user.service';
 import { hasher } from './utils/Hasher';
 
 
-
 @Controller('auth')
 export class AuthController {
-    // constructor(readonly authService: AuthService){}
     constructor(private readonly userService: UserService) {}
-
 
     @Post('register')
     @UsePipes(new ValidationPipe())
@@ -24,7 +21,6 @@ export class AuthController {
         return created;
     }
 
-    //TODO: Доделать волидацию данных проверить длину password и логина.
     @Post('login')
     @UsePipes(new ValidationPipe())
     async login(@Body() dto:LoginDto){        
