@@ -23,6 +23,8 @@ export class AuthController {
             ...ob,
             passwordHash:hasher(password)
         });
+
+        return Math.random();
     }
 
     //TODO: Доделать волидацию данных проверить длину password и логина.
