@@ -16,12 +16,12 @@ export class AuthController {
     async register(@Body() dto:SignUpDto){
         const {password, ...ob} = dto;
 
-        this.userService.create({
+        const created = this.userService.create({
             ...ob,
             passwordHash:hasher(password)
         });
 
-        return Math.random();
+        return created;
     }
 
     //TODO: Доделать волидацию данных проверить длину password и логина.
