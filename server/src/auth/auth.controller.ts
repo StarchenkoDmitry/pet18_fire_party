@@ -1,8 +1,7 @@
-import { Body, Controller, Get, Post, Req, ValidationPipe } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { Request } from 'express';
+import { BadRequestException, Body, Controller, Get, Post, ValidationPipe } from '@nestjs/common';
 import { LoginDto } from './dto/auth.dto';
 import { UserService } from 'src/user/user.service';
+import { hasher } from './utils/Hasher';
 
 
 
@@ -14,12 +13,17 @@ export class AuthController {
 
     //TODO: Доделать волидацию данных проверить длину password и логина. 
     @Post('login')
-    async login(@Body(new ValidationPipe()) dto:LoginDto, @Req() req:Request){        
-        // console.log("Login ",req.cookies);
-        // console.log("Dto: ",dto);
-        
+    async login(@Body(new ValidationPipe()) dto:LoginDto){        
+        const user = await this.userService.findOne(dto.login)
+        const passwordHash = await hasher(dto.password);
 
-        return true;
+        if(user.passwordHash === passwordHash){
+            return {
+                ok:"ok"
+            }
+        }else{
+            throw new BadRequestException({bob:124},{cause:"TILOX"})
+        }
     }
 
     @Get('logout')
