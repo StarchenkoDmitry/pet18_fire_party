@@ -1,10 +1,11 @@
-import { BadRequestException, Body, Controller, Get, NotFoundException, Post, Req, Res, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, HttpException, NotFoundException, Post, Req, Res, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { LoginDto, SignUpDto } from './dto/auth.dto';
 import { UserService } from 'src/user/user.service';
 import { hasher } from './utils/Hasher';
 import { Request, Response } from 'express';
-import { AuthGuard, REQ_KET_TOKEN } from './auth.guard';
-import { SessionRandom } from 'src/auth/utils/SessionRandom';
+import { AuthGuard, NotAuthGuard, REQ_KET_TOKEN } from './auth.guard';
+import { CreateToken } from 'src/auth/utils/Tokener';
+import { LoginStatus } from 'src/user/user.interface';
 
 
 @Controller('auth')
@@ -13,10 +14,11 @@ export class AuthController {
     constructor(private readonly userService: UserService) {}
 
     @Post('register')
+    @UseGuards(new NotAuthGuard())
     async register(@Body() dto:SignUpDto, @Res({ passthrough: true }) res:Response){
         const {password, ...ob} = dto;
 
-        const newToken = SessionRandom();
+        const newToken = CreateToken();
         const createUserDto = {
             ...ob,
             passwordHash:hasher(password),
@@ -32,28 +34,20 @@ export class AuthController {
     }
 
     @Post('login')
-    // @UseGuards(new AuthGuard())
+    @UseGuards(new NotAuthGuard())
     async login(@Body() dto:LoginDto, @Res({ passthrough: true }) res:Response){
-        const user = await this.userService.findOne(dto.login);
-
-        if(!user) throw new NotFoundException({error:"User not found."});
-
-        const passwordHash = await hasher(dto.password);
-        // console.log(`login: userPass(${user.passwordHash}) pass(${passwordHash})`)
-
-        // if(user.passwordHash !== passwordHash) throw new BadRequestException({error:"не правильный password"});
-        
-        res.cookie(REQ_KET_TOKEN,Math.random().toString(),{});
-
-        return Math.random().toString();
+        const {status, token} = await this.userService.login(dto);
+        if(status === LoginStatus.passwordWrong || status === LoginStatus.userNotFound){
+            throw new HttpException("Error incorrect login or password",400);
+        }
+        if(token){ res.cookie(REQ_KET_TOKEN,token,{signed:true}); }        
     }
 
     @Get('logout')
-    async logout(){
+    @UseGuards(new AuthGuard())
+    async logout(@Res({ passthrough: true }) res:Response){
+        console.log("logout");
+        res.clearCookie(REQ_KET_TOKEN);
         return true;
     }
 }
-
-
-
-        // console.log("Coolies req: ",req.cookies);

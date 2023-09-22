@@ -1,4 +1,4 @@
-export function SessionRandom():string{
+export function CreateToken():string{
     const max = 20;
     let str = "";
     for (let i = 0; i < max; i++) {
