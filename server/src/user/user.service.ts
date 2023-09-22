@@ -16,6 +16,7 @@ let users: User[] = [{
 @Injectable()
 export class UserService {
 
+  
   async create(createUserDto: CreateUserDto):Promise<Boolean> {
     const userRes = users.find(u=>u.login === createUserDto.login);
     if(!userRes){
@@ -26,6 +27,11 @@ export class UserService {
     }
     return !userRes;
     // return 'This action adds a new user';
+  }
+
+
+  async findOne(login: string):Promise<User>{
+    return users.find(u=>u.login === login);
   }
 
   // findAll() {
