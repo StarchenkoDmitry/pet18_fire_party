@@ -24,22 +24,14 @@ export class AuthController {
     @Post('login')
     @UsePipes(new ValidationPipe())
     async login(@Body() dto:LoginDto){        
-        const user = await this.userService.findOne(dto.login)
+        const user = await this.userService.findOne(dto.login);
+
+        if(!user) throw new NotFoundException({error:"User not found."});
+
         const passwordHash = await hasher(dto.password);
+        // console.log(`login: userPass(${user.passwordHash}) pass(${passwordHash})`)
 
-        if(!user){
-            throw new NotFoundException({error:"User not found."});            
-        }
-
-        console.log(`login: userPass(${user.passwordHash}) pass(${passwordHash})`)
-
-        if(user.passwordHash === passwordHash){
-            return {
-                ok:"ok"
-            }
-        }else{
-            throw new BadRequestException({error:"не правильный password"})
-        }
+        if(user.passwordHash !== passwordHash) throw new BadRequestException({error:"не правильный password"});
     }
 
     @Get('logout')
