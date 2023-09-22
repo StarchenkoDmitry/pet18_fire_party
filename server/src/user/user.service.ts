@@ -1,7 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import { LoginDto } from 'src/auth/dto/auth.dto';
+import { hasher } from 'src/auth/utils/Hasher';
+import { LoginResult, LoginStatus } from './user.interface';
+import { CreateToken } from 'src/auth/utils/Tokener';
 
 
 let users: User[] = [{
@@ -35,19 +38,18 @@ export class UserService {
     return users.find(u=>u.login === login);
   }
 
-  // findAll() {
-  //   return `This action returns all user`;
-  // }
+  async login(dto:LoginDto):Promise<LoginResult>{
+    const user = users.find(u=>u.login === dto.login);
 
-  // findOne(id: number) {
-  //   return `This action returns a #${id} user`;
-  // }
+    if(!user) return {status:LoginStatus.userNotFound};
 
-  // update(id: number, updateUserDto: UpdateUserDto) {
-  //   return `This action updates a #${id} user`;
-  // }
+    const passwordHash = await hasher(dto.password);
+    if(user.passwordHash !== passwordHash){
+      return {status:LoginStatus.passwordWrong};
+    }
+    
+    user.token = CreateToken();
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} user`;
-  // }
+    return {status:LoginStatus.ok,token:user.token};
+  }
 }
