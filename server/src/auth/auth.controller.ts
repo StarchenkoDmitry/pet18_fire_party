@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, NotFoundException, Post, ValidationPipe } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, NotFoundException, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { LoginDto, SignUpDto } from './dto/auth.dto';
 import { UserService } from 'src/user/user.service';
 import { hasher } from './utils/Hasher';
@@ -13,11 +13,12 @@ export class AuthController {
 
     //TODO: Доделать волидацию данных проверить длину password и логина.
     @Post('signup')
-    async signup(@Body(new ValidationPipe()) dto:SignUpDto){
+    @UsePipes(new ValidationPipe())
+    async signup(@Body() dto:SignUpDto){
         const {password, ...ob} = dto;
 
         //TODO: седлать проверку на существование login в базе и *email
-        
+
         this.userService.create({
             ...ob,
             passwordHash:hasher(password)
@@ -26,7 +27,8 @@ export class AuthController {
 
     //TODO: Доделать волидацию данных проверить длину password и логина.
     @Post('login')
-    async login(@Body(new ValidationPipe()) dto:LoginDto){        
+    @UsePipes(new ValidationPipe())
+    async login(@Body() dto:LoginDto){        
         const user = await this.userService.findOne(dto.login)
         const passwordHash = await hasher(dto.password);
 
