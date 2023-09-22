@@ -1,29 +1,39 @@
-import { BadRequestException, Body, Controller, Get, NotFoundException, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, NotFoundException, Post, Req, Res, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { LoginDto, SignUpDto } from './dto/auth.dto';
 import { UserService } from 'src/user/user.service';
 import { hasher } from './utils/Hasher';
+import { Request, Response } from 'express';
+import { AuthGuard, REQ_KET_TOKEN } from './auth.guard';
+import { SessionRandom } from 'src/auth/utils/SessionRandom';
 
 
 @Controller('auth')
+@UsePipes(new ValidationPipe({whitelist: true}))
 export class AuthController {
     constructor(private readonly userService: UserService) {}
 
     @Post('register')
-    @UsePipes(new ValidationPipe())
-    async register(@Body() dto:SignUpDto){
+    async register(@Body() dto:SignUpDto, @Res({ passthrough: true }) res:Response){
         const {password, ...ob} = dto;
 
-        const created = this.userService.create({
+        const newToken = SessionRandom();
+        const createUserDto = {
             ...ob,
-            passwordHash:hasher(password)
-        });
+            passwordHash:hasher(password),
+            token:newToken
+        }
+
+        const created = this.userService.create(createUserDto);
+        if(created){
+            res.cookie(REQ_KET_TOKEN,createUserDto.token,{signed:true});
+        }
 
         return created;
     }
 
     @Post('login')
-    @UsePipes(new ValidationPipe())
-    async login(@Body() dto:LoginDto){        
+    // @UseGuards(new AuthGuard())
+    async login(@Body() dto:LoginDto, @Res({ passthrough: true }) res:Response){
         const user = await this.userService.findOne(dto.login);
 
         if(!user) throw new NotFoundException({error:"User not found."});
@@ -31,7 +41,11 @@ export class AuthController {
         const passwordHash = await hasher(dto.password);
         // console.log(`login: userPass(${user.passwordHash}) pass(${passwordHash})`)
 
-        if(user.passwordHash !== passwordHash) throw new BadRequestException({error:"не правильный password"});
+        // if(user.passwordHash !== passwordHash) throw new BadRequestException({error:"не правильный password"});
+        
+        res.cookie(REQ_KET_TOKEN,Math.random().toString(),{});
+
+        return Math.random().toString();
     }
 
     @Get('logout')
@@ -39,3 +53,7 @@ export class AuthController {
         return true;
     }
 }
+
+
+
+        // console.log("Coolies req: ",req.cookies);

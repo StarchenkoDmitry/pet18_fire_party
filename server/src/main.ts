@@ -5,9 +5,10 @@ import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.enableCors({origin:true,credentials:true})
+  
+  app.use(cookieParser("My_secret_1234"));
   app.setGlobalPrefix("api");
-  app.use(cookieParser());
+  app.enableCors({origin:true,credentials:true})
   
   // Create SWAGGER
   const config = new DocumentBuilder()
