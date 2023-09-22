@@ -12,9 +12,9 @@ export class AuthController {
 
 
     //TODO: Доделать волидацию данных проверить длину password и логина.
-    @Post('signup')
+    @Post('register')
     @UsePipes(new ValidationPipe())
-    async signup(@Body() dto:SignUpDto){
+    async register(@Body() dto:SignUpDto){
         const {password, ...ob} = dto;
 
         //TODO: седлать проверку на существование login в базе и *email
