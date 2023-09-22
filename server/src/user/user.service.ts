@@ -6,10 +6,12 @@ import { User } from './entities/user.entity';
 
 let users: User[] = [{
   login:'dima',
-  passwordHash:'duck1'
+  passwordHash:'duck1',
+  email:"lol",
 },{
   login:'zena',
-  passwordHash:'duck2'
+  passwordHash:'duck2',
+  email:"lol",
 }];
 
 
@@ -20,13 +22,14 @@ export class UserService {
   async create(createUserDto: CreateUserDto):Promise<Boolean> {
     const userRes = users.find(u=>u.login === createUserDto.login);
     if(!userRes){
-      users.push({
-        login:createUserDto.login,
-        passwordHash:createUserDto.passwordHash
-      });
+      // users.push({
+      //   login:createUserDto.login,
+      //   passwordHash:createUserDto.passwordHash,
+      //   email:createUserDto.email
+      // });
+      users.push({...createUserDto});
     }
     return !userRes;
-    // return 'This action adds a new user';
   }
 
 

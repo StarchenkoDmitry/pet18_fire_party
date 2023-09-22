@@ -7,3 +7,21 @@ export class LoginDto {
     @IsString()
     password:string;
 }
+
+
+export class SignUpDto {
+    @IsString()
+    login:string;    
+
+    @IsString()
+    email:string;
+
+    @IsString()
+    name:string;
+
+    @IsString()
+    surname:string;
+
+    @IsString()
+    password:string;
+}
