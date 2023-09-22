@@ -44,15 +44,3 @@ export class UserService {
   //   return `This action removes a #${id} user`;
   // }
 }
-
-
-
-
-
-// let users = [{
-//   name:'dimka',
-//   password:'duck1'
-// },{
-//   name:'zena',
-//   password:'duck2'
-// }];
