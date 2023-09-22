@@ -22,10 +22,8 @@ export class SignUpDto {
     password:string;
 
     @MaxLength(16)
-    @IsString()
     name:string;
 
     @MaxLength(16)
-    @IsString()
     surname:string;
 }
