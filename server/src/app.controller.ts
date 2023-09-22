@@ -36,7 +36,7 @@ export class AppController {
     // return this.authService.login(req.user);
     console.log("JwtLogin user: ",req.user);
     if(req.user)
-      return this.authService.login(req.user);
+      return {BOOOOB:"SFSDF"}//this.authService.login(req.user);
     else{
       return {message:"LOL"};
     }  
