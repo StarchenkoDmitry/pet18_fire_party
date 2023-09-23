@@ -9,7 +9,7 @@ interface RegisterData{
 
 export async function Register(data:RegisterData):Promise<boolean>{
     try {
-        const res = await api.post("auth/register",data);        
+        const res = await api.post("auth/register",data);
         return res.status === 201;
     } catch (error) {
         console.log("Action Register error: ",error);
