@@ -6,6 +6,7 @@ import { Request, Response } from 'express';
 import { AuthGuard, NotAuthGuard, REQ_KET_TOKEN } from './auth.guard';
 import { CreateToken } from 'src/auth/utils/Tokener';
 import { LoginStatus } from 'src/user/user.interface';
+import { CreateUserDto } from 'src/user/dto/create-user.dto';
 
 
 @Controller('auth')
@@ -16,22 +17,20 @@ export class AuthController {
     @Post('register')
     @UseGuards(new NotAuthGuard())
     async register(@Body() dto:SignUpDto, @Res({ passthrough: true }) res:Response){
-        const {password, ...ob} = dto;
+        const {password, ...ob} = dto; 
 
         const newToken = CreateToken();
-        const createUserDto = {
+        const createUserDto : CreateUserDto = {
             ...ob,
             passwordHash:hasher(password),
             token:newToken
         }
 
         const created = this.userService.create(createUserDto);
-        if(created){
-            res.cookie(REQ_KET_TOKEN,createUserDto.token,{signed:true});
-        }
+        if(created){ res.cookie(REQ_KET_TOKEN,createUserDto.token,{signed:true}); }
 
         return created;
-    }
+    }   
 
     @Post('login')
     @UseGuards(new NotAuthGuard())
