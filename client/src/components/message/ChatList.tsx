@@ -1,4 +1,5 @@
 'use client'
+import { useState } from "react";
 import styles from "./ChatList.module.scss";
 
 const list = [{
@@ -22,7 +23,9 @@ const list = [{
 }];
 
 export default function MassageList() {
-    console.log("Render ChatList")
+    const [sf,dfgfg] = useState("fgfg");
+    console.log("Render ChatList:", sf) 
+
     const randerList = list.map(e=><div key={e.id} className={styles.message_item}>
         <img className={styles.img} src={e.img} alt=""/>
         <div className={styles.block_right}>
@@ -30,7 +33,7 @@ export default function MassageList() {
             <div>{e.lastMessage}</div>
         </div>
     </div>)
-    
+
     return (
         <div className={styles.message_list + " "}>
             {randerList}

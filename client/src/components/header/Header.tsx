@@ -7,8 +7,11 @@ export default function Header() {
     return (
         <header className={styles.header} >
             <a href="/">Online Chat</a>
-            <Link href='/'>Root</Link>
-            <Link href='/lenta'>Lenta</Link>
+            <Link href='/'>Home</Link>
+            
+            <Link href='/me'>Me</Link>
+            {/* <Link href='/chat'>Me</Link>
+            <Link href='/me'>Me</Link> */}
             {/* <Link href='/home'>Home</Link>
             <Link href='/profile'>Profile</Link> */}
         </header>

@@ -1,5 +1,5 @@
 // 'use client'
-import { IsExistSession } from "@/components/actions/Actions";
+import { IsExistSession } from "@/components/actions/ServerActions";
 import styles from "./page.module.scss"
 import MainScreen from "@/components/screens/MainScreen";
 
