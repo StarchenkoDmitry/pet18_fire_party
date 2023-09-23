@@ -14,13 +14,11 @@ export class UserService {
   
   async create(createUserDto: CreateUserDto):Promise<Boolean> {
     const userRes = await this.prisma.user.findFirst({where:{login: createUserDto.login}});
-    // console.log("UserRes: ",userRes)
 
     if(!userRes){
       const created = await this.prisma.user.create({data:{
         ...createUserDto,
-      }}) 
-      // console.log("CREATED: ",created)
+      }})
     }
 
     return !userRes;
