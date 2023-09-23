@@ -5,50 +5,52 @@ import { LoginDto } from 'src/auth/dto/auth.dto';
 import { hasher } from 'src/auth/utils/Hasher';
 import { LoginResult, LoginStatus } from './user.interface';
 import { CreateToken } from 'src/auth/utils/Tokener';
-
-
-let users: User[] = [{
-  login:'dima',
-  passwordHash:'duck1',
-  email:"lol",
-},{
-  login:'zena',
-  passwordHash:'duck2',
-  email:"lol",
-}];
-
-
+import { PrismaService } from 'src/prisma.service';
 
 
 @Injectable()
 export class UserService {
-
+  constructor(private prisma: PrismaService) {}
   
   async create(createUserDto: CreateUserDto):Promise<Boolean> {
-    const userRes = users.find(u=>u.login === createUserDto.login);
+    const userRes = await this.prisma.user.findFirst({where:{login: createUserDto.login}});
+    // console.log("UserRes: ",userRes)
 
     if(!userRes){
-      users.push({...createUserDto});
+      const created = await this.prisma.user.create({data:{
+        ...createUserDto,
+      }}) 
+      // console.log("CREATED: ",created)
     }
+
     return !userRes;
   }
 
+  async findAll():Promise<User[]>{
+    const userss = await this.prisma.user.findMany();
 
-  async findOne(login: string):Promise<User>{
-    return users.find(u=>u.login === login);
+    return userss.map(u=>{
+      const {id,...userok} = u;
+      return userok as User;
+    })
   }
 
+  async findOne(login: string):Promise<User>{
+    return this.prisma.user.findFirst({where:{login:login}})
+  }  
+
   async login(dto:LoginDto):Promise<LoginResult>{
-    const user = users.find(u=>u.login === dto.login);
+    const user = await this.prisma.user.findFirst({where:{login:dto.login}})
 
     if(!user) return {status:LoginStatus.userNotFound};
 
     const passwordHash = await hasher(dto.password);
     if(user.passwordHash !== passwordHash){
       return {status:LoginStatus.passwordWrong};
-    }
-    
+    }    
     user.token = CreateToken();
+
+    await this.prisma.user.update({where:{id:user.id},data:{token:user.token}});
 
     return {status:LoginStatus.ok,token:user.token};
   }
