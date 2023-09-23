@@ -36,3 +36,6 @@ next-env.d.ts
 
 # my shit files
 /_old
+
+# Environment files
+.env
