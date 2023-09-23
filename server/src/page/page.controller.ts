@@ -7,8 +7,8 @@ import { UpdatePageDto } from './dto/update-page.dto';
 export class PageController {
   constructor(private readonly pageService: PageService) {}
 
-  @Get()
-  findAll() {
+  @Get("main")
+  getMainPage() {
     return this.pageService.findAll();
   }
 }
