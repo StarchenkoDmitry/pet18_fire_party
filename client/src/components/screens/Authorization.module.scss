@@ -1,0 +1,22 @@
+.container{
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.authform{
+  
+  padding: 1em;
+
+  border-radius: 1em;
+  background-color: rgb(184, 222, 255);
+}
+
+
+
+.btn_submit{
+  padding: .2em;
+  color: #fff;
+  background-color: rgb(63, 125, 241);
+}
