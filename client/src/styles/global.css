@@ -9,10 +9,18 @@
   /* --pane-padding: 5px 42px; */
 }
 
+html{
+  /* font-family: "gg sans", "Noto Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; */
+  font-family: Roboto, -apple-system, "apple color emoji", BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
 body {
-  /* padding: 4rem; */
   background-color: rgb(55 51 67);
   
+  width: 100vw;
+  height: 100vh;
+
+  /* padding: 4rem; */
   /* overflow: hidden; */
 }
 
@@ -22,7 +30,13 @@ body {
 
 
 
-.fireui_scrollbar_novisibl::-webkit-scrollbar {
+/* .fireui_scrollbar_novisibl::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+} */
+
+
+.fireui_scroll1::-webkit-scrollbar {
   width: 0px;
   height: 0px;
 }
