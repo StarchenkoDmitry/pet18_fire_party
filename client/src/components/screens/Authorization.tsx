@@ -2,36 +2,47 @@
 import { FormEvent, useState } from "react";
 import styles from "./Authorization.module.scss";
 import { Register } from "../actions/Actions";
-import { RandomEmail } from "@/utils/Randomer";
+import { RandomEmail, RandomLogin, RandomName, RandomPassword } from "@/utils/Randomer";
 
 export default function Authorization() {
     const [registering,setRegistering] = useState(false);
-    const [email,setEmail] = useState('');
-    const [login,setLogin] = useState('');
+    
+    const [login,setLogin] = useState(()=>RandomLogin());
+    const [email,setEmail] = useState(()=>RandomEmail());
+    const [password,setPassword] = useState(()=>RandomPassword());
+    const [name,setName] = useState(()=>RandomName());
+    const [surname,setSurname] = useState(()=>RandomName());
 
     const randomchik = ()=>{
         setEmail(RandomEmail());
     }
        
     const onsubmit = async (event: FormEvent<HTMLFormElement>)=>{
+        event.preventDefault();
+        // event.stopPropagation();        
+
         setRegistering(true);
-        // event.preventDefault();
-        // event.stopPropagation();
+
         const target = event.target as any;
 
         const login = target.login.value;        
         const email = target.email.value;
         const password = target.password.value;
 
+        const name = target.name.value;
+        const surname = target.surname.value;
+
+
         console.log(login,email,password);
         
-        const data = {login,email,password};
+        const data = {login,email,password,name,surname};
         console.log('data: ',data);
 
         const registered = await Register(data);
         console.log("registered: ",registered);
+
         
-        setRegistering(false);
+        if(registered) setRegistering(false);
     }
 
     return (
@@ -40,25 +51,21 @@ export default function Authorization() {
                 <form onSubmit={ onsubmit} method="POST">
 
                     <label htmlFor="login">Login</label><br/>
-                    <input name="login"></input><br/>
+                    <input name="login" defaultValue={login}></input><br/>
 
                     <label htmlFor="email">Email</label><br/>
-                    <input name="email" 
-                    // defaultValue={RandomEmail()}
-                    // onChange={()=>{setEmail(RandomEmail())}}
-                    value={email}
-                    ></input><br/>
+                    <input name="email" defaultValue={email}></input><br/>
 
                     <label htmlFor="password">Password</label><br/>
-                    <input name="password"></input><br/>
+                    <input name="password" defaultValue={password}></input><br/>
 
                     
                     <label htmlFor="name">Name</label><br/>
-                    <input name="name"></input><br/>
+                    <input name="name" defaultValue={name}></input><br/>
                     <label htmlFor="surname">Surname</label><br/>
-                    <input name="surname"></input><br/><br/>
+                    <input name="surname" defaultValue={surname}></input><br/><br/>
 
-                    <button disabled={registering} type="submit" className={styles.btn_submit}>Register</button>
+                    <button type="submit" className={styles.btn_submit}>Register</button>
                 </form>
                 <button onClick={randomchik}>Random</button>
             </div>
