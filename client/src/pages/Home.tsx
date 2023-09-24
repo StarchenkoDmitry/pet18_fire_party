@@ -5,7 +5,7 @@ import Header from "@/components/header/Header";
 
 
 
-export default function Main() {
+export default function Home() {
   return (
     <div className={styles.page}>
       <Header/>
