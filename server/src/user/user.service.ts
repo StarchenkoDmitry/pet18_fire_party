@@ -13,15 +13,20 @@ export class UserService {
   constructor(private prisma: PrismaService) {}
   
   async create(createUserDto: CreateUserDto):Promise<Boolean> {
-    const userRes = await this.prisma.user.findFirst({where:{login: createUserDto.login}});
+    try {      
+      const userRes = await this.prisma.user.findFirst({where:{login: createUserDto.login}});
 
-    if(!userRes){
-      const created = await this.prisma.user.create({data:{
-        ...createUserDto,
-      }})
+      if(!userRes){
+        const created = await this.prisma.user.create({data:{
+          ...createUserDto,
+        }})
+      }
+
+      return !userRes;
+    } catch (error) {
+      console.log("UserService->create error: ",error);
+      return false;
     }
-
-    return !userRes;
   }
 
   async findAll():Promise<User[]>{

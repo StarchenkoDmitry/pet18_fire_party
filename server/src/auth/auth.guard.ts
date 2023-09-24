@@ -27,11 +27,12 @@ export class NotAuthGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean{
     try{
       const request:Request = context.switchToHttp().getRequest();
+      console.log("cookies: ",request.cookies);
 
       const token = request.cookies[REQ_KET_TOKEN];
       console.log(`${REQ_KET_TOKEN}: `,token);
 
-      return token === undefined;
+      return token === undefined ||  token === "";
     }catch(error){
       console.log("Error: ",error);
       return false;

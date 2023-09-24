@@ -5,7 +5,7 @@ import Header from "@/components/header/Header";
 
 
 
-export default async function Main() {
+export default function Main() {
   return (
     <div className={styles.page}>
       <Header/>

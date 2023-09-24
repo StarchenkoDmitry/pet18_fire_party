@@ -17,7 +17,7 @@ export class AuthController {
     @Post('register')
     @UseGuards(new NotAuthGuard())
     async register(@Body() dto:SignUpDto, @Res({ passthrough: true }) res:Response){
-        console.log("@register")
+        console.log("@register ", dto)
         const {password, ...ob} = dto; 
 
         const newToken = CreateToken();
