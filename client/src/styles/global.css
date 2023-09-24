@@ -1,16 +1,20 @@
-@tailwind base;
+/* @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities; */
+
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 
 :root {
   --max-width: 1000px;
-
-  /* --main-color: rgb(50, 67, 218); */
-  /* --pane-padding: 5px 42px; */
 }
 
 html{
-  /* font-family: "gg sans", "Noto Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; */
   font-family: Roboto, -apple-system, "apple color emoji", BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
 
@@ -20,8 +24,6 @@ body {
   width: 100vw;
   height: 100vh;
 
-  /* padding: 4rem; */
-  /* overflow: hidden; */
 }
 
 
