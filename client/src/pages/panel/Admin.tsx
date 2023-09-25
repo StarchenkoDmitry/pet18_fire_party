@@ -18,16 +18,19 @@ export default function Admin() {
         <div className={styles.page}>
             <div className="">
                 ADMIN PANEL
-            </div>
-            <div>
-            {
-                users?.map((e,i)=><div key={i}>
-                    <div>{e.login}</div>
-                    <div>{e.email}</div>
-                </div>)
-            }
-            </div>
-            
+            </div>            
+            <table className={styles.table_users}>
+                <tr>
+                    <th scope="col">Login</th>
+                    <th scope="col">Email</th>
+                </tr>
+                {
+                    users?.map((e,i)=><tr key={i}>
+                        <td>{e.login}</td>
+                        <td>{e.email}</td>
+                    </tr>)
+                }
+            </table>
         </div>
     );
 }

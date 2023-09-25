@@ -7,9 +7,21 @@
   // width: 100vw;
   // height: 100vh;
 
-  background-color: rgb(111 111 111);
+  background-color: rgb(255, 255, 255);
 
 
   //todo: overflow
   overflow: hidden;
+}
+
+
+
+.table_users{
+  padding: .5em;
+  border-radius: 1em;
+  background-color: rgb(226, 226, 226);
+}
+.table_users th{
+  text-align: start;
+  background-color: rgb(163, 255, 209);
 }
