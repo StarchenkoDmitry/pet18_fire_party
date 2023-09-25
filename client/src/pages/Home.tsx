@@ -1,5 +1,5 @@
 import Authorization from "@/components/screens/Authorization";
-import styles from "./page.module.scss"
+import styles from "./Home.module.scss"
 import MainScreen from "@/components/screens/MainScreen";
 import Header from "@/components/header/Header";
 

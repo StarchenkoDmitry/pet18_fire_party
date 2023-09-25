@@ -12,6 +12,18 @@ let messageList: IMessage[]= [{
     text:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam nemo voluptatibus quo quam harum hic ducimus ex facere eos? Fugit animi corporis molestias eos? Magnam corrupti iusto quaerat sapiente itaque?"
 },{
     text:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam nemo voluptatibus quo quam harum hic ducimus ex facere eos? Fugit animi corporis molestias eos? Magnam corrupti iusto quaerat sapiente itaque?"
+},{
+    text:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam nemo voluptatibus quo quam harum hic ducimus ex facere eos? Fugit animi corporis molestias eos? Magnam corrupti iusto quaerat sapiente itaque?"
+},{
+    text:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam nemo voluptatibus quo quam harum hic ducimus ex facere eos? Fugit animi corporis molestias eos? Magnam corrupti iusto quaerat sapiente itaque?"
+},{
+    text:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam nemo voluptatibus quo quam harum hic ducimus ex facere eos? Fugit animi corporis molestias eos? Magnam corrupti iusto quaerat sapiente itaque?"
+},{
+    text:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam nemo voluptatibus quo quam harum hic ducimus ex facere eos? Fugit animi corporis molestias eos? Magnam corrupti iusto quaerat sapiente itaque?"
+},{
+    text:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam nemo voluptatibus quo quam harum hic ducimus ex facere eos? Fugit animi corporis molestias eos? Magnam corrupti iusto quaerat sapiente itaque?"
+},{
+    text:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam nemo voluptatibus quo quam harum hic ducimus ex facere eos? Fugit animi corporis molestias eos? Magnam corrupti iusto quaerat sapiente itaque?"
 }];
 
 // console.log("TEST");
