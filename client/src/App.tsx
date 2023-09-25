@@ -1,25 +1,24 @@
-import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
-// import './App.css'
 import '@/styles/global.css'
 
+import { BrowserRouter, Route, Router, Routes } from 'react-router-dom'
 import Home from './pages/Home'
-import { Route, Router, Routes } from 'react-router-dom'
+import Me from './pages/Me'
+import Admin from './pages/panel/Admin'
 
 function App() {
     return (
-        <>
+        <BrowserRouter>
             <Routes>
-                <Route path="/" element= {<Home/>} />
-                {/* <Route path="/about-me" element= {<AboutMe/>} />
-                <Route path="/portfolio" element= {<Portfolio/>} />
-                <Route path="/socials" element= {<Socials/>} /> */}
-            </Routes>            
-        </>
+                <Route path="/" >
+                    <Route index element={<Home />} />
+                    <Route path='me' element={<Me />} />
+                    {/* <Route path="*" element={<NoPage />} /> */}
+                </Route>
+                <Route path='/panel/admin' element={<Admin/>}/>
+            </Routes>      
+        </BrowserRouter>
     )
 }
-
 export default App
 
 
@@ -33,3 +32,18 @@ export default App
                 <Redirect to="/" />
                 </Switch>
             </Router> */}
+
+
+
+            // return (
+            //     <BrowserRouter>
+            //         <Routes>
+            //             <Route path="/" element={<Layout />}>
+            //                 <Route index element={<Home />} />
+            //                 <Route path="blogs" element={<Blogs />} />
+            //                 {/* <Route path="contact" element={<Contact />} /> */}
+            //                 {/* <Route path="*" element={<NoPage />} /> */}
+            //             </Route>
+            //         </Routes>      
+            //     </BrowserRouter>
+            // )
