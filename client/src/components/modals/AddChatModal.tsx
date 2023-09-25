@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "./AddChatModal.module.scss";
 import api from "@/api/api";
+import { User } from "@/common/inerfaces";
 
 export interface Props{
     isActive:boolean;
@@ -9,7 +10,8 @@ export interface Props{
 
 export default function AddChatModal({isActive,setActive}:Props) {
     const [text,setText] = useState("");
-    console.log("Text: ",text)
+    // console.log("Text: ",text)
+    const [users,setUsers] = useState<User[] | undefined>();
 
     const closeEvent =()=>{ setActive(false); }
 
@@ -22,14 +24,19 @@ export default function AddChatModal({isActive,setActive}:Props) {
             console.log(res.data);
             return res.data;
         }
-        func1().then(()=>{
-
+        func1().then((res)=>{
+            setUsers(res);
         }).catch(()=>{
-            
+            setUsers(undefined);
         });
 
         return ()=>{controller.abort()}
     },[text]);
+
+
+    const addChat = (id:number)=>{
+
+    }
 
     return (
         <div className={styles.modal +" "+ (isActive ? styles.active: "")} onClick={closeEvent}>
@@ -41,6 +48,12 @@ export default function AddChatModal({isActive,setActive}:Props) {
                         setText(e.target.value);
                     }}/>
                 </div>
+                {
+                    users?.map((u,i)=><div key={i}>
+                        <span>{u.login}</span>
+                        <button onClick={()=>addChat(i)} >add</button>
+                    </div>)
+                }
             </div>
         </div>
     )
