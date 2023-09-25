@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { IsString } from 'class-validator';
 
 @Controller('user')
 export class UserController {
@@ -15,6 +16,14 @@ export class UserController {
   @Get()
   getAll() {
     return this.userService.findAll();
+  }
+
+
+  @Get('findAllByName/:text')
+  async findAllByName(@Param("text") text:string){
+    console.log(`findAllByName/:text text: ${text}`);
+
+    return await this.userService.findAllByName(text);
   }
 
   // @Get(':id')

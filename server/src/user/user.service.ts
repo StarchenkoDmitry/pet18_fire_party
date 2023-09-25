@@ -38,6 +38,21 @@ export class UserService {
     })
   }
 
+  async findAllByName(text:string,lemit:number = 10):Promise<User[]>{
+    const userss = await this.prisma.user.findMany({
+      where:{
+        login:{
+          contains:text
+        }
+      }
+    });
+
+    return userss.map(u=>{
+      const {id,...userok} = u;
+      return userok as User;
+    })
+  }
+
   async findOne(login: string):Promise<User>{
     return this.prisma.user.findFirst({where:{login:login}})
   }  
