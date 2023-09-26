@@ -10,6 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
 model User{
   id  Int   @id @default(autoincrement())
   // createdAt DateTime @default(now()) @map("created_at")
@@ -22,4 +23,17 @@ model User{
 
   name String?
   surname String?
+
+  chats Chat[]
+}
+
+model Chat{
+  id Int @id @default(autoincrement())
+
+  users User[]
+}
+
+model Post{
+  id Int @id @default(autoincrement())
+
 }
