@@ -23,22 +23,31 @@ model User {
   surname String?
 
 
-  chats Chat[]
+  // chats Chat[]
 
-  // chatsID Int[] 
+
+  // chatsID Int[] @relation("chat_id")
+
+  chats Chat[] @relation("UserToUser", fields: [chatsID], references: [id])
+  chatsID Int[] 
 }
 
 
 
 model Chat {
-  id Int @id @default(autoincrement())
+  id Int @id @default(autoincrement()) @map("chat_id")
 
   nameChat String
+
+  // users User[]
+
 
   // userId Int    @unique
   // user   User   @relation(fields: [userId], references: [id])
 
-  users User[]
+
+
+
 
   @@map("chats")
 }
