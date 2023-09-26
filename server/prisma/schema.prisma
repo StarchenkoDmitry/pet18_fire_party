@@ -10,30 +10,35 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id Int @id @default(autoincrement())
 
-model User{
-  id  Int   @id @default(autoincrement())
-  // createdAt DateTime @default(now()) @map("created_at")
-  // updatedAt DateTime @updatedAt @map("updated_at")
-
-  login String @unique
-  email String @unique
+  login        String  @unique
+  email        String  @unique
   passwordHash String
-  token String?
 
-  name String?
+  token        String?
+
+  name    String?
   surname String?
 
+
   chats Chat[]
+
+  // chatsID Int[] 
 }
 
-model Chat{
+
+
+model Chat {
   id Int @id @default(autoincrement())
+
+  nameChat String
+
+  // userId Int    @unique
+  // user   User   @relation(fields: [userId], references: [id])
 
   users User[]
-}
 
-model Post{
-  id Int @id @default(autoincrement())
-
+  @@map("chats")
 }

@@ -9,6 +9,9 @@ import { PrismaService } from './prisma.service';
   imports: [AuthModule, UserModule],
   controllers: [AppController],
   providers: [AppService,PrismaService],
+
 })
 export class AppModule {}
  
+
+//TODO: export prismaservice
