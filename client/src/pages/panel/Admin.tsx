@@ -7,6 +7,7 @@ export default function Admin() {
     const [users,set_users] = useState<User[]|undefined>(undefined);
 
     useEffect(()=>{
+        GetChats();
 
         GetAllUsers().then((res)=>{
             set_users(res);
@@ -20,16 +21,20 @@ export default function Admin() {
                 ADMIN PANEL
             </div>            
             <table className={styles.table_users}>
-                <tr>
-                    <th scope="col">Login</th>
-                    <th scope="col">Email</th>
-                </tr>
+                <thead>
+                    <tr>
+                        <th scope="col">Login</th>
+                        <th scope="col">Email</th>
+                    </tr>
+                </thead>
+                <tbody>
                 {
                     users?.map((e,i)=><tr key={i}>
                         <td>{e.login}</td>
                         <td>{e.email}</td>
                     </tr>)
                 }
+                </tbody>                
             </table>
         </div>
     );
@@ -54,6 +59,19 @@ async function GetAllUsers():Promise<User[] | undefined> {
             return res.data;
         }else return;
     } catch (error) {
-        
+        console.log("Error: ",error)
+    }
+}
+
+
+
+async function GetChats() {
+    try {
+        const res = await api.get("chat");
+        if(res.status === 200){
+            console.log("chat: ",res.data);
+        }
+    } catch (error) {
+        console.log("Error: ",error)
     }
 }

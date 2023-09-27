@@ -31,13 +31,21 @@ model Chat {
 
   nameChat String
 
-  users User[]  
+  users User[]
+
+
+  lastMessage Message? @relation("ChatOnMessage",fields: [lastMessageID],references: [id])
+  lastMessageID Int?
 }
+
 
 model Message{
   id Int @id @default(autoincrement()) @unique
 
   text String
+  createAt DateTime @default(now())
+
+  onChat Chat[] @relation("ChatOnMessage")
 
   nextMessage Message[] @relation("MessageRef")
   prevMessage Message? @relation("MessageRef", fields: [prevMessageID],references: [id])
