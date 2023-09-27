@@ -10,6 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
 model User {
   id Int @id @default(autoincrement())
 
@@ -22,26 +23,62 @@ model User {
   name    String?
   surname String?
 
-
   chats Chat[]
-  // chatsID Int[] @relation("chat_id")
-
-  // chats Chat[] @relation("UserToUser", fields: [chatsID], references: [id])
-  // chatsID Int[] 
 }
 
-
-
 model Chat {
-  id Int @id @default(autoincrement()) @map("chat_id")
+  id Int @id @default(autoincrement())
 
   nameChat String
 
   users User[]
 
-
-  // userId Int    @unique
-  // user   User   @relation(fields: [userId], references: [id])
-
-
+  // lastMessageID Int
+  // lastMessage Message? @relation(fields: [lastMessageID],references: [id])
 }
+
+model Message{
+  id Int @id @default(autoincrement()) @unique
+
+  text String
+
+  nextMessage Message[] @relation("MessageRef")
+  prevMessage Message? @relation("MessageRef", fields: [prevMessageID],references: [id])
+  prevMessageID Int?
+  
+  // @map("backMessageID")
+  // children Message[] @relation("children")
+  // parent Message  @relation(fields: [parentId], references: [id])
+  // parentId Int @unique
+
+
+  // @@map("message")
+}
+
+
+// model Chapter {
+//   id          Int       @default(autoincrement()) @id
+//   // ...
+//   parent      Chapter?  @relation(fields: [parentId], references: [id])
+//   parentId    Int?
+// }
+
+// model User2 {
+//   id      Int      @id @default(autoincrement())
+//   profile Profile?
+// }
+
+// model Profile {
+//   id     Int  @id @default(autoincrement())
+//   user   User2 @relation(fields: [userId], references: [id])
+//   userId Int  @unique // relation scalar field (used in the `@relation` attribute above)
+// }
+
+// model User4 {
+//   id          Int     @id @default(autoincrement())
+//   name        String?
+  
+//   successorId Int?    @unique
+//   successor   User4?   @relation("BlogOwnerHistory", fields: [successorId], references: [id])
+//   predecessor User4?   @relation("BlogOwnerHistory")
+// }
