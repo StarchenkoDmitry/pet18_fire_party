@@ -23,13 +23,11 @@ model User {
   surname String?
 
 
-  // chats Chat[]
-
-
+  chats Chat[]
   // chatsID Int[] @relation("chat_id")
 
-  chats Chat[] @relation("UserToUser", fields: [chatsID], references: [id])
-  chatsID Int[] 
+  // chats Chat[] @relation("UserToUser", fields: [chatsID], references: [id])
+  // chatsID Int[] 
 }
 
 
@@ -39,15 +37,11 @@ model Chat {
 
   nameChat String
 
-  // users User[]
+  users User[]
 
 
   // userId Int    @unique
   // user   User   @relation(fields: [userId], references: [id])
 
 
-
-
-
-  @@map("chats")
 }
