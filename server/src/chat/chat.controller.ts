@@ -1,9 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, UsePipes } from '@nestjs/common';
 import { ChatService } from './chat.service';
-import { CreateChatDto } from './dto/create-chat.dto';
-import { UpdateChatDto } from './dto/update-chat.dto';
+import { CreateChatDto } from './chat.dto';
 
 @Controller('chat')
+@UsePipes(new ValidationPipe({whitelist: true}))
 export class ChatController {
   constructor(private readonly chatService: ChatService) {}
 
@@ -16,6 +16,7 @@ export class ChatController {
   findAll() {
     return this.chatService.getAll();
   }
+
 
   // @Get(':id')
   // findOne(@Param('id') id: string) {

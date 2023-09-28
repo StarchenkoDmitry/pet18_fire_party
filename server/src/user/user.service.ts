@@ -15,14 +15,14 @@ export class UserService {
   async create(createUserDto: CreateUserDto):Promise<Boolean> {
     
     // this.prisma.user.create({data:{chats:{}}});
-    await this.prisma.chat.create({data:{
-      nameChat:"dimka",
-      users:{create:[{
-        email:"5325",
-        login:"346346",
-        passwordHash:"546547",
-      }]},
-    }});
+    // await this.prisma.chat.create({data:{
+    //   nameChat:"dimka",
+    //   users:{create:[{
+    //     email:"5325",
+    //     login:"346346",
+    //     passwordHash:"546547",
+    //   }]},
+    // }});
     // this.prisma.user.findFirst({where:{ id:0}});
 
     try {      

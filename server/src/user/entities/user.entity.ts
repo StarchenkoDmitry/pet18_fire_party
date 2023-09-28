@@ -1,4 +1,6 @@
 export class User {
+    pubid:string;
+
     login:string;
     passwordHash:string;
     email:string;
