@@ -10,7 +10,7 @@ export class AuthGuard implements CanActivate {
     try{
       const request:Request = context.switchToHttp().getRequest();
 
-      const token = request.cookies[REQ_KET_TOKEN];
+      const token = request.signedCookies[REQ_KET_TOKEN];
       console.log(`${REQ_KET_TOKEN}: `,token);
 
       return token !== undefined;
@@ -29,7 +29,7 @@ export class NotAuthGuard implements CanActivate {
       const request:Request = context.switchToHttp().getRequest();
       console.log("cookies: ",request.cookies);
 
-      const token = request.cookies[REQ_KET_TOKEN];
+      const token = request.signedCookies[REQ_KET_TOKEN];
       console.log(`${REQ_KET_TOKEN}: `,token);
 
       return token === undefined ||  token === "";

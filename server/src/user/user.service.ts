@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { User } from './entities/user.entity';
+import { User } from './user.entity';
 import { LoginDto } from 'src/auth/dto/auth.dto';
 import { hasher } from 'src/auth/utils/Hasher';
 import { LoginResult, LoginStatus } from './user.interface';
 import { CreateToken } from 'src/auth/utils/Tokener';
 import { PrismaService } from 'src/prisma.service';
 
-
+import { User as UserDB } from "@prisma/client"
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
@@ -50,6 +50,7 @@ export class UserService {
     })
   }
 
+
   async findAllByName(text:string,lemit:number = 10):Promise<User[]>{
     const userss = await this.prisma.user.findMany({
       where:{
@@ -68,6 +69,12 @@ export class UserService {
   async findOne(login: string):Promise<User>{
     return this.prisma.user.findFirst({where:{login:login}})
   }  
+
+  
+  async findOneByToken(token: string):Promise<UserDB>{
+    return this.prisma.user.findFirst({where:{token:token}})
+  }  
+
 
   async login(dto:LoginDto):Promise<LoginResult>{
     const user = await this.prisma.user.findFirst({where:{login:dto.login}})

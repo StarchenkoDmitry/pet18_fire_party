@@ -25,6 +25,7 @@ model User {
   surname String?
 
   chats Chat[]
+  messages Message[]
 }
 
 model Chat {
@@ -33,7 +34,7 @@ model Chat {
   nameChat String
 
   users User[]
-
+  
 
   lastMessage Message? @relation("ChatOnMessage",fields: [lastMessageID],references: [id])
   lastMessageID Int?
@@ -45,6 +46,11 @@ model Message{
 
   text String
   createAt DateTime @default(now())
+
+
+  user User @relation( fields: [userID],references: [id])
+  userID Int
+
 
   onChat Chat[] @relation("ChatOnMessage")
 

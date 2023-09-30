@@ -1,7 +1,7 @@
 import { PartialType } from '@nestjs/swagger';
 
 export class CreateChatDto {
-    pubID:number
+    pubID:number;//pubid с кем будет создат чат
 }
 
 
