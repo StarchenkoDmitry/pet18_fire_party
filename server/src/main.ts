@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as cookieParser from 'cookie-parser';
 import { PrismaService } from './prisma.service';
+import { AuthGuard } from './auth/auth.guard';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -17,6 +18,8 @@ async function bootstrap() {
   app.use(cookieParser("My_secret_1234"));
   app.setGlobalPrefix("api");
   app.enableCors({origin:true,credentials:true})
+
+  app.useGlobalGuards();
   
   // Create SWAGGER
   const config = new DocumentBuilder()

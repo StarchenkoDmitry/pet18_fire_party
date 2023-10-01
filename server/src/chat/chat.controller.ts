@@ -3,7 +3,7 @@ import { ChatService } from './chat.service';
 import { CreateChatDto } from './chat.dto';
 
 import { Request, Response } from 'express';
-import { AuthGuard, REQ_KET_TOKEN } from 'src/auth/auth.guard';
+import { AuthGuard, REQ_COOKIE_SESSION } from 'src/auth/auth.guard';
 import { UserService } from 'src/user/user.service';
 
 @Controller('chat')
@@ -13,12 +13,13 @@ export class ChatController {
               private readonly userService: UserService) {}
 
   @Post()
-  @UseGuards(new AuthGuard())
+  // @UseGuards(AuthGuard)
   create(@Body() createChatDto: CreateChatDto,@Req() req:Request) {
-    const meToken = req.signedCookies[REQ_KET_TOKEN];
+    const meToken = req.signedCookies[REQ_COOKIE_SESSION];
     if(!meToken) return;
 
-    const user = this.userService.findOneByToken(meToken);
+    // const user = this.userService.findOneByToken(meToken);
+    const user = this.userService.findOneBySession(meToken);
     if(!user) return;
     
     return this.chatService.create(createChatDto);
@@ -30,13 +31,14 @@ export class ChatController {
   }
 
   @Get("me")
-  @UseGuards(new AuthGuard())
+  // @UseGuards(AuthGuard)
   async getMyChats(@Req() req:Request){
-    const meToken = req.signedCookies[REQ_KET_TOKEN];
+    const session = req.signedCookies[REQ_COOKIE_SESSION];
     // console.log(`getMyChats(${meToken})`);
-    if(!meToken) return;
+    if(!session) return;
 
-    const user = await this.userService.findOneByToken(meToken);
+    // const user = await this.userService.findOneByToken(meToken);
+    const user = await this.userService.findOneBySession(session);
     // console.log(`getMyChats(${meToken}) user: `,user);
 
     if(!user) return;

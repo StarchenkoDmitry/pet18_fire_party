@@ -19,7 +19,7 @@ model User {
   email        String  @unique
   passwordHash String
 
-  token        String?
+  session String?
 
   name    String?
   surname String?
@@ -34,7 +34,6 @@ model Chat {
   nameChat String
 
   users User[]
-  
 
   lastMessage Message? @relation("ChatOnMessage",fields: [lastMessageID],references: [id])
   lastMessageID Int?
