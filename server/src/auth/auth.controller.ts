@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, HttpException, NotFoundException, Post, Req, Res, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, HttpException, NotFoundException, Post, Req, Res, Session, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { LoginDto, SignUpDto } from './dto/auth.dto';
 import { UserService } from 'src/user/user.service';
 import { hasher } from './utils/Hasher';
@@ -16,8 +16,8 @@ export class AuthController {
 
     @Post('register')
     @UseGuards(new NotAuthGuard())
-    async register(@Body() dto:SignUpDto, @Res({ passthrough: true }) res:Response){
-        console.log("@register ", dto)
+    async register(@Session() ses ,@Body() dto:SignUpDto, @Res({ passthrough: true }) res:Response){
+        console.log("@register ", dto,ses)
         const {password, ...ob} = dto; 
 
         const newToken = CreateToken();
