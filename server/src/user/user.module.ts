@@ -8,7 +8,7 @@ import { MyAuthGuard } from 'src/auth/auth.guard';
   imports:[],
   controllers: [UserController],
   providers: [UserService,PrismaService],
-  exports:[UserService]
+  exports:[]//UserService
 })
 export class UserModule {}
  

@@ -10,13 +10,19 @@ import { UserService } from './user/user.service';
 import { APP_GUARD } from '@nestjs/core';
 
 @Module({
-  imports: [AuthModule, UserModule, ChatModule],
+  imports: [AuthModule,UserModule, ChatModule],
   controllers: [AppController],
-  providers: [AppService,PrismaService,
-    {
-      provide: APP_GUARD,
-      useClass: MyAuthGuard,
-    },
+  providers: [
+    // {
+    //   provide:APP_GUARD,
+    //   useClass:MyAuthGuard
+    // }
+    // ,
+    AppService,PrismaService,
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: MyAuthGuard,
+    // },
   ],
   
   exports:[PrismaService]

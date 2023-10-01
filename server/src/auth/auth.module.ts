@@ -5,11 +5,12 @@ import { UserService } from 'src/user/user.service';
 import { PrismaService } from 'src/prisma.service';
 import { MyAuthGuard } from './auth.guard';
 import { UserModule } from 'src/user/user.module';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [],
   controllers: [AuthController],
-  providers: [AuthService,UserService,PrismaService],
+  providers: [UserService,AuthService,PrismaService],
   // exports: [AuthService],
 })
 export class AuthModule {}

@@ -44,7 +44,7 @@ export class AuthController {
     }
 
     @Get('logout')
-    // @UseGuards(AuthGuard)
+    // @UseGuards(MyAuthGuard)
     async logout(@Res({ passthrough: true }) res:Response){
         console.log("logout");
         //TODO: удалить session из базы данных User
