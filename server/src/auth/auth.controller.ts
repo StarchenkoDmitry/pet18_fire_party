@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, HttpException, NotFoundException, Post, Req, Res, Session, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { BadRequestException, Body, CanActivate, Controller, ExecutionContext, Get, HttpException, Injectable, NotFoundException, Post, Req, Res, Session, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { LoginDto, SignUpDto } from './dto/auth.dto';
 import { UserService } from 'src/user/user.service';
 import { hasher } from './utils/Hasher';
@@ -7,12 +7,54 @@ import { CreateToken } from 'src/auth/utils/Tokener';
 import { LoginStatus } from 'src/user/user.interface';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { MyAuthGuard, REQ_COOKIE_SESSION } from './auth.guard';
+import { AuthService } from './auth.service';
+
+
+
+
+
+
+
+
+
+
+export const REQ_KEY_SESSION = "session";//"session";
+@Injectable()
+export class MyAuthGuardAuth implements CanActivate {
+  constructor(private readonly userService: UserService) {
+    console.log("INIT MyAuthGuard")
+  }
+
+  async canActivate(context: ExecutionContext): Promise<boolean>{
+    try{
+      const request:Request = context.switchToHttp().getRequest();
+      // console.log("DoAuthUser cookies: ",request.signedCookies);
+      const session = request.signedCookies[REQ_COOKIE_SESSION];
+      request[REQ_KEY_SESSION] = session;      
+      console.log("DoAuthUserApp session: ",session);
+      
+      return true;
+
+    }catch(error){
+      console.log("Error: ",error);
+      return false;
+    }
+  }
+}
+
+
+
+
+
+
 
 
 @Controller('auth')
 @UsePipes(new ValidationPipe({whitelist: true}))
 export class AuthController {
-    constructor(private readonly userService: UserService) {}
+    // constructor(   @Inject(forwardRef(() => UserService)) private userService: UserService) {}
+    constructor(private readonly fdfdg : AuthService,
+        private readonly userService: UserService) {}
 
     @Post('register')
     async register(@Body() dto:SignUpDto, @Res({ passthrough: true }) res:Response){
@@ -44,7 +86,8 @@ export class AuthController {
     }
 
     @Get('logout')
-    // @UseGuards(MyAuthGuard)
+    // @UseGuards(MyAuthGuard) 
+    @UseGuards(MyAuthGuardAuth) 
     async logout(@Res({ passthrough: true }) res:Response){
         console.log("logout");
         //TODO: удалить session из базы данных User
