@@ -3,14 +3,14 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { IsString } from 'class-validator';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { MyAuthGuard } from 'src/auth/auth.guard';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
  
   @Get()
-  // @UseGuards(AuthGuard)
+  // @UseGuards(MyAuthGuard)
   getAll(@Session() ses) {
     console.log("@getAll ",ses)
     return this.userService.findAll();

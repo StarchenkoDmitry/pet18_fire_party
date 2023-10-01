@@ -6,7 +6,7 @@ import { Request, Response } from 'express';
 import { CreateToken } from 'src/auth/utils/Tokener';
 import { LoginStatus } from 'src/user/user.interface';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
-import { AuthGuard, REQ_COOKIE_SESSION } from './auth.guard';
+import { MyAuthGuard, REQ_COOKIE_SESSION } from './auth.guard';
 
 
 @Controller('auth')

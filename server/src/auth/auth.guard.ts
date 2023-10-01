@@ -15,8 +15,8 @@ export const REQ_KEY_SESSION = "session";//"session";
 export const REQ_KEY_USER = Symbol("User");
 
 @Injectable()
-export class AuthGuard implements CanActivate {
-  constructor(private readonly userService: UserService) {}
+export class MyAuthGuard implements CanActivate {
+  constructor(@Inject(UserService) private readonly userService: UserService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean>{
     try{
