@@ -1,4 +1,4 @@
-import { CanActivate, ExecutionContext, Inject, Injectable } from "@nestjs/common";
+import { CanActivate, ExecutionContext, Inject, Injectable, forwardRef } from "@nestjs/common";
 import {Request} from "express"
 
 import crypto from "crypto";
@@ -16,7 +16,11 @@ export const REQ_KEY_USER = Symbol("User");
 
 @Injectable()
 export class MyAuthGuard implements CanActivate {
-  constructor(@Inject(UserService) private readonly userService: UserService) {}
+  constructor(
+    // @Inject(UserService)
+    @forwardRef(() => UserService)
+    private readonly userService: UserService
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean>{
     try{
@@ -123,5 +127,45 @@ export function generateSession() {
 //     }
 //   }
 // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// export const REQ_KEY_SESSION = "session";//"session";
+// @Injectable()
+// export class MyAuthGuardAuth implements CanActivate {
+//   constructor(private readonly userService: UserService) {
+//     console.log("INIT MyAuthGuard")
+//   }
+
+//   async canActivate(context: ExecutionContext): Promise<boolean>{
+//     try{
+//       const request:Request = context.switchToHttp().getRequest();
+//       // console.log("DoAuthUser cookies: ",request.signedCookies);
+//       const session = request.signedCookies[REQ_COOKIE_SESSION];
+//       request[REQ_KEY_SESSION] = session;      
+//       console.log("DoAuthUserApp session: ",session);
+      
+//       return true;
+
+//     }catch(error){
+//       console.log("Error: ",error);
+//       return false;
+//     }
+//   }
+// }
+
+
 
 

@@ -12,43 +12,6 @@ import { AuthService } from './auth.service';
 
 
 
-
-
-
-
-
-
-export const REQ_KEY_SESSION = "session";//"session";
-@Injectable()
-export class MyAuthGuardAuth implements CanActivate {
-  constructor(private readonly userService: UserService) {
-    console.log("INIT MyAuthGuard")
-  }
-
-  async canActivate(context: ExecutionContext): Promise<boolean>{
-    try{
-      const request:Request = context.switchToHttp().getRequest();
-      // console.log("DoAuthUser cookies: ",request.signedCookies);
-      const session = request.signedCookies[REQ_COOKIE_SESSION];
-      request[REQ_KEY_SESSION] = session;      
-      console.log("DoAuthUserApp session: ",session);
-      
-      return true;
-
-    }catch(error){
-      console.log("Error: ",error);
-      return false;
-    }
-  }
-}
-
-
-
-
-
-
-
-
 @Controller('auth')
 @UsePipes(new ValidationPipe({whitelist: true}))
 export class AuthController {
@@ -87,7 +50,7 @@ export class AuthController {
 
     @Get('logout')
     // @UseGuards(MyAuthGuard) 
-    @UseGuards(MyAuthGuardAuth) 
+    @UseGuards(MyAuthGuard) 
     async logout(@Res({ passthrough: true }) res:Response){
         console.log("logout");
         //TODO: удалить session из базы данных User
