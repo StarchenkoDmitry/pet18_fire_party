@@ -3,7 +3,7 @@ export class CreateUserDto{
     passwordHash:string;
     email:string;
 
-    token?:string;
+    session?:string;
 
     name?:string;
     surname?:string;

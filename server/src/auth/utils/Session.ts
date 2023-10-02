@@ -1,6 +1,6 @@
-import crypto from "crypto"
+import * as crypto from "crypto"
 
 export function GenerateSession() {
-    const sessionId = crypto.randomBytes(16).toString('base64');
-    return sessionId;
+    const session = crypto.randomBytes(16).toString('base64');
+    return session;
 }

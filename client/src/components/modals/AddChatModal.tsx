@@ -35,7 +35,7 @@ export default function AddChatModal({isActive,setActive}:Props) {
 
 
     const addChat = (id:number)=>{
-
+        
     }
 
     return (

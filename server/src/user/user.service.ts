@@ -12,21 +12,9 @@ import { GenerateSession } from 'src/auth/utils/Session';
 export class UserService {
   constructor(private prisma: PrismaService) {
     console.log("constructor UserService")
-  }
+  } 
   
-  async create(createUserDto: CreateUserDto):Promise<Boolean> {
-    
-    // this.prisma.user.create({data:{chats:{}}});
-    // await this.prisma.chat.create({data:{
-    //   nameChat:"dimka",
-    //   users:{create:[{
-    //     email:"5325",
-    //     login:"346346",
-    //     passwordHash:"546547",
-    //   }]},
-    // }});
-    // this.prisma.user.findFirst({where:{ id:0}});
-
+  async create(createUserDto: CreateUserDto):Promise<Boolean> {    
     try {      
       const userRes = await this.prisma.user.findFirst({where:{login: createUserDto.login}});
 
@@ -94,4 +82,34 @@ export class UserService {
       session:user.session
     };
   }
+
+  async logout(session:string):Promise<boolean>{
+    try {
+      //TODO: заменить UpdateMany на update когда я сделаю session Unique
+      const user = await this.prisma.user.updateMany({
+        data:{
+          session:null,
+        },
+        where:{
+          session:session
+        }
+      });
+    } catch (error) {
+      return false;
+    }
+  }
 }
+
+
+
+
+    // this.prisma.user.create({data:{chats:{}}});
+    // await this.prisma.chat.create({data:{
+    //   nameChat:"dimka",
+    //   users:{create:[{
+    //     email:"5325",
+    //     login:"346346",
+    //     passwordHash:"546547",
+    //   }]},
+    // }});
+    // this.prisma.user.findFirst({where:{ id:0}});
