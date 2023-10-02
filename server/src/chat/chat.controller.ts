@@ -3,7 +3,7 @@ import { ChatService } from './chat.service';
 import { CreateChatDto } from './chat.dto';
 
 import { Request, Response } from 'express';
-import { MyAuthGuard, REQ_COOKIE_SESSION } from 'src/auth/auth.guard';
+import { AuthGuard, REQ_COOKIE_SESSION } from 'src/auth/auth.guard';
 import { UserService } from 'src/user/user.service';
 
 @Controller('chat')

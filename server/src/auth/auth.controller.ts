@@ -1,4 +1,4 @@
-import { BadRequestException, Body, CanActivate, Controller, ExecutionContext, Get, HttpException, Injectable, NotFoundException, Post, Req, Res, Session, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, Post, Res, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { LoginDto, SignUpDto } from './dto/auth.dto';
 import { UserService } from 'src/user/user.service';
 import { hasher } from './utils/Hasher';
@@ -6,17 +6,13 @@ import { Request, Response } from 'express';
 import { CreateToken } from 'src/auth/utils/Tokener';
 import { LoginStatus } from 'src/user/user.interface';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
-import { MyAuthGuard, REQ_COOKIE_SESSION } from './auth.guard';
-import { AuthService } from './auth.service';
-
-
+import { AuthGuard, REQ_COOKIE_SESSION } from './auth.guard';
 
 
 @Controller('auth')
 @UsePipes(new ValidationPipe({whitelist: true}))
 export class AuthController {
-    // constructor(   @Inject(forwardRef(() => UserService)) private userService: UserService) {}
-    constructor(private readonly fdfdg : AuthService,
+    constructor(
         private readonly userService: UserService) {}
 
     @Post('register')
@@ -39,7 +35,7 @@ export class AuthController {
 
     @Post('login')
     async login(@Body() dto:LoginDto, @Res({ passthrough: true }) res:Response){
-        const {status, token} = await this.userService.login(dto);
+        const {status, session: token} = await this.userService.login(dto);
         if(status === LoginStatus.passwordWrong || status === LoginStatus.userNotFound){
             throw new HttpException("Error incorrect login or password",400);
         }
@@ -49,8 +45,7 @@ export class AuthController {
     }
 
     @Get('logout')
-    // @UseGuards(MyAuthGuard) 
-    @UseGuards(MyAuthGuard) 
+    @UseGuards(AuthGuard) 
     async logout(@Res({ passthrough: true }) res:Response){
         console.log("logout");
         //TODO: удалить session из базы данных User
@@ -58,7 +53,3 @@ export class AuthController {
         return true;
     }
 }
-
-// @UseGuards(AuthGuard)
-
-// @UseGuards(AuthGuard)

@@ -4,14 +4,15 @@ import { LoginDto } from 'src/auth/dto/auth.dto';
 import { hasher } from 'src/auth/utils/Hasher';
 import { LoginResult, LoginStatus } from './user.interface';
 import { CreateToken } from 'src/auth/utils/Tokener';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { User } from '@prisma/client';
-import { generateSession } from 'src/auth/auth.guard';
+import { GenerateSession } from 'src/auth/utils/Session';
 
-// import { User, User as UserDB } from "@prisma/client"
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) {
+    console.log("constructor UserService")
+  }
   
   async create(createUserDto: CreateUserDto):Promise<Boolean> {
     
@@ -69,18 +70,11 @@ export class UserService {
 
   async findOne(login: string):Promise<User>{
     return this.prisma.user.findFirst({where:{login:login}})
-  }  
-  
-
-  // async findOneByToken(token: string):Promise<User>{
-  //   return this.prisma.user.findFirst({where:{token:token}})
-  // }
-
+  }
 
   async findOneBySession(session: string):Promise<User>{
     return this.prisma.user.findFirst({where:{session:session}})
   }
-
 
   async login(dto:LoginDto):Promise<LoginResult>{
     const user = await this.prisma.user.findFirst({where:{login:dto.login}})
@@ -91,31 +85,13 @@ export class UserService {
     if(user.passwordHash !== passwordHash){
       return {status:LoginStatus.passwordWrong};
     }    
-    user.session = generateSession();
+    user.session = GenerateSession();
 
     await this.prisma.user.update({where:{id:user.id},data:{session:user.session}});
 
     return {
       status:LoginStatus.ok,
-      token:user.session
+      session:user.session
     };
   }
-
-  // async login(dto:LoginDto):Promise<LoginResult>{
-  //   const user = await this.prisma.user.findFirst({where:{login:dto.login}})
-
-  //   if(!user) return {status:LoginStatus.userNotFound};
-
-  //   const passwordHash = await hasher(dto.password);
-  //   if(user.passwordHash !== passwordHash){
-  //     return {status:LoginStatus.passwordWrong};
-  //   }    
-  //   user.token = CreateToken();
-
-  //   await this.prisma.user.update({where:{id:user.id},data:{token:user.token}});
-
-  //   return {status:LoginStatus.ok,token:user.token};
-  // }
-
-
 }

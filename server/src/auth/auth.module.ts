@@ -1,16 +1,15 @@
 import { Module, forwardRef } from '@nestjs/common';
-import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { UserService } from 'src/user/user.service';
-import { PrismaService } from 'src/prisma.service';
-import { MyAuthGuard } from './auth.guard';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { AuthGuard } from './auth.guard';
 import { UserModule } from 'src/user/user.module';
 import { APP_GUARD } from '@nestjs/core';
+import { PrismaModule } from 'src/prisma/prisma.module';
 
 @Module({
-  imports: [],//[forwardRef(() => UserModule)],
+  imports: [PrismaModule,UserModule],//[forwardRef(() => UserModule)],
   controllers: [AuthController],
-  providers: [UserService,AuthService,PrismaService],
-  // exports: [AuthService],
+  providers: [],
 })
-export class AuthModule {}
+export class AuthModule {} 

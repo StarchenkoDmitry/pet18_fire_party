@@ -5,5 +5,5 @@ export enum LoginStatus{
 }
 export interface LoginResult{
     status:LoginStatus;
-    token?:string;
+    session?:string;
 }
