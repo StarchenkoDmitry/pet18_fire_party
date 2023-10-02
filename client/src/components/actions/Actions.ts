@@ -18,3 +18,16 @@ export async function Register(data:RegisterData):Promise<boolean>{
         return false;
     }
 }
+
+
+export async function CreateChat(friend_pubid:string):Promise<boolean>{
+    try {
+        const res = await api.post("chat/create",{pubid:friend_pubid});
+        console.log("#chat create res: ",res.data)
+        return res.status === 201;
+    } catch (error) {
+        console.log("Action CreateChat error: ",error);
+        return false;
+    }
+}
+

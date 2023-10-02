@@ -17,9 +17,12 @@ export class ChatController {
   @Post("create")
   @UseGuards(AuthGuard)
   async create(@Body() createChatDto: CreateChatDto,@UserDec() user:User) {
-    const session = user.session;
+    const me_pubid = user.pubid;
+    const {pubid: friend_pubid } = createChatDto;
+    console.log("#chat create: ",createChatDto)
 
-    return await this.chatService.create({pubid:""});
+    // return await this.chatService.create(me_pubid,friend_pubid);
+    return await this.chatService.create(me_pubid,friend_pubid);
   }
 
   @Get()
@@ -28,21 +31,10 @@ export class ChatController {
   }
 
   @Get("me")
-  // @UseGuards(AuthGuard)
-  async getMyChats(@Req() req:Request){
-    const session = req.signedCookies[REQ_RES_COOKIE_SESSION];
-    // console.log(`getMyChats(${meToken})`);
-    if(!session) return;
-
-    // const user = await this.userService.findOneByToken(meToken);
-    const user = await this.userService.findOneBySession(session);
-    // console.log(`getMyChats(${meToken}) user: `,user);
-
-    if(!user) return;
-
+  @UseGuards(AuthGuard)
+  async getMyChats(@UserDec() user:User){
     const chats = await this.chatService.getMyChats(user.id);
-    if(chats) return chats;
-
+    return chats;
   }
   
 

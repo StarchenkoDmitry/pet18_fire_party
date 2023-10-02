@@ -3,11 +3,12 @@ import ChatList from "../message/ChatList";
 import AddChatModal from "../modals/AddChatModal";
 import styles from "./ChatsPanel.module.scss";
 import api from "@/api/api";
+import { Chat } from "@/common/inerfaces";
 
 export default function ChatsPanel() {
     const [isActiveModal,setActiveModal] = useState(false);
 
-    const [text,setText] = useState<any>("");
+    const [chats,setChats] = useState<Chat[]>([]);
 
     useEffect(()=>{
         const controller = new AbortController();
@@ -19,13 +20,17 @@ export default function ChatsPanel() {
         }
 
         func1().then((res)=>{
-            setText(JSON.stringify(res));
+            setChats(res);
         }).catch(()=>{
-            setText(undefined);
+            setChats([]);
         });
 
         return ()=>{controller.abort()}
     },[]);
+
+    const rend_chats = chats.map(e=><div key={e.pubid}>
+        <span>{e.nameChat} {e.pubid}</span>
+    </div>)
     
     return (
         <div className={styles.chats_panel}>
@@ -33,7 +38,7 @@ export default function ChatsPanel() {
                 <input className={styles.input} type="text" />
             </div>
             <div className={styles.block_poisk}>
-                <span>{text}</span>
+                { rend_chats }
             </div>
             <ChatList/>
             <div className={styles.btn_add_chat} onClick={()=>setActiveModal((pa)=>!pa)}>

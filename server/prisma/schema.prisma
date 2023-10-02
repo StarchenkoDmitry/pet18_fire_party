@@ -19,7 +19,7 @@ model User {
   email        String  @unique
   passwordHash String
 
-  session String?
+  session String? @unique
 
   name    String?
   surname String?
@@ -30,6 +30,7 @@ model User {
 
 model Chat {
   id Int @id @default(autoincrement())
+  pubid String @unique @default(uuid())
 
   nameChat String
 

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import styles from "./AddChatModal.module.scss";
 import api from "@/api/api";
 import { User } from "@/common/inerfaces";
+import { CreateChat } from "../actions/Actions";
 
 export interface Props{
     isActive:boolean;
@@ -34,8 +35,8 @@ export default function AddChatModal({isActive,setActive}:Props) {
     },[text]);
 
 
-    const addChat = (id:number)=>{
-        
+    const addChat = (pubid:string)=>{
+        CreateChat(pubid);
     }
 
     return (
@@ -51,7 +52,7 @@ export default function AddChatModal({isActive,setActive}:Props) {
                 {
                     users?.map((u,i)=><div key={i}>
                         <span>{u.login}</span>
-                        <button onClick={()=>addChat(i)} >add</button>
+                        <button onClick={()=>addChat(u.pubid)} >add</button>
                     </div>)
                 }
             </div>
