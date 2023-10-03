@@ -12,7 +12,8 @@ export default function ContentPanel() {
             <div>{pubid} {routename}</div>
             {
                 routename === "chat" ?
-                    <Chat />: <div>HZ</div>          
+                    <Chat pubid={pubid || ""} />
+                    :<div>HZ</div>
             }
         </div>
     );

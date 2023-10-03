@@ -9,7 +9,7 @@ export const UserDec : ()=>ParameterDecorator = createParamDecorator(
 
         if(!user) throw new BadRequestException("436-98436098340968346-45457")
 
-        console.log("@User decorator: ",user);
+        // console.log("@UserDec decorator: ",user);
         return user;
     },
 );

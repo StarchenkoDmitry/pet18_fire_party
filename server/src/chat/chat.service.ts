@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateChatDto } from './chat.dto';
 import { Chat } from '@prisma/client';
-import { ChatInfo } from 'src/common/inerfaces';
+import { ChatInfo, Message } from 'src/common/inerfaces';
 
 @Injectable()
 export class ChatService {  
@@ -17,6 +17,81 @@ export class ChatService {
       },
     });
     return ress;
+  }
+
+  async createMessage(userid:number, chat_pubid:string,message:string) {
+    const chat = await this.prisma.chat.findFirst({
+      where:{
+        pubid:chat_pubid,
+        AND:{
+          users:{
+            some:{
+              id:userid
+            }
+          }
+        }
+      }
+    });
+    // console.log("messes: ",chat);
+    if(chat){
+      const newMessage = await this.prisma.message.create({
+        data:{
+          text:message,
+          userID:userid,
+          prevMessageID:chat.lastMessageID
+        }
+      });      
+
+      const lastMessageID = chat.lastMessageID;
+      await this.prisma.chat.update({
+        where:{id:chat.id},
+        data:{
+          lastMessageID: newMessage.id
+        }
+      });
+      return true;
+    }    
+    return false;
+  }
+
+  async getAllMessages(userid:number ,chat_pubid:string):Promise<Message[] | undefined>{
+    const chat = await this.prisma.chat.findFirst({
+      where:{
+        pubid:chat_pubid,
+        AND:{
+          users:{
+            some:{
+              id:userid
+            }
+          }
+        }
+      }
+    })
+    if(chat){
+      const messages:Message[] = [];
+      // if(chat.lastMessageID !== 0){
+      //   const message = await this.prisma.message.findFirst({
+      //     where:{id:chat.lastMessageID}
+      //   });
+      //   messages.push(message)
+      // }
+      let lastMessageID = chat.lastMessageID;
+      let maxReadMessage = 50;
+      while(lastMessageID && lastMessageID !== 0 && (maxReadMessage--) >0){
+        const message = await this.prisma.message.findFirst({
+          where:{id:lastMessageID}
+        });
+        messages.push({
+          id:message.id,
+          text:message.text,
+          createAt: message.createAt,
+          prevMessageID: message.prevMessageID
+        })
+        lastMessageID = message.prevMessageID;
+      }
+      return messages;
+    }
+    return;
   }
 
   getAll() {

@@ -1,8 +1,8 @@
 
 
 
-export interface Message{
-    id:number;
-    text:string;
+// export interface Message{
+//     id:number;
+//     text:string;
     
-}
+// }

@@ -50,3 +50,12 @@ export interface MeChats{
     mepubid:string;
     chats:ChatInfo[]
 }
+
+
+
+export interface Message{
+    id:number;
+    text:string;
+    createAt:Date;
+    prevMessageID: number;
+}
