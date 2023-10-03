@@ -1,35 +1,41 @@
 import { useEffect, useState } from "react";
 import ChatList from "../message/ChatList";
 import AddChatModal from "../modals/AddChatModal";
-import styles from "./ChatsPanel.module.scss";
+import styles from "./CommunicationsPanel.module.scss";
 import api from "@/api/api";
-import { Chat } from "@/common/inerfaces";
+import { MeChats } from "@/common/inerfaces";
+import { useNavigate } from "react-router-dom";
 
-export default function ChatsPanel() {
+export default function CommunicationsPanel() {
+    const navigate = useNavigate();
     const [isActiveModal,setActiveModal] = useState(false);
 
-    const [chats,setChats] = useState<Chat[]>([]);
+    const [listchats,setListChats] = useState<MeChats>();
 
     useEffect(()=>{
         const controller = new AbortController();
         
         const func1 = async () => {
             const res = await api.get('chat/me',{signal: controller.signal});
-            console.log(res.data);
+            console.log("chat/me res: ", res.data);
             return res.data;
         }
 
         func1().then((res)=>{
-            setChats(res);
+            setListChats(res);
         }).catch(()=>{
-            setChats([]);
+            setListChats(undefined);
         });
 
         return ()=>{controller.abort()}
     },[]);
+    
+    const onSelectFriendChat = (chat_pubid:string)=>{
+        navigate(`/chat/${chat_pubid}`);
+    }
 
-    const rend_chats = chats.map(e=><div key={e.pubid}>
-        <span>{e.nameChat} {e.pubid}</span>
+    const rend_chats = listchats?.chats.map(e=><div key={e.pubid} className={styles.friend_chat} onClick={()=>onSelectFriendChat(e.pubid)}>
+        <span>{e.users.map(e=>e.name)}</span>
     </div>)
     
     return (

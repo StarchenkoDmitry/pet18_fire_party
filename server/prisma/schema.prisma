@@ -32,7 +32,7 @@ model Chat {
   id Int @id @default(autoincrement())
   pubid String @unique @default(uuid())
 
-  nameChat String
+  // nameChat String
 
   users User[]
 

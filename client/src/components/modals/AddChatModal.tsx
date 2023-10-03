@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "./AddChatModal.module.scss";
 import api from "@/api/api";
-import { User } from "@/common/inerfaces";
+import { UserDB } from "@/common/inerfaces";
 import { CreateChat } from "../actions/Actions";
 
 export interface Props{
@@ -12,7 +12,7 @@ export interface Props{
 export default function AddChatModal({isActive,setActive}:Props) {
     const [text,setText] = useState("");
     // console.log("Text: ",text)
-    const [users,setUsers] = useState<User[] | undefined>();
+    const [users,setUsers] = useState<UserDB[] | undefined>();
 
     const closeEvent =()=>{ setActive(false); }
 

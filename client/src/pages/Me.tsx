@@ -2,7 +2,7 @@ import MainScreen from "@/components/screens/MainScreen";
 import styles from "./Me.module.scss"
 
 
-export default function Home() {
+export default function Me() {
   return (
     <div className={styles.page}>
       <MainScreen/>

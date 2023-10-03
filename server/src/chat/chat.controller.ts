@@ -7,6 +7,7 @@ import { AuthGuard, REQ_RES_COOKIE_SESSION } from 'src/auth/auth.guard';
 import { UserService } from 'src/user/user.service';
 import { UserDec } from 'src/auth/auth.decorator';
 import { User } from '@prisma/client';
+import { MeChats } from 'src/common/inerfaces';
 
 @Controller('chat')
 @UsePipes(new ValidationPipe({whitelist: true}))
@@ -32,9 +33,13 @@ export class ChatController {
 
   @Get("me")
   @UseGuards(AuthGuard)
-  async getMyChats(@UserDec() user:User){
+  async getMyChats(@UserDec() user:User):Promise<MeChats>{
     const chats = await this.chatService.getMyChats(user.id);
-    return chats;
+
+    return {
+      mepubid:user.pubid,
+      chats:chats
+    };
   }
   
 
