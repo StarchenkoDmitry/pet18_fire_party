@@ -9,11 +9,13 @@ function App() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/"  >
+                <Route path="/">
                     <Route index element={<Home />} />
 
                     <Route path='me' element={<Me/>}/>
-                    <Route path='chat/:pubid' element={<div>CHAT/</div>}/>
+                    <Route path='chat/:pubid' element={<Me/>}/>
+                    <Route path=':routename/:pubid' element={<Me/>}/>
+                    
 
                 </Route>
                 <Route path='/panel/admin' element={<Admin/>}/>
