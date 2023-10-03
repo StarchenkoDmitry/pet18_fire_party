@@ -7,12 +7,11 @@ export default function Admin() {
     const [users,set_users] = useState<User[]|undefined>(undefined);
 
     useEffect(()=>{
-        GetChats();
+        // GetChats();
 
         GetAllUsers().then((res)=>{
             set_users(res);
         });
-
     },[]);
 
     return (
@@ -53,7 +52,7 @@ interface User{
 
 async function GetAllUsers():Promise<User[] | undefined> {
     try {
-        const res = await api.get("user");
+        const res = await api.get("user/all");
         if(res.status === 200){
             console.log(res.data);
             return res.data;

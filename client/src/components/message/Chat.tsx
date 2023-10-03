@@ -9,27 +9,9 @@ interface IMessage{
 let messageList: IMessage[]= [{
     text:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam nemo voluptatibus quo quam harum hic ducimus ex facere eos? Fugit animi corporis molestias eos? Magnam corrupti iusto quaerat sapiente itaque?"
 },{
-    text:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam nemo voluptatibus quo quam harum hic ducimus ex facere eos? Fugit animi corporis molestias eos? Magnam corrupti iusto quaerat sapiente itaque?"
-},{
-    text:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam nemo voluptatibus quo quam harum hic ducimus ex facere eos? Fugit animi corporis molestias eos? Magnam corrupti iusto quaerat sapiente itaque?"
-},{
-    text:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam nemo voluptatibus quo quam harum hic ducimus ex facere eos? Fugit animi corporis molestias eos? Magnam corrupti iusto quaerat sapiente itaque?"
-},{
-    text:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam nemo voluptatibus quo quam harum hic ducimus ex facere eos? Fugit animi corporis molestias eos? Magnam corrupti iusto quaerat sapiente itaque?"
-},{
-    text:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam nemo voluptatibus quo quam harum hic ducimus ex facere eos? Fugit animi corporis molestias eos? Magnam corrupti iusto quaerat sapiente itaque?"
-},{
-    text:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam nemo voluptatibus quo quam harum hic ducimus ex facere eos? Fugit animi corporis molestias eos? Magnam corrupti iusto quaerat sapiente itaque?"
-},{
-    text:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam nemo voluptatibus quo quam harum hic ducimus ex facere eos? Fugit animi corporis molestias eos? Magnam corrupti iusto quaerat sapiente itaque?"
-},{
-    text:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam nemo voluptatibus quo quam harum hic ducimus ex facere eos? Fugit animi corporis molestias eos? Magnam corrupti iusto quaerat sapiente itaque?"
+    text:"1orem ipsum dolor sit amet consectetur adipisicing elit. Numquam nemo voluptatibus quo quam harum hic ducimus ex facere eos? Fugit animi corporis molestias eos? Magnam corrupti iusto quaerat sapiente itaque?"
 }];
 
-// console.log("TEST");
-// Array(20).forEach(r=>{
-//     console.log("R")
-// });
 
 
 export default function Chat() {

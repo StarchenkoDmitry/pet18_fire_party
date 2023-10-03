@@ -3,7 +3,7 @@ import '@/styles/global.css'
 import { BrowserRouter, Route, Router, Routes } from 'react-router-dom'
 import Home from './pages/Home'
 import Admin from './pages/panel/Admin'
-import Me from './pages/Me'
+import Main from './pages/Main'
 
 function App() {
     return (
@@ -12,9 +12,9 @@ function App() {
                 <Route path="/">
                     <Route index element={<Home />} />
 
-                    <Route path='me' element={<Me/>}/>
-                    <Route path='chat/:pubid' element={<Me/>}/>
-                    <Route path=':routename/:pubid' element={<Me/>}/>
+                    {/* <Route path='me' element={<Me/>}/> */}
+                    {/* <Route path='chat/:pubid' element={<Me/>}/> */}
+                    <Route path=':routename/:pubid' element={<Main/>}/>
                     
 
                 </Route>

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import ChatList from "../message/ChatList";
 import AddChatModal from "../modals/AddChatModal";
 import styles from "./CommunicationsPanel.module.scss";
 import api from "@/api/api";
@@ -46,7 +45,7 @@ export default function CommunicationsPanel() {
             <div className={styles.block_poisk}>
                 { rend_chats }
             </div>
-            <ChatList/>
+            {/* <ChatList/> */}
             <div className={styles.btn_add_chat} onClick={()=>setActiveModal((pa)=>!pa)}>
                 +
             </div>
