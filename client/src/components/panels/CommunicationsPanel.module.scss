@@ -1,20 +1,21 @@
 .chats_panel{
   position: relative;
-  display: grid;
+  display: flex;
+  flex-direction: column;
   width: 15em;
-
+  // height: 100%;
   //todo: Доделать grid и flex
-  flex: none;
-  grid-template-rows: min-content;
+
+  background-color: rgb(46, 192, 131);
+  
 }
 
 
 
 .block_poisk{
-  flex: 1;
-  background-color: rgb(76, 187, 150);
+  // flex: 1;
+  background-color: rgb(196, 54, 209);
   display: flex;
-
 }
 
 
@@ -24,6 +25,14 @@
   // width: 200px;
   // width: 100%;
 }
+
+
+
+.list_chats{
+
+}
+
+
 
 
 .btn_add_chat{

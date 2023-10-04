@@ -16,14 +16,16 @@ export default function Chat({pubid}:ChatInput) {
     const [messages,setMessages] = useState<Message[] | undefined>(undefined);
 
     useEffect(()=>{
-        GetAllMessage(pubid).then(res=>{
-            setMessages(res);
-        });
+        GetAllMessage(pubid).then(res=>{setMessages(res);});
     },[pubid]);
 
     const addMessage = ()=>{
         const message = refka.current?.value || "";
-        SendMessage(pubid,message)
+        SendMessage(pubid,message).then((res)=>{
+            if(res){
+                GetAllMessage(pubid).then(res=>{setMessages(res);});
+            }
+        });
     }
 
     return (
@@ -37,7 +39,9 @@ export default function Chat({pubid}:ChatInput) {
             </div>
             <div className={styles.messages}>
                 {
-                    messages?.map((e,i)=><p key={i}>{e.text}</p>)
+                    messages?.map((e,i)=><div key={i}>
+                        <p>{e.text}</p>
+                    </div>)
                 }
             </div>
             <div className={styles.container_input}>

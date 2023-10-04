@@ -40,11 +40,9 @@ export default function CommunicationsPanel() {
     return (
         <div className={styles.chats_panel}>
             <div className={styles.block_poisk}>
-                {/* <div className="input-search"> */}
-                    <input className={styles.input} type="text" />
-                {/* </div> */}
+                <input className={styles.input} type="text" />
             </div>
-            <div className={styles.block_poisk}>
+            <div className={styles.list_chats}>
                 { rend_chats }
             </div>
             {/* <ChatList/> */}
