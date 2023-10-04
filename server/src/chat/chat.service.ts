@@ -69,18 +69,16 @@ export class ChatService {
     })
     if(chat){
       const messages:Message[] = [];
-      // if(chat.lastMessageID !== 0){
-      //   const message = await this.prisma.message.findFirst({
-      //     where:{id:chat.lastMessageID}
-      //   });
-      //   messages.push(message)
-      // }
       let lastMessageID = chat.lastMessageID;
       let maxReadMessage = 50;
       while(lastMessageID && lastMessageID !== 0 && (maxReadMessage--) >0){
         const message = await this.prisma.message.findFirst({
           where:{id:lastMessageID}
         });
+        if(!message){
+          lastMessageID = null;
+          continue;
+        }
         messages.push({
           id:message.id,
           text:message.text,

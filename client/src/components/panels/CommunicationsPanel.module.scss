@@ -11,12 +11,18 @@
 
 
 .block_poisk{
+  flex: 1;
   background-color: rgb(76, 187, 150);
+  display: flex;
+
 }
 
+
 .input{
+  flex:1;
   margin: .4em;
-  width: 200px;
+  // width: 200px;
+  // width: 100%;
 }
 
 

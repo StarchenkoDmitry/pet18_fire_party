@@ -41,19 +41,29 @@
 }
 
 
+
 .messages{
   flex: 1;
-  overflow: scroll;
+  // overflow: scroll;
+  overflow-y: auto;
 }
 
 .messages p{
   display: block;
+
   margin: 1em;
   padding: .2em;
-  max-width: 500px;
-  background-color: aquamarine;
-}
 
+  max-width: 500px;
+
+  border-radius: .5em;
+  background-color: aquamarine;
+
+
+  // word-wrap: normal;
+  // white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
 
 
 

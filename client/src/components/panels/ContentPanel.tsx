@@ -9,7 +9,7 @@ export default function ContentPanel() {
 
     return (
         <div className={styles.content}>
-            <div>{pubid} {routename}</div>
+            {/* <div>{pubid} {routename}</div> */}
             {
                 routename === "chat" ?
                     <Chat pubid={pubid || ""} />
