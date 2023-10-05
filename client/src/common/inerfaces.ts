@@ -1,13 +1,4 @@
 export interface UserDB {
-    // login:string;
-    // passwordHash:string;
-    // email:string;
-
-    // token?:string;
-
-    // name?:string;
-    // surname?:string;
-
     id: number
     pubid: string
 
@@ -21,18 +12,6 @@ export interface UserDB {
     surname: string | null
 }
 
-
-// export interface ChatDB{
-//     id: number
-//     pubid: string
-//     lastMessageID: number | null
-// }
-
-
-// export interface Chat{
-//     pubid: string
-//     lastMessageID: number | null
-// }
 
 
 export interface ChatInfo_User{
