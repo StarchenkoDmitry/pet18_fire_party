@@ -20,7 +20,7 @@ export class AuthGuard implements CanActivate {
       const request:Request = context.switchToHttp().getRequest();
       const session = request.signedCookies[REQ_RES_COOKIE_SESSION];
       request[REQ_KEY_SESSION] = session;      
-      console.log("DoAuthUser session: ",session);
+      // console.log("DoAuthUser session: ",session);
 
       if(!session) return false;
 

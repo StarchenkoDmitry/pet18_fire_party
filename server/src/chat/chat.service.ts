@@ -70,8 +70,8 @@ export class ChatService {
     if(chat){
       const messages:Message[] = [];
       let lastMessageID = chat.lastMessageID;
-      let maxReadMessage = 50;
-      while(lastMessageID && lastMessageID !== 0 && (maxReadMessage--) >0){
+      let maxGetMessages = 256;
+      while(lastMessageID && lastMessageID !== 0 && (maxGetMessages--) >0){
         const message = await this.prisma.message.findFirst({
           where:{id:lastMessageID}
         });

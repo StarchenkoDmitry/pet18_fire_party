@@ -40,6 +40,19 @@ export class UserService {
     })
   }
 
+  async changeImage(userID:number,imageID:number):Promise<boolean>{    
+    try {
+      const res = await this.prisma.user.update({
+        data:{ imageID:imageID },
+        where:{ id:userID }
+      });
+      // console.log("changeImg res: ",res);
+      return true;  
+    } catch (error) {
+      console.log("UserService changeImg error: ",error);
+      return false;      
+    }
+  }
 
   async findAllByName(text:string,lemit:number = 10):Promise<User[]>{
     const userss = await this.prisma.user.findMany({
