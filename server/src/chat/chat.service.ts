@@ -126,8 +126,30 @@ export class ChatService {
         return {pubid:e.pubid,name:e.name};
       })};
     }));
-
     return list_chatInfo;
+  }
+
+  async delete(id:number):Promise<boolean>{
+    const curMes = await this.prisma.message.findFirst({where:{id:id}});
+    if(!curMes) return false;
+    // if(!curMes) throw new Error(`Message(id:${id}) is not exist!`)
+
+    const prevMesID = curMes.prevMessageID;
+
+    const nextMess = await this.prisma.message.findFirst({where:{prevMessageID:id}});
+    if(!nextMess){
+      //curMes Это последний message
+      const curChat = await this.prisma.chat.findFirst({where:{lastMessageID:id}});
+      if(!curChat) throw new Error("Chat не существует Это ошибка!!!")
+      
+      this.prisma.chat.update({data:{lastMessageID:prevMesID},where:{id:curChat.id}});
+    }
+    else{
+      await this.prisma.message.update({data:{prevMessageID:prevMesID},where:{id:nextMess.id}});
+    }
+
+    const delres = await this.prisma.message.delete({where:{id:id}});    
+    return delres !== null;
   }
 }
 

@@ -58,6 +58,11 @@ export class ChatController {
     };
   }
   
+  @Delete('message/:id')
+  async toDelete(@Param('id') id: string) {
+    console.log(`/chat/message/${id}`)
+    return await this.chatService.delete(+id);
+  }
 
   // @Get(':id')
   // findOne(@Param('id') id: string) {
@@ -69,8 +74,4 @@ export class ChatController {
   //   return this.chatService.update(+id, updateChatDto);
   // }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.chatService.remove(+id);
-  // }
 }

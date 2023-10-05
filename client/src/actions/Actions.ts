@@ -60,7 +60,7 @@ export async function GetAllMessage(chat_pubid:string):Promise<Message[] | undef
 }
 
 
-export async function GetImage(pubid:string):Promise<Message[] | undefined>{
+export async function GetImage(pubid:string):Promise<any>{
     try {
         const res = await api.get(`image/${pubid}`);
         console.log("/image/:pubid res: ",res.data)
@@ -73,4 +73,21 @@ export async function GetImage(pubid:string):Promise<Message[] | undefined>{
         return undefined;
     }
 }
+
+
+export async function DeleteMessage(id:number):Promise<boolean>{
+    try {
+        const res = await api.delete(`chat/message/${id}`);
+        console.log("/chat/message/:id res: ",res)
+        if(res.status ===200){            
+            return res.data;
+        }else{
+            return false;
+        }
+    } catch (error) {
+        console.log("Action GetImage error: ",error);
+        return false;
+    }
+}
+
 

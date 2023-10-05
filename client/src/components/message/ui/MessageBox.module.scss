@@ -16,12 +16,18 @@
   overflow-wrap: anywhere;
 }
 
+.message_head{
+  display: flex;
+}
 
 .message_createAt{
+  flex: 1;
   font-size: .8em;
   border-radius: .2em;
   background-color: aliceblue;
 }
+
+
 
 .message_text{
   margin-top: .4em;
