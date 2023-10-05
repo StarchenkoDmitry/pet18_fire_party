@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styles from "./AddChatModal.module.scss";
 import api from "@/api/api";
 import { UserDB } from "@/common/inerfaces";
-import { CreateChat } from "../actions/Actions";
+import { CreateChat } from "../../actions/Actions";
 
 export interface Props{
     isActive:boolean;

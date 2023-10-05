@@ -1,7 +1,7 @@
 // 'use client'
 import { FormEvent, useState } from "react";
 import styles from "./Authorization.module.scss";
-import { Register } from "../actions/Actions";
+import { Register } from "../../actions/Actions";
 import { RandomEmail, RandomLogin, RandomName, RandomPassword } from "@/utils/Randomer";
 import { useNavigate } from "react-router-dom";
 

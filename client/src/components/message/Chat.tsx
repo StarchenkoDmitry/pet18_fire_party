@@ -1,15 +1,14 @@
 // 'use client'
 import { useEffect, useRef, useState } from "react";
 import styles from "./Chat.module.scss";
-import { GetAllMessage, SendMessage } from "../actions/Actions";
+import { GetAllMessage, SendMessage } from "../../actions/Actions";
 import { Message } from "@/common/inerfaces";
 
-
-export type ChatInput={
+export type ChatProps={
     pubid:string
 }
 
-export default function Chat({pubid}:ChatInput) {
+export default function Chat({pubid}:ChatProps) {
     console.log(`Render Chat(${pubid})`)
     const refka = useRef<HTMLInputElement>(null);
 
@@ -32,8 +31,8 @@ export default function Chat({pubid}:ChatInput) {
         <div className={styles.chat}>
             <div className={styles.header}>
                 <div className={styles.img}>
-                    <img src="/imgraw/users/eugene.png" alt="" />
-                </div>
+                    <img src="http://127.0.0.1:3000/api/image/buffer/7fcc2423-8ec3-4020-9e70-b976207654a2" />
+                </div>                
                 <span className={styles.name}>Eugen</span>
                 <span style={{margin:"1em"}}>{pubid}</span>
             </div>
