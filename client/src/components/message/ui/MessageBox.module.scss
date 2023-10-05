@@ -1,0 +1,30 @@
+
+.message{
+  display: block;
+
+  margin: 1em;
+  padding: .2em;
+
+  max-width: 500px;
+
+  // border-radius: .5em;
+  background-color: rgb(2, 194, 114);
+
+
+  // word-wrap: normal;
+  // white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+
+.message_createAt{
+  font-size: .8em;
+  border-radius: .2em;
+  background-color: aliceblue;
+}
+
+.message_text{
+  margin-top: .4em;
+  padding: .2em;
+  background-color: rgb(10, 218, 103)
+}

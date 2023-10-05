@@ -1,8 +1,8 @@
-// 'use client'
 import { useEffect, useRef, useState } from "react";
 import styles from "./Chat.module.scss";
 import { GetAllMessage, SendMessage } from "../../actions/Actions";
 import { Message } from "@/common/inerfaces";
+import MessageBox from "./ui/MessageBox";
 
 export type ChatProps={
     pubid:string
@@ -38,9 +38,7 @@ export default function Chat({pubid}:ChatProps) {
             </div>
             <div className={styles.messages}>
                 {
-                    messages?.map((e,i)=><div key={i}>
-                        <p>{e.text}</p>
-                    </div>)
+                    messages?.map((e,i)=><MessageBox key={i} mes={e} />)
                 }
             </div>
             <div className={styles.container_input}>
