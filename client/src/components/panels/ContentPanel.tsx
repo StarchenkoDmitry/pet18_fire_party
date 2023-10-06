@@ -2,6 +2,7 @@ import styles from "./ContentPanel.module.scss";
 
 import Chat from "../message/Chat";
 import { useParams } from "react-router-dom";
+import SelectChat from "./ui/SelectChat";
 
 
 export default function ContentPanel() {
@@ -9,11 +10,9 @@ export default function ContentPanel() {
 
     return (
         <div className={styles.content}>
-            {/* <div>{pubid} {routename}</div> */}
             {
                 routename === "chat" ?
-                    <Chat id={id || ""} />
-                    :<div>HZ</div>
+                    <Chat id={id || ""} />:<SelectChat/>
             }
         </div>
     );
