@@ -5,14 +5,14 @@ import { useParams } from "react-router-dom";
 
 
 export default function ContentPanel() {
-    const { pubid,routename } = useParams();
+    const { id,routename } = useParams();
 
     return (
         <div className={styles.content}>
             {/* <div>{pubid} {routename}</div> */}
             {
                 routename === "chat" ?
-                    <Chat id={pubid || ""} />
+                    <Chat id={id || ""} />
                     :<div>HZ</div>
             }
         </div>

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateChatDto } from './chat.dto';
 import { Chat } from '@prisma/client';
-import { ChatInfo, Message } from 'src/common/inerfaces';
+import { IChatInfo, IMessage } from 'src/common/inerfaces';
 
 @Injectable()
 export class ChatService {  
@@ -53,7 +53,7 @@ export class ChatService {
     return false;
   }
 
-  async getAllMessages(userid:string ,chatid:string):Promise<Message[] | undefined>{
+  async getAllMessages(userid:string ,chatid:string):Promise<IMessage[] | undefined>{
     const chat = await this.prisma.chat.findFirst({
       where:{
         id:chatid,
@@ -67,7 +67,7 @@ export class ChatService {
       }
     })
     if(chat){
-      const messages:Message[] = [];
+      const messages:IMessage[] = [];
       let lastMessageID = chat.lastMessageID;
       let maxGetMessages = 256;
       while(lastMessageID && (maxGetMessages--) >0){
@@ -95,7 +95,7 @@ export class ChatService {
     return this.prisma.chat.findMany();
   }
 
-  async getMyChats(userid:string):Promise<ChatInfo[]>{
+  async getMyChats(userid:string):Promise<IChatInfo[]>{
     const myChats: Chat[] = await this.prisma.chat.findMany({
       where:{
         users:{
@@ -106,7 +106,7 @@ export class ChatService {
       }
     });
 
-    const list_chatInfo : ChatInfo[] = await Promise.all(myChats.map(async (chat)=>{
+    const list_chatInfo : IChatInfo[] = await Promise.all(myChats.map(async (chat)=>{
       const users = await this.prisma.user.findMany({
         where:{
           chats:{

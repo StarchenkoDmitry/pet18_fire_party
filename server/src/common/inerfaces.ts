@@ -1,4 +1,4 @@
-export interface UserDB {
+export interface IUser {
     id: string
 
     login: string
@@ -12,26 +12,21 @@ export interface UserDB {
 }
 
 
+export type IUserForChatInfo = Pick<IUser, "id" | "name">
 
-export interface ChatInfo_User{
-    id:string;
-    name:string;
-}
-
-export interface ChatInfo{
+export interface IChatInfo{
     id: string;
-    users: ChatInfo_User[];
+    users: IUserForChatInfo[];
     lastMessageID: string | null
 }
 
-export interface MeChats{
+export interface IMeChats{
     meid:string;
-    chats:ChatInfo[]
+    chats:IChatInfo[]
 }
 
 
-
-export interface Message{
+export interface IMessage{
     id:string;
     text:string;
     createAt:Date;

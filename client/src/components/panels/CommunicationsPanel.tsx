@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import AddChatModal from "../modals/AddChatModal";
 import styles from "./CommunicationsPanel.module.scss";
 import api from "@/api/api";
-import { MeChats } from "@/common/inerfaces";
+import { IMeChats } from "@/common/inerfaces";
 import { useNavigate } from "react-router-dom";
 
 export default function CommunicationsPanel() {
     const navigate = useNavigate();
     const [isActiveModal,setActiveModal] = useState(false);
 
-    const [listchats,setListChats] = useState<MeChats>();
+    const [listchats,setListChats] = useState<IMeChats>();
 
     useEffect(()=>{
         const controller = new AbortController();

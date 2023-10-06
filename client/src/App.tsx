@@ -14,7 +14,7 @@ function App() {
 
                     {/* <Route path='me' element={<Me/>}/> */}
                     {/* <Route path='chat/:pubid' element={<Me/>}/> */}
-                    <Route path=':routename/:pubid' element={<Main/>}/>
+                    <Route path=':routename/:id' element={<Main/>}/>
                     
 
                 </Route>
@@ -29,15 +29,15 @@ export default App
 
 
 
-    {/* <BrowserRouter>
-            <Routes>
-                <Route path="/" >
-                    <Route index element={<Home />} />
-                    <Route path='me' element={<Me />} />
-                </Route>
-                <Route path='/panel/admin' element={<Admin/>}/>
-            </Routes>      
-        </BrowserRouter> */}
+/* <BrowserRouter>
+    <Routes>
+        <Route path="/" >
+            <Route index element={<Home />} />
+            <Route path='me' element={<Me />} />
+        </Route>
+        <Route path='/panel/admin' element={<Admin/>}/>
+    </Routes>      
+</BrowserRouter> */
 
 
-        {/* <Route path="*" element={<NoPage />} /> */}
+/* <Route path="*" element={<NoPage />} /> */

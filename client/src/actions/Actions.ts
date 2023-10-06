@@ -1,5 +1,5 @@
 import api from "@/api/api";
-import { Message } from "@/common/inerfaces";
+import { IMessage } from "@/common/inerfaces";
 
 interface RegisterData{
     login:string;
@@ -44,10 +44,10 @@ export async function SendMessage(chatid:string,message:string):Promise<boolean>
 }
 
 
-export async function GetAllMessage(chatid:string):Promise<Message[] | undefined>{
+export async function GetAllMessage(chatid:string):Promise<IMessage[] | undefined>{
     try {
         const res = await api.get(`chat/messages/${chatid}`);
-        console.log("/chat/messages/:chatid res: ",res)
+        console.log("/chat/messages/:chatid res: ",res.data)
         if(res.status === 200){
             return res.data;
         }else return undefined;
@@ -76,7 +76,7 @@ export async function GetImage(id:string):Promise<any>{
 export async function DeleteMessage(id:string):Promise<boolean>{
     try {
         const res = await api.delete(`chat/message/${id}`);
-        console.log("/chat/message/:id res: ",res)
+        console.log("/chat/message/:id res: ",res.data)
         if(res.status ===200){            
             return res.data;
         }else{

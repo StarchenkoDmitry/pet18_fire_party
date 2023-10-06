@@ -1,28 +1,37 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./Chat.module.scss";
-import { GetAllMessage, SendMessage } from "../../actions/Actions";
-import { Message } from "@/common/inerfaces";
+import { DeleteMessage, GetAllMessage, SendMessage } from "../../actions/Actions";
+import { IMessage } from "@/common/inerfaces";
 import MessageBox from "./ui/MessageBox";
 
 export type ChatProps={
     id:string
 }
 
-export default function Chat({id: pubid}:ChatProps) {
-    console.log(`Render Chat(${pubid})`)
+export default function Chat({id}:ChatProps) {
+    console.log(`Render Chat(${id})`)
     const refka = useRef<HTMLInputElement>(null);
 
-    const [messages,setMessages] = useState<Message[] | undefined>(undefined);
+    const [messages,setMessages] = useState<IMessage[] | undefined>(undefined);
 
     useEffect(()=>{
-        GetAllMessage(pubid).then(res=>{setMessages(res);});
-    },[pubid]);
+        GetAllMessage(id).then(res=>{setMessages(res);});
+    },[id]);
+
+    const toRemove = (mesID:string)=>{
+        DeleteMessage(mesID).then(res=>{
+            // console.log("DeleteMessage: ",res)
+            if(res){
+                GetAllMessage(id).then(res=>{setMessages(res);});
+            }
+        });
+    }
 
     const addMessage = ()=>{
         const message = refka.current?.value || "";
-        SendMessage(pubid,message).then((res)=>{
+        SendMessage(id,message).then((res)=>{
             if(res){
-                GetAllMessage(pubid).then(res=>{setMessages(res);});
+                GetAllMessage(id).then(res=>{setMessages(res);});
             }
         });
     }
@@ -34,11 +43,11 @@ export default function Chat({id: pubid}:ChatProps) {
                     <img src="http://127.0.0.1:3000/api/image/buffer/7fcc2423-8ec3-4020-9e70-b976207654a2" />
                 </div>                
                 <span className={styles.name}>Eugen</span>
-                <span style={{margin:"1em"}}>{pubid}</span>
+                <span style={{margin:"1em"}}>{id}</span>
             </div>
             <div className={styles.messages}>
                 {
-                    messages?.map((e,i)=><MessageBox key={i} mes={e} />)
+                    messages?.map((e,i)=><MessageBox key={i} mes={e}toRemove={()=>toRemove(e.id)}/>)
                 }
             </div>
             <div className={styles.container_input}>
