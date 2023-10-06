@@ -1,7 +1,5 @@
 import api from "@/api/api";
 import { Message } from "@/common/inerfaces";
-import { RandomEmail } from "@/utils/Randomer";
-
 
 interface RegisterData{
     login:string;
@@ -20,9 +18,9 @@ export async function Register(data:RegisterData):Promise<boolean>{
     }
 }
 
-export async function CreateChat(friend_pubid:string):Promise<boolean>{
+export async function CreateChat(friend_id:string):Promise<boolean>{
     try {
-        const res = await api.post("chat/create",{pubid:friend_pubid});
+        const res = await api.post("chat/create",{pubid:friend_id});
         console.log("/chat/create res: ",res.data)
         return res.status === 201;
     } catch (error) {
@@ -31,10 +29,10 @@ export async function CreateChat(friend_pubid:string):Promise<boolean>{
     }
 }
 
-export async function SendMessage(chat_pubid:string,message:string):Promise<boolean>{
+export async function SendMessage(chatid:string,message:string):Promise<boolean>{
     try {
         const res = await api.post("chat/createmessage",{
-            pubid:chat_pubid,
+            id:chatid,
             message:message
         });
         console.log("/chat/createmessage res: ",res.data)
@@ -46,10 +44,10 @@ export async function SendMessage(chat_pubid:string,message:string):Promise<bool
 }
 
 
-export async function GetAllMessage(chat_pubid:string):Promise<Message[] | undefined>{
+export async function GetAllMessage(chatid:string):Promise<Message[] | undefined>{
     try {
-        const res = await api.get(`chat/getmessages/${chat_pubid}`);
-        console.log("/chat/getmessages/:chat_pubid res: ",res.data)
+        const res = await api.get(`chat/messages/${chatid}`);
+        console.log("/chat/messages/:chatid res: ",res)
         if(res.status === 200){
             return res.data;
         }else return undefined;
@@ -60,10 +58,10 @@ export async function GetAllMessage(chat_pubid:string):Promise<Message[] | undef
 }
 
 
-export async function GetImage(pubid:string):Promise<any>{
+export async function GetImage(id:string):Promise<any>{
     try {
-        const res = await api.get(`image/${pubid}`);
-        console.log("/image/:pubid res: ",res.data)
+        const res = await api.get(`image/${id}`);
+        console.log("/image/:id res: ",res.data)
         if(res.status === 200){
             return res.data;
         }
@@ -75,7 +73,7 @@ export async function GetImage(pubid:string):Promise<any>{
 }
 
 
-export async function DeleteMessage(id:number):Promise<boolean>{
+export async function DeleteMessage(id:string):Promise<boolean>{
     try {
         const res = await api.delete(`chat/message/${id}`);
         console.log("/chat/message/:id res: ",res)

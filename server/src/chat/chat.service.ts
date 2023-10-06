@@ -8,21 +8,21 @@ import { ChatInfo, Message } from 'src/common/inerfaces';
 export class ChatService {  
   constructor(private prisma: PrismaService) {}
 
-  async create(pubid1:string,pubid2:string) {    
+  async create(id1:string,id2:string) {    
     const ress = await this.prisma.chat.create({
       data:{
         users:{
-          connect:[{pubid:pubid1},{pubid:pubid2}]
+          connect:[{id:id1},{id:id2}]
         }
       },
     });
     return ress;
   }
 
-  async createMessage(userid:number, chat_pubid:string,message:string) {
+  async createMessage(userid:string, chatid:string,message:string) {
     const chat = await this.prisma.chat.findFirst({
       where:{
-        pubid:chat_pubid,
+        id:chatid,
         AND:{
           users:{
             some:{
@@ -32,7 +32,6 @@ export class ChatService {
         }
       }
     });
-    // console.log("messes: ",chat);
     if(chat){
       const newMessage = await this.prisma.message.create({
         data:{
@@ -54,10 +53,10 @@ export class ChatService {
     return false;
   }
 
-  async getAllMessages(userid:number ,chat_pubid:string):Promise<Message[] | undefined>{
+  async getAllMessages(userid:string ,chatid:string):Promise<Message[] | undefined>{
     const chat = await this.prisma.chat.findFirst({
       where:{
-        pubid:chat_pubid,
+        id:chatid,
         AND:{
           users:{
             some:{
@@ -71,7 +70,7 @@ export class ChatService {
       const messages:Message[] = [];
       let lastMessageID = chat.lastMessageID;
       let maxGetMessages = 256;
-      while(lastMessageID && lastMessageID !== 0 && (maxGetMessages--) >0){
+      while(lastMessageID && (maxGetMessages--) >0){
         const message = await this.prisma.message.findFirst({
           where:{id:lastMessageID}
         });
@@ -96,8 +95,8 @@ export class ChatService {
     return this.prisma.chat.findMany();
   }
 
-  async getMyChats(userid:number):Promise<ChatInfo[]>{
-    const mechats: Chat[] = await this.prisma.chat.findMany({
+  async getMyChats(userid:string):Promise<ChatInfo[]>{
+    const myChats: Chat[] = await this.prisma.chat.findMany({
       where:{
         users:{
           some:{
@@ -106,30 +105,32 @@ export class ChatService {
         }
       }
     });
-    
-  //   var results: number[] = await Promise.all(arr.map(async (item): Promise<number> => {
-  //     await callAsynchronousOperation(item);
-  //     return item + 1;
-  // }));
 
-    const list_chatInfo : ChatInfo[] = await Promise.all(mechats.map(async (e)=>{
-      const {id,...obj} = e;
+    const list_chatInfo : ChatInfo[] = await Promise.all(myChats.map(async (chat)=>{
       const users = await this.prisma.user.findMany({
-        where:{chats:{
-          some:{
-            pubid:obj.pubid
+        where:{
+          chats:{
+            some:{
+              id:chat.id
+            }
           }
-        }}
+        }
       });
 
-      return {...obj,users:users.map(e=>{
-        return {pubid:e.pubid,name:e.name};
-      })};
+      return {
+        id: chat.id,
+        lastMessageID: chat.lastMessageID,
+        users: users.map(user=>{
+          return {
+            id: user.id,
+            name: user.name};
+        })
+      };
     }));
     return list_chatInfo;
   }
 
-  async delete(id:number):Promise<boolean>{
+  async delete(id:string):Promise<boolean>{
     const curMes = await this.prisma.message.findFirst({where:{id:id}});
     if(!curMes) return false;
     // if(!curMes) throw new Error(`Message(id:${id}) is not exist!`)

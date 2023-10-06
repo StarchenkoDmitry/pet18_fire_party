@@ -3,12 +3,12 @@ import { IsString } from 'class-validator';
 
 export class CreateChatDto {
     @IsString()
-    pubid:string;//pubid с кем будет создат чат
+    id:string;//pubid с кем будет создат чат
 }
 
 export class CreateMessageDto {
     @IsString()
-    pubid:string;
+    id:string;
     @IsString()
     message:string;
 }

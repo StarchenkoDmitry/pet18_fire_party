@@ -1,15 +1,5 @@
 export interface UserDB {
-    // login:string;
-    // passwordHash:string;
-    // email:string;
-
-    // token?:string;
-
-    // name?:string;
-    // surname?:string;
-
-    id: number
-    pubid: string
+    id: string
 
     login: string
     email: string
@@ -22,40 +12,28 @@ export interface UserDB {
 }
 
 
-// export interface ChatDB{
-//     id: number
-//     pubid: string
-//     lastMessageID: number | null
-// }
-
-
-// export interface Chat{
-//     pubid: string
-//     lastMessageID: number | null
-// }
-
 
 export interface ChatInfo_User{
-    pubid:string;
+    id:string;
     name:string;
 }
 
 export interface ChatInfo{
-    pubid: string;
+    id: string;
     users: ChatInfo_User[];
-    lastMessageID: number | null
+    lastMessageID: string | null
 }
 
 export interface MeChats{
-    mepubid:string;
+    meid:string;
     chats:ChatInfo[]
 }
 
 
 
 export interface Message{
-    id:number;
+    id:string;
     text:string;
     createAt:Date;
-    prevMessageID: number;
+    prevMessageID: string;
 }

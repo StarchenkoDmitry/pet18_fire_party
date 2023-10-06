@@ -17,22 +17,18 @@ export class ChatController {
 
   @Post("create")
   @UseGuards(AuthGuard)
-  async create(@Body() createChatDto: CreateChatDto,@UserDec() user:User) {
-    const me_pubid = user.pubid;
-    const {pubid: friend_pubid } = createChatDto;
-    console.log("#chat create: ",createChatDto)
-
-    // return await this.chatService.create(me_pubid,friend_pubid);
-    return await this.chatService.create(me_pubid,friend_pubid);
+  async create(@Body() { id }: CreateChatDto,@UserDec() user:User) {
+    const myid = user.id;
+    // console.log("/chat/create dto: ",{id});
+    return await this.chatService.create(myid,id);
   }
 
   @Post("createmessage")
   @UseGuards(AuthGuard)
-  async createMessage(@Body() createMessageDto: CreateMessageDto,@UserDec() user:User) {
-    const {pubid: chat_pubid, message} = createMessageDto;
-    // console.log("#chat createmessage: ",createMessageDto)
+  async createMessage(@Body() {id, message}: CreateMessageDto,@UserDec() user:User) {
+    // console.log("/chat/createmessage dto: ",{id, message});
     
-    return await this.chatService.createMessage(user.id,chat_pubid,message);
+    return await this.chatService.createMessage(user.id,id,message);
   }
 
   @Get()
@@ -40,38 +36,28 @@ export class ChatController {
     return this.chatService.getAll();
   }
 
-  @Get("getmessages/:pubid")
+  @Get("messages/:id")
   @UseGuards(AuthGuard)
-  async getAllMessages(@Param("pubid") pubid:string, @UserDec() user:User) {
-    console.log(`#chat getmessages(pubid:${pubid})`)
-    return await this.chatService.getAllMessages(user.id,pubid);
+  async getAllMessages(@Param("id") id:string, @UserDec() user:User) {
+    // console.log("/chat/messages id: ", id)
+    return await this.chatService.getAllMessages(user.id,id);
   }
 
   @Get("me")
   @UseGuards(AuthGuard)
   async getMyChats(@UserDec() user:User):Promise<MeChats>{
+    // console.log("/chat/me");
     const chats = await this.chatService.getMyChats(user.id);
 
     return {
-      mepubid:user.pubid,
+      meid:user.id,
       chats:chats
     };
   }
   
   @Delete('message/:id')
   async toDelete(@Param('id') id: string) {
-    console.log(`/chat/message/${id}`)
-    return await this.chatService.delete(+id);
+    // console.log(`/chat/message/:id ${id}`)
+    return await this.chatService.delete(id);
   }
-
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.chatService.findOne(+id);
-  // }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateChatDto: UpdateChatDto) {
-  //   return this.chatService.update(+id, updateChatDto);
-  // }
-
 }

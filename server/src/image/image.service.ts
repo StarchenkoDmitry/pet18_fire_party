@@ -19,8 +19,8 @@ export class ImageService {
     });
     return res;
   }
-  async get(pubid:string) {
-    return await this.prisma.image.findFirst({ where:{pubid:pubid} });
+  async get(id:string) {
+    return await this.prisma.image.findFirst({ where:{id:id} });
   }
   
   // remove(id: number) {

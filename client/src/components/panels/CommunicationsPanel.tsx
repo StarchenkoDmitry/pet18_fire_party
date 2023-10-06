@@ -33,7 +33,7 @@ export default function CommunicationsPanel() {
         navigate(`/chat/${chat_pubid}`);
     }
 
-    const rend_chats = listchats?.chats.map(e=><div key={e.pubid} className={styles.friend_chat} onClick={()=>onSelectFriendChat(e.pubid)}>
+    const rend_chats = listchats?.chats.map(e=><div key={e.id} className={styles.friend_chat} onClick={()=>onSelectFriendChat(e.id)}>
         <span>{e.users.map(e=>e.name)}</span>
     </div>)
     

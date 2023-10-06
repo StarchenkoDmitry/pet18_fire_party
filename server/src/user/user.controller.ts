@@ -16,26 +16,27 @@ export class UserController {
   @Get('all')
   @UseGuards(AuthGuard)
   getAll() {
-    console.log("user/all @getAll()")
+    // console.log("user/all");
     return this.userService.findAll();
   }
 
   @Get(["findAllByName",'findAllByName/:text'])
   @UseGuards(AuthGuard)
   async findAllByName(@Param("text") text:string){
-    console.log(`user/findAllByName/:text text: ${text}`);
+    // console.log(`user/findAllByName/:text text: ${text}`);
     return await this.userService.findAllByName(text);
   }
   
   @Post('img')
   @UseGuards(AuthGuard)
   @UseInterceptors(FileInterceptor('file'))
-  async uploadFile(@UploadedFile() file: Express.Multer.File,@UserDec() user:User) {    
+  async uploadFile(@UploadedFile() file: Express.Multer.File,@UserDec() user:User) {
+    // console.log("user/img");
     const {originalname, mimetype, buffer, size } = file;
     const res_img = await this.imageService.create({originalname, mimetype, buffer, size});
     if(res_img){
       const res_changed = await this.userService.changeImage(user.id,res_img.id);
-      return res_changed ? res_img.pubid : undefined;
+      return res_changed ? res_img.id : undefined;
     }
     else return;
   }

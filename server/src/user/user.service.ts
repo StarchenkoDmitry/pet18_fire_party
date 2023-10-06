@@ -3,7 +3,6 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { LoginDto } from 'src/auth/dto/auth.dto';
 import { hasher } from 'src/auth/utils/Hasher';
 import { LoginResult, LoginStatus } from './user.interface';
-import { CreateToken } from 'src/auth/utils/Tokener';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { User } from '@prisma/client';
 import { GenerateSession } from 'src/auth/utils/Session';
@@ -15,7 +14,7 @@ export class UserService {
   } 
   
   async create(createUserDto: CreateUserDto):Promise<Boolean> {    
-    try {      
+    try {
       const userRes = await this.prisma.user.findFirst({where:{login: createUserDto.login}});
 
       if(!userRes){
@@ -40,7 +39,7 @@ export class UserService {
     })
   }
 
-  async changeImage(userID:number,imageID:number):Promise<boolean>{    
+  async changeImage(userID:string,imageID:string):Promise<boolean>{    
     try {
       const res = await this.prisma.user.update({
         data:{ imageID:imageID },
@@ -112,17 +111,3 @@ export class UserService {
     }
   }
 }
-
-
-
-
-    // this.prisma.user.create({data:{chats:{}}});
-    // await this.prisma.chat.create({data:{
-    //   nameChat:"dimka",
-    //   users:{create:[{
-    //     email:"5325",
-    //     login:"346346",
-    //     passwordHash:"546547",
-    //   }]},
-    // }});
-    // this.prisma.user.findFirst({where:{ id:0}});

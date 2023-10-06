@@ -13,24 +13,3 @@ import { ImageModule } from './image/image.module';
   exports:[]
 })
 export class AppModule {} 
- 
-
-//TODO: export prismaservice
-
-
-
-    // {
-    //   provide:APP_GUARD,
-    //   useClass:MyAuthGuard
-    // }
-    // ,
-
-
-  // exports:[AuthGuard],
-
-
-  
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: MyAuthGuard,
-    // },

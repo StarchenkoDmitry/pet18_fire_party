@@ -6,16 +6,17 @@ import { Response } from "express"
 export class ImageController {
   constructor(private readonly imageService: ImageService) {}
 
-  @Get(':pubid')
-  async findOne(@Param('pubid') pubid: string) {
-    // console.log("/image/:pubid ", pubid);
-    return await this.imageService.get(pubid);
+  @Get(':id')
+  async findOne(@Param('pubid') id: string) {
+    // console.log("/image/:id ", pubid);
+    return await this.imageService.get(id);
   }
 
-  @Get('buffer/:pubid')
-  async test(@Param('pubid') pubid:string, @Res() res:Response) {
-    // console.log("/image/test/:pubid ", pubid);
-    const imgres =  await this.imageService.get(pubid);
+  @Get('buffer/:id')
+  async test(@Param('id') id:string, @Res() res:Response) {
+    // console.log("/image/test/:id ", id);
+    const imgres =  await this.imageService.get(id);
+    if(!imgres)return
     const buff = Buffer.from(imgres.buffer);
     return res.send(buff);
   }

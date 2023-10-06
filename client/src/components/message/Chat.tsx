@@ -5,10 +5,10 @@ import { Message } from "@/common/inerfaces";
 import MessageBox from "./ui/MessageBox";
 
 export type ChatProps={
-    pubid:string
+    id:string
 }
 
-export default function Chat({pubid}:ChatProps) {
+export default function Chat({id: pubid}:ChatProps) {
     console.log(`Render Chat(${pubid})`)
     const refka = useRef<HTMLInputElement>(null);
 
