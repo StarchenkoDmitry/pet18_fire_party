@@ -12,8 +12,7 @@ datasource db {
 
 
 model User {
-  id Int @id @default(autoincrement())
-  pubid String @unique @default(uuid())
+  id String @id @unique @default(uuid())
 
   login        String  @unique
   email        String  @unique
@@ -27,45 +26,43 @@ model User {
   chats Chat[]
   messages Message[]
 
-  imageID Int?
+  imageID String?
   image Image? @relation(fields: [imageID],references: [id])
   
 }
 
 model Chat {
-  id Int @id @default(autoincrement())
-  pubid String @unique @default(uuid())
+  id String @id @unique @default(uuid())
 
   users User[]
 
   lastMessage Message? @relation("ChatOnMessage",fields: [lastMessageID],references: [id])
-  lastMessageID Int?
+  lastMessageID String?
 }
 
 
 model Message{
-  id Int @id @default(autoincrement()) @unique
+  id String @id @unique @default(uuid())
 
   text String
   createAt DateTime @default(now())
 
 
   user User @relation( fields: [userID],references: [id])
-  userID Int
+  userID String
 
 
   onChat Chat[] @relation("ChatOnMessage")
 
   nextMessage Message[] @relation("MessageRef")
   prevMessage Message? @relation("MessageRef", fields: [prevMessageID],references: [id])
-  prevMessageID Int?
+  prevMessageID String?
 }
 
 
 
 model Image{
-  id Int @id @default(autoincrement()) @unique
-  pubid String @unique @default(uuid())
+  id String @id @unique @default(uuid())
 
   createAt DateTime @default(now())
 
