@@ -7,6 +7,7 @@ import Main from './pages/Main'
 import Chat from './components/message/Chat'
 import SelectChat from './components/panels/ui/SelectChat'
 import NoPage from './pages/NoPage'
+import Profile from './pages/Profile'
 
 function App() {
     return (
@@ -20,6 +21,8 @@ function App() {
                         <Route path=':id' element={<Chat/>} />
                     </Route>
                 </Route>
+                
+                <Route path='/profile' element={<Profile />}/>
 
                 <Route path='/register' element={<Registration />}/>
                 <Route path='/panel/admin' element={<Admin/>}/>
