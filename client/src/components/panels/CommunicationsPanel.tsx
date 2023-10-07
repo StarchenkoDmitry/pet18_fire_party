@@ -21,6 +21,7 @@ export default function CommunicationsPanel() {
         }
 
         func1().then((res)=>{
+            
             setListChats(res);
         }).catch(()=>{
             setListChats(undefined);
@@ -34,7 +35,7 @@ export default function CommunicationsPanel() {
     }
 
     const rend_chats = listchats?.chats.map(e=><div key={e.id} className={styles.friend_chat} onClick={()=>onSelectFriendChat(e.id)}>
-        <span>{e.users.map(e=>e.name)}</span>
+        <span>{e.user.name}</span>
     </div>)
     
     return (

@@ -20,9 +20,21 @@ export interface IChatInfo{
     lastMessageID: string | null
 }
 
+export interface IChatInfoKorotko{
+    id: string;
+    user: IUserForChatInfo;
+    lastMessageID: string | null
+}
+
+
+// export interface IMeChats{
+//     meid:string;
+//     chats:IChatInfo[]
+// }
+
 export interface IMeChats{
     meid:string;
-    chats:IChatInfo[]
+    chats:IChatInfoKorotko[]
 }
 
 

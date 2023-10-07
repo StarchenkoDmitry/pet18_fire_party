@@ -19,6 +19,15 @@ export class ChatService {
     return ress;
   }
 
+  async get(id:string){
+    return await this.prisma.chat.findFirst({
+      where:{id:id},
+      include:{
+        users:true
+      }
+    })
+  }
+
   async createMessage(userid:string, chatid:string,message:string) {
     const chat = await this.prisma.chat.findFirst({
       where:{
