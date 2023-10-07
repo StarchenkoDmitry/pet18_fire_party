@@ -1,4 +1,3 @@
-// 'use client'
 import { FormEvent, useState } from "react";
 import styles from "./Authorization.module.scss";
 import { Register } from "../../actions/Actions";
@@ -10,7 +9,6 @@ export default function Authorization() {
     const [registering,setRegistering] = useState(false);
     
     const navigate = useNavigate();
-
     
     const [login,setLogin] = useState(()=>RandomLogin());
     const [email,setEmail] = useState(()=>RandomEmail());
@@ -24,7 +22,7 @@ export default function Authorization() {
        
     const onsubmit = async (event: FormEvent<HTMLFormElement>)=>{
         event.preventDefault();
-        // event.stopPropagation();        
+        // event.stopPropagation();
 
         setRegistering(true);
 
@@ -49,7 +47,8 @@ export default function Authorization() {
 
         
         if(registered){
-            navigate("/me");        
+            // navigate("/me");
+            navigate("/");
         }
         setRegistering(false);
     }

@@ -1,5 +1,5 @@
 import Authorization from "@/components/screens/Authorization";
-import styles from "./Home.module.scss"
+import styles from "./Registration.module.scss"
 import Header from "@/components/header/Header";
 
 
@@ -12,4 +12,3 @@ export default function Registration() {
     </div>
   );
 }
-

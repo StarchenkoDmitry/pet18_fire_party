@@ -1,43 +1,32 @@
 import '@/styles/global.css'
 
-import { BrowserRouter, Route, Router, Routes } from 'react-router-dom'
-import Home from './pages/Home'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import Registration from './pages/Registration'
 import Admin from './pages/panel/Admin'
 import Main from './pages/Main'
+import Chat from './components/message/Chat'
+import SelectChat from './components/panels/ui/SelectChat'
+import NoPage from './pages/NoPage'
 
 function App() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/">
-                    <Route index element={<Home />} />
+                <Route path='/' element={<Main/>} >
+                    <Route index element={<SelectChat/>} />
 
-                    {/* <Route path='me' element={<Me/>}/> */}
-                    {/* <Route path='chat/:pubid' element={<Me/>}/> */}
-                    <Route path=':routename/:id' element={<Main/>}/>
-                    
-
+                    <Route path='/chat' >
+                        <Route index element={<SelectChat/>} />
+                        <Route path=':id' element={<Chat/>} />
+                    </Route>
                 </Route>
+
+                <Route path='/register' element={<Registration />}/>
                 <Route path='/panel/admin' element={<Admin/>}/>
 
-                <Route path="*" element={<div>NO PAGE 5474</div>} />
-            </Routes>      
+                <Route path="*" element={<NoPage/>} />
+            </Routes>
         </BrowserRouter>
     )
 }
 export default App
-
-
-
-/* <BrowserRouter>
-    <Routes>
-        <Route path="/" >
-            <Route index element={<Home />} />
-            <Route path='me' element={<Me />} />
-        </Route>
-        <Route path='/panel/admin' element={<Admin/>}/>
-    </Routes>      
-</BrowserRouter> */
-
-
-/* <Route path="*" element={<NoPage />} /> */

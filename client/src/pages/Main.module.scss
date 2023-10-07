@@ -1,15 +1,6 @@
 .page{
   display: flex;
-  flex:1;
-  flex-direction: column;
 
-  // min-height: 100%;
-  // width: 100vw;
-  // height: 100vh;
-
-  background-color: rgb(71, 71, 71);
-
-
-  //todo: overflow
-  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
 }

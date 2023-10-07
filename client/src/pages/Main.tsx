@@ -1,15 +1,14 @@
 import styles from "./Main.module.scss"
-import MainScreen from "@/components/screens/MainScreen";
 
+import CommunicationsPanel from "@/components/panels/CommunicationsPanel";
+import ContentPanel from "@/components/panels/ContentPanel";
 
 
 export default function Main() {
-
-
     return (
         <div className={styles.page}>
-            <MainScreen />
+            <CommunicationsPanel/>
+            <ContentPanel/>
         </div>
     );
 }
-
