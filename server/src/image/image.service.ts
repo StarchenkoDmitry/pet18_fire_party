@@ -22,6 +22,21 @@ export class ImageService {
   async get(id:string) {
     return await this.prisma.image.findFirst({ where:{id:id} });
   }
+
+  async update(id:string,file:ExpressFIle){
+    return await this.prisma.image.update({
+      data:{
+        ...file
+      },
+      where:{
+        id:id
+      }
+    });
+  }
+
+  async getMany(){
+    return await this.prisma.image.findMany();
+  }
   
   // remove(id: number) {
   //   return `This action removes a #${id} image`;
