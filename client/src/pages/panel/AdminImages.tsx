@@ -15,7 +15,7 @@ export default function AdminImages() {
         <div className={styles.page}>
            {
             ids && ids.map((e,i)=><div key={i}>
-                <span>{e}</span>
+                <div>{e}</div>
                 <img className={styles.img} src={`http://127.0.0.1:3000/api/image/buffer/${e}`} />
             </div>)
            }

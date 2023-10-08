@@ -19,8 +19,8 @@ html{
 body {
   background-color: rgb(55 51 67);
   
-  min-width: 100vw;
-  min-height: 100vh;
+  /* min-width: 100vw;
+  min-height: 100vh; */
 
 }
 
@@ -28,8 +28,8 @@ body {
 #root{
   display: flex;
   flex-direction: column;
-  min-width: 100vw;
-  min-height: 100vh;
+  /* min-width: 100vw;
+  min-height: 100vh; */
 }
 
 

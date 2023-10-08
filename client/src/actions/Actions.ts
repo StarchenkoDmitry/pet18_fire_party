@@ -89,3 +89,22 @@ export async function DeleteMessage(id:string):Promise<boolean>{
 }
 
 
+export async function UpdateImage(id:string,blob:Blob) {
+    try
+    {
+        const formData = new FormData();
+        formData.append("file", blob);
+
+        const res = await api.post(`image/update/${id}`,formData,{
+            headers: { 'Content-Type': 'multipart/form-data' }
+        });
+        // console.log("image/update/:id res: ",res.data)
+
+        if(res.status === 201){
+            return res.data;
+        }
+        else return;
+    } catch (error) {
+        console.log("Error: ",error)
+    }
+}
