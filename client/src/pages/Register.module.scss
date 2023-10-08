@@ -2,12 +2,14 @@
   display: flex;
   flex:1;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
   // min-height: 100%;
   // width: 100vw;
   // height: 100vh;
 
-  background-color: rgb(71, 71, 71);
+  background-color: rgb(55 51 67);
 
 
   //todo: overflow

@@ -1,7 +1,7 @@
 import '@/styles/global.css'
 
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import Registration from './pages/Registration'
+import Register from './pages/Register'
 import Admin from './pages/panel/Admin'
 import Main from './pages/Main'
 import Chat from './components/message/Chat'
@@ -25,7 +25,7 @@ function App() {
                 
                 <Route path='/profile' element={<Profile />}/>
 
-                <Route path='/register' element={<Registration />}/>
+                <Route path='/register' element={<Register />}/>
                 <Route path='/panel/admin' element={<Admin/>}/>
 
                 <Route path='/panel/adminimages' element={<AdminImages/>}/>
