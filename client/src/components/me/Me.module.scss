@@ -1,0 +1,24 @@
+.me{
+  display: flex;
+  align-items: center;
+
+  padding-left: .5em;
+
+  height: 3.5em;
+  background-color: #dbdbdb;
+}
+
+.me img{
+  display: block;
+  // margin: .5em;
+  width: 3em;
+  height: 3em;//2.625
+  border-radius: 2.5em;
+  border: .125em solid #fff;
+}
+
+.name{
+  padding: .5em;
+  font-size: 1.25em;
+  font-weight: 500;
+}

@@ -12,6 +12,12 @@ export class UserService {
   constructor(private prisma: PrismaService) {
     console.log("constructor UserService")
   } 
+
+  async get(id:string){
+    return await this.prisma.user.findFirst({
+      where:{id:id}
+    });
+  }
   
   async create(createUserDto: CreateUserDto):Promise<Boolean> {    
     try {
@@ -63,8 +69,7 @@ export class UserService {
     });
 
     return userss.map(u=>{
-      const {id,...userok} = u;
-      return userok as User;
+      return u;
     })
   }
 

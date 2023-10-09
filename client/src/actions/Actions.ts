@@ -4,7 +4,7 @@ import { IMessage } from "@/common/inerfaces";
 
 export async function CreateChat(friend_id:string):Promise<boolean>{
     try {
-        const res = await api.post("chat/create",{pubid:friend_id});
+        const res = await api.post("chat/create",{id:friend_id});
         console.log("/chat/create res: ",res.data)
         return res.status === 201;
     } catch (error) {

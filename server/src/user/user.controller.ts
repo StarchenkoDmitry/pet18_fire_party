@@ -5,6 +5,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { ImageService } from 'src/image/image.service';
 import { UserDec } from 'src/auth/auth.decorator';
 import { User } from '@prisma/client';
+import { IMe } from 'src/common/me.interface';
 
 @Controller('user')
 export class UserController {
@@ -18,6 +19,19 @@ export class UserController {
   getAll() {
     // console.log("user/all");
     return this.userService.findAll();
+  }
+
+  @Get('me')
+  @UseGuards(AuthGuard)
+  getMe(@UserDec() user:User) {
+    // console.log("user/me");
+    const me: IMe = {
+      id:user.id,
+      name:user.name,
+      surname:user.surname,
+      imageID:user.imageID
+    };
+    return me;
   }
 
   @Get(["findAllByName",'findAllByName/:text'])
@@ -40,4 +54,6 @@ export class UserController {
     }
     else return;
   }
+
+
 }

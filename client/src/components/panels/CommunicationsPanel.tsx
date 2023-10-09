@@ -4,6 +4,7 @@ import styles from "./CommunicationsPanel.module.scss";
 import api from "@/api/api";
 import { IMeChats } from "@/common/inerfaces";
 import { useNavigate } from "react-router-dom";
+import Me from "../me/Me";
 
 export default function CommunicationsPanel() {
     const navigate = useNavigate();
@@ -40,6 +41,7 @@ export default function CommunicationsPanel() {
     
     return (
         <div className={styles.chats_panel}>
+            <Me/>
             <div className={styles.block_poisk}>
                 <input className={styles.input} type="text" />
             </div>

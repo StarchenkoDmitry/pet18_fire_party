@@ -35,8 +35,8 @@ export default function AddChatModal({isActive,setActive}:Props) {
     },[text]);
 
 
-    const addChat = (pubid:string)=>{
-        CreateChat(pubid);
+    const addChat = (id:string)=>{
+        CreateChat(id);
     }
 
     return (
@@ -52,7 +52,7 @@ export default function AddChatModal({isActive,setActive}:Props) {
                 {
                     users?.map((u,i)=><div key={i}>
                         <span>{u.login}</span>
-                        <button onClick={()=>addChat(u.pubid)} >add</button>
+                        <button onClick={()=>addChat(u.id)} >add</button>
                     </div>)
                 }
             </div>
