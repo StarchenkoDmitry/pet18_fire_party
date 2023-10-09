@@ -1,4 +1,5 @@
-import styles from "./AddChatModal.module.scss";
+import Profile from "../Profile";
+import styles from "./ProfileModal.module.scss";
 
 
 export interface ProfileModalProps{
@@ -10,7 +11,9 @@ export default function ProfileModal({doClose}:ProfileModalProps) {
 
     return (
         <div className={styles.modal} onClick={doClose}>
-            Test ProfileModal
+            <div onClick={(e)=>e.stopPropagation()}>
+                <Profile/>
+            </div>
         </div>
     )
 }

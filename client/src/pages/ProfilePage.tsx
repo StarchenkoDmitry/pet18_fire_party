@@ -1,12 +1,12 @@
 import { ChangeEvent, useRef, useState } from "react";
-import styles from "./Profile.module.scss"
+import styles from "./ProfilePage.module.scss"
 
 import AvatarEditor from 'react-avatar-editor'
 import api from "@/api/api";
 import { UpdateImage } from "@/actions/Actions";
 import { CreateBlobFromCanvas } from "@/utils/Convert";
 
-export default function Profile() {
+export default function ProfilePage() {
   const editor = useRef<AvatarEditor>(null);
 
   const [scale,setScale] = useState(1);

@@ -7,7 +7,7 @@ import Main from './pages/Main'
 import Chat from './components/message/Chat'
 import SelectChat from './components/panels/ui/SelectChat'
 import NoPage from './pages/NoPage'
-import Profile from './pages/Profile'
+import ProfilePage from './pages/ProfilePage'
 import AdminImages from './pages/panel/AdminImages'
 
 function App() {
@@ -23,7 +23,7 @@ function App() {
                     </Route>
                 </Route>
                 
-                <Route path='/profile' element={<Profile />}/>
+                <Route path='/profile' element={<ProfilePage/>}/>
 
                 <Route path='/register' element={<Register />}/>
                 <Route path='/panel/admin' element={<Admin/>}/>
