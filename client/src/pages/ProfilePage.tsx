@@ -2,7 +2,7 @@ import styles from "./ProfilePage.module.scss"
 import { ChangeEvent, useRef, useState } from "react";
 import AvatarEditor from 'react-avatar-editor'
 import { UpdateImage } from "@/actions/Actions";
-import { CreateBlobFromCanvas } from "@/utils/Convert";
+import { ConvertCanvasToBlob } from "@/utils/Convert";
 
 export default function ProfilePage() {
   const editor = useRef<AvatarEditor>(null);
@@ -40,10 +40,10 @@ export default function ProfilePage() {
 
             console.log("CLICL",canvas,canvasScaled)
             
-            console.log("blob: ",await CreateBlobFromCanvas(canvas))
-            console.log("blob2: ",await CreateBlobFromCanvas(canvasScaled))
+            console.log("blob: ",await ConvertCanvasToBlob(canvas))
+            console.log("blob2: ",await ConvertCanvasToBlob(canvasScaled))
 
-            await UpdateImage("2",await CreateBlobFromCanvas(canvasScaled))
+            await UpdateImage("2",await ConvertCanvasToBlob(canvasScaled))
           }
         }}>Save</button>
         <div>Zoom:{scale}</div>

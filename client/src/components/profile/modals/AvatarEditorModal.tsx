@@ -1,10 +1,10 @@
 import styles from "./AvatarEditorModal.module.scss";
 
-import { ConvertBlobToBase64, CreateBlobFromCanvas } from "@/utils/Convert";
+import { ConvertBlobToStringBase64, ConvertCanvasToBlob } from "@/utils/Convert";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import AvatarEditor from "react-avatar-editor";
-import { UpdateImage } from "@/actions/Actions";
 import axios from "axios";
+import { UpdateImage } from "@/actions/Image.actions";
 
 
 const url = "http://127.0.0.1:3000/api/image/buffer/2";
@@ -14,17 +14,17 @@ export interface AvatarEditorModalProps{
     // imageURL: string;
     doClose?:()=>void;
 
-    loadImage?:Promise<string>;// ()=>string;    
-    saveImage?:(dataURL:string)=>void;
+    loadImage?:()=>Promise<string | undefined>;
+    saveImage?:(dataURL:string)=>Promise<boolean>;
 }
 
 
 
-export default function AvatarEditorModal({doClose}:AvatarEditorModalProps) {
+export default function AvatarEditorModal({doClose,loadImage,saveImage}:AvatarEditorModalProps) {
     console.log("Rendering AvatarEditorModal")
 
     const editor = useRef<AvatarEditor>(null);
-    const [scale,setScale] = useState(1);    
+    const [scale,setScale] = useState(1);
     
     const [image,setImage] = useState("");
 
@@ -36,7 +36,7 @@ export default function AvatarEditorModal({doClose}:AvatarEditorModalProps) {
                 responseType:"blob",
                 withCredentials:true
             })
-            await ConvertBlobToBase64(res.data).then(res2=>{
+            await ConvertBlobToStringBase64(res.data).then(res2=>{
                 setImage(res2);
             });
             console.log("IMAGE: ", res);
@@ -50,7 +50,7 @@ export default function AvatarEditorModal({doClose}:AvatarEditorModalProps) {
         setScale( scale )
     }
 
-    const saveImage = async () => {
+    const doSaveImage = async () => {
         if (editor && editor.current) {
             const canvas = editor.current.getImage()//размер как у Editor 
             const canvasScaled = editor.current.getImageScaledToCanvas()//роазмер с маштабом
@@ -59,10 +59,10 @@ export default function AvatarEditorModal({doClose}:AvatarEditorModalProps) {
 
             console.log("canvas,canvasScaled",canvas,canvasScaled)
             
-            console.log("canvas: ",await CreateBlobFromCanvas(canvas))
-            console.log("canvasScaled: ",await CreateBlobFromCanvas(canvasScaled))
+            console.log("canvas: ",await ConvertCanvasToBlob(canvas))
+            console.log("canvasScaled: ",await ConvertCanvasToBlob(canvasScaled))
 
-            await UpdateImage("2",await CreateBlobFromCanvas(canvas))
+            await UpdateImage("2",await ConvertCanvasToBlob(canvas))
         }
     }
 
@@ -80,7 +80,7 @@ export default function AvatarEditorModal({doClose}:AvatarEditorModalProps) {
 
                     border={20}
 
-                    crossOrigin="use-credentials"          
+                    crossOrigin="use-credentials"
                     scale={scale}
                 /><br/>
                 
@@ -102,7 +102,7 @@ export default function AvatarEditorModal({doClose}:AvatarEditorModalProps) {
                     defaultValue="1"
                 /><br/>
 
-                <button onClick={saveImage}>Save</button>
+                <button onClick={doSaveImage}>Save</button>
             </div>
         </div>
     )

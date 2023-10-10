@@ -42,20 +42,6 @@ export async function GetAllMessage(chatid:string):Promise<IMessage[] | undefine
 }
 
 
-export async function GetImage(id:string):Promise<any>{
-    try {
-        const res = await api.get(`image/${id}`);
-        console.log("/image/:id res: ",res.data)
-        if(res.status === 200){
-            return res.data;
-        }
-        else return undefined;
-    } catch (error) {
-        console.log("Action GetImage error: ",error);
-        return undefined;
-    }
-}
-
 
 export async function DeleteMessage(id:string):Promise<boolean>{
     try {
@@ -72,23 +58,3 @@ export async function DeleteMessage(id:string):Promise<boolean>{
     }
 }
 
-
-export async function UpdateImage(id:string,blob:Blob) {
-    try
-    {
-        const formData = new FormData();
-        formData.append("file", blob);
-
-        const res = await api.post(`image/update/${id}`,formData,{
-            headers: { 'Content-Type': 'multipart/form-data' }
-        });
-        // console.log("image/update/:id res: ",res.data)
-
-        if(res.status === 201){
-            return res.data;
-        }
-        else return;
-    } catch (error) {
-        console.log("Error: ",error)
-    }
-}

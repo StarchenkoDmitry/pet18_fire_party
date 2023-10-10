@@ -5,6 +5,13 @@ import { IMe } from "@/common/me.interface";
 import { GetMe } from "@/actions/Me.actions";
 import Avatar from "./ui/Avatar";
 import AvatarEditorModal from "./modals/AvatarEditorModal";
+import axios from "axios";
+import { ConvertBlobToStringBase64 } from "@/utils/Convert";
+import { GetMyAvatarImage } from "@/actions/Image.actions";
+
+
+
+const url = "http://127.0.0.1:3000/api/image/buffer/";
 
 
 export default function Profile() {
@@ -20,7 +27,19 @@ export default function Profile() {
 
     const openAvatarEditor = ()=>setShowAvatarEditor(true);
     const closeAvatarEditor = ()=>setShowAvatarEditor(false);
-    
+
+    const getMyImage = async ():Promise<string | undefined>=>{
+        const blob = await GetMyAvatarImage();
+        if(!blob) return;        
+        const imageDataURL = await ConvertBlobToStringBase64(blob)
+        return imageDataURL;
+    }
+  
+    const setMyImage =async (dataURL:string):Promise<boolean> => {
+        const blob = Conv
+        return false;
+    }
+
     if(me){
         return(
             <div className={styles.profile}>
@@ -36,8 +55,8 @@ export default function Profile() {
                 <div>
                     <button className={styles.btn_deleteMe}>Delete me</button>
                 </div>
-                
-                {showAvatarEditor && <AvatarEditorModal doClose={closeAvatarEditor}/>}
+
+                {showAvatarEditor && <AvatarEditorModal loadImage={getMyImage} saveImage={} doClose={closeAvatarEditor}/>}
             </div>
         );
     }
