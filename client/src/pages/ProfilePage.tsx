@@ -1,8 +1,6 @@
-import { ChangeEvent, useRef, useState } from "react";
 import styles from "./ProfilePage.module.scss"
-
+import { ChangeEvent, useRef, useState } from "react";
 import AvatarEditor from 'react-avatar-editor'
-import api from "@/api/api";
 import { UpdateImage } from "@/actions/Actions";
 import { CreateBlobFromCanvas } from "@/utils/Convert";
 

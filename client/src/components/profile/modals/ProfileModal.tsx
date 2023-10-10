@@ -1,5 +1,7 @@
-import Profile from "../Profile";
 import styles from "./ProfileModal.module.scss";
+
+import Profile from "../Profile";
+
 
 
 export interface ProfileModalProps{

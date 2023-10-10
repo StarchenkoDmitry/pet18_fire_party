@@ -36,17 +36,27 @@ export default function Profile() {
                 <div>
                     <button className={styles.btn_deleteMe}>Delete me</button>
                 </div>
-
+                
                 {showAvatarEditor && <AvatarEditorModal doClose={closeAvatarEditor}/>}
             </div>
         );
     }
     else{
+        //PROFILE_SKELETE
         return (
             <div className={styles.profile}>
-                <h2>Profile is loading</h2>
-                <img src='/img/user.png'/>
-                <span className={styles.name}>name</span>
+                <h2>My profile</h2>
+                <span>ID: 1234####-####-####-1234-####1234####</span>
+                <div className={styles.maininfo}>
+                    <img className={styles.skelete_img} src='/img/user.png'/>
+                    <div className={styles.names}>
+                        <span className={styles.name}>name: Duck</span>
+                        <span className={styles.name}>surname: Omutovich</span>
+                    </div>
+                </div>
+                <div>
+                    <button className={styles.btn_deleteMe}>Delete me</button>
+                </div>
             </div>
         );
     }    

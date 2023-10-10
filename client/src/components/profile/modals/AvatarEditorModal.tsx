@@ -1,41 +1,34 @@
-import { CreateBlobFromCanvas } from "@/utils/Convert";
 import styles from "./AvatarEditorModal.module.scss";
 
+import { ConvertBlobToBase64, CreateBlobFromCanvas } from "@/utils/Convert";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import AvatarEditor from "react-avatar-editor";
 import { UpdateImage } from "@/actions/Actions";
-import api from "@/api/api";
 import axios from "axios";
 
 
 const url = "http://127.0.0.1:3000/api/image/buffer/2";
 
 
-export interface AvatarEditorModalProps{
+export interface AvatarEditorModalProps{    
     // imageURL: string;
     doClose?:()=>void;
 
-    saveFile?:(file:Blob)=>void;
+    loadImage?:Promise<string>;// ()=>string;    
+    saveImage?:(dataURL:string)=>void;
 }
 
-function blobToBase64(blob:Blob):Promise<string>{
-    return new Promise((resolve, _) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result as string);
-      reader.readAsDataURL(blob);
-    });
-  }
+
 
 export default function AvatarEditorModal({doClose}:AvatarEditorModalProps) {
     console.log("Rendering AvatarEditorModal")
 
     const editor = useRef<AvatarEditor>(null);
-    const inputFile = useRef(null);
-    const [scale,setScale] = useState(1);
+    const [scale,setScale] = useState(1);    
     
-    
-    const [im,setIm] = useState("");
+    const [image,setImage] = useState("");
 
+    const inputFile = useRef(null);
 
     useEffect(()=>{
         const dfdf = async ()=>{
@@ -43,8 +36,8 @@ export default function AvatarEditorModal({doClose}:AvatarEditorModalProps) {
                 responseType:"blob",
                 withCredentials:true
             })
-            await blobToBase64(res.data).then(res2=>{
-                setIm(res2);
+            await ConvertBlobToBase64(res.data).then(res2=>{
+                setImage(res2);
             });
             console.log("IMAGE: ", res);
         }
@@ -59,28 +52,28 @@ export default function AvatarEditorModal({doClose}:AvatarEditorModalProps) {
 
     const saveImage = async () => {
         if (editor && editor.current) {
-          const canvas = editor.current.getImage()//размер как у Editor 
-          const canvasScaled = editor.current.getImageScaledToCanvas()//роазмер с маштабом
+            const canvas = editor.current.getImage()//размер как у Editor 
+            const canvasScaled = editor.current.getImageScaledToCanvas()//роазмер с маштабом
 
-          if(!canvas || !canvasScaled) return;
+            if(!canvas || !canvasScaled) return;
 
-          console.log("CLICL",canvas,canvasScaled)
-          
-          console.log("blob: ",await CreateBlobFromCanvas(canvas))
-          console.log("blob2: ",await CreateBlobFromCanvas(canvasScaled))
+            console.log("canvas,canvasScaled",canvas,canvasScaled)
+            
+            console.log("canvas: ",await CreateBlobFromCanvas(canvas))
+            console.log("canvasScaled: ",await CreateBlobFromCanvas(canvasScaled))
 
-          await UpdateImage("2",await CreateBlobFromCanvas(canvasScaled))
+            await UpdateImage("2",await CreateBlobFromCanvas(canvas))
         }
     }
 
     return (
         <div className={styles.modal} onClick={doClose}>
             <div className={styles.content} onClick={(e)=>e.stopPropagation()}>
-                <img src={im} alt="" />
+                <img src={image} alt="" />
                 <h2>EditorAvatar</h2><br/>
                 <AvatarEditor
                     ref={editor}
-                    image={im}
+                    image={image}
 
                     width={250}
                     height={250}
@@ -90,7 +83,6 @@ export default function AvatarEditorModal({doClose}:AvatarEditorModalProps) {
                     crossOrigin="use-credentials"          
                     scale={scale}
                 /><br/>
-
                 
                 <input ref={inputFile} type="file" id="file" style={{display:"none"}} />
                 <button onClick={()=>{
