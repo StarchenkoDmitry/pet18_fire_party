@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Param, UseGuards, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Param, UseGuards, UseInterceptors, UploadedFile, Res } from '@nestjs/common';
 import { UserService } from './user.service';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -6,6 +6,9 @@ import { ImageService } from 'src/image/image.service';
 import { UserDec } from 'src/auth/auth.decorator';
 import { User } from '@prisma/client';
 import { IMe } from 'src/common/me.interface';
+
+import { Response } from "express"
+import { ExpressFIle } from 'src/image/image.interface';
 
 @Controller('user')
 export class UserController {
@@ -56,4 +59,54 @@ export class UserController {
   }
 
 
+  
+  @Get('buffer/:id')
+  async test(@Param('id') id:string, @Res() res:Response) {
+    console.log("/image/buffer/:id ", id);
+    const imgres =  await this.imageService.get(id);
+    if(!imgres)return
+    const buff = Buffer.from(imgres.buffer);
+    return res.send(buff);
+  }
+
+  @Get("avatarBlob")
+  @UseGuards(AuthGuard)
+  async getMyAvatar(@UserDec() user:User, @Res() res:Response) {
+    console.log("/user/avatarBlob");
+    if(!user.imageID){
+      res.status(204).send(undefined);//.json({error:"I have not a avatar"});
+      return;
+    }
+    const myImage =  await this.imageService.get(user.imageID);
+    if(!myImage){
+      res.status(204).send(undefined);
+      return;
+    }
+    const imageBuffer = Buffer.from(myImage.buffer);
+    res.status(200).send(imageBuffer);
+  }
+
+  @Post("avatarBlob")
+  @UseGuards(AuthGuard)
+  @UseInterceptors(FileInterceptor('file'))
+  async setMyAvatar(@UploadedFile() file: Express.Multer.File, @UserDec() user:User){
+    console.log("[POST] user/avatarBlob file:",file);
+
+    const newImage : ExpressFIle = {
+      originalname: file.originalname,
+      mimetype: file.mimetype,
+      buffer:file.buffer,
+      size: file.size
+    };
+
+    if(user.imageID){
+      const resUpdate = await this.imageService.update(user.imageID,newImage);
+      console.log("[POST] user/avatarBlob resUpdate:",resUpdate);
+      return user.imageID;
+    }else{
+      const resImage = await this.imageService.create(newImage);
+      const resChanged = await this.userService.changeImage(user.id,resImage.id);    
+      return resChanged ? resImage.id : undefined;
+    }
+  }
 }

@@ -1,5 +1,7 @@
 import api from "@/api/api";
 
+
+//вродебы depricated
 export async function GetImage(id:string):Promise<any>{
     try {
         const res = await api.get(`image/${id}`);
@@ -14,6 +16,7 @@ export async function GetImage(id:string):Promise<any>{
     }
 }
 
+//depricated
 export async function UpdateImage(id:string,blob:Blob) {
     try
     {
@@ -35,13 +38,12 @@ export async function UpdateImage(id:string,blob:Blob) {
 }
 
 
-export async function GetMyAvatarImage():Promise<Blob | undefined>{
+export async function GetMyAvatar():Promise<Blob | undefined>{
     try {
-        const res = await api.get("image/myavatarblob",{
+        const res = await api.get("user/avatarBlob",{
             responseType:"blob",
         });
         console.log("GetMyAvatarImage res:",res)
-
         return res.status === 200 ? res.data : undefined;
     } catch (error) {
         console.log("GetMyAvatar error: ",error)
@@ -49,16 +51,20 @@ export async function GetMyAvatarImage():Promise<Blob | undefined>{
     }
 }
 
+export async function SetMyAvatar(blob:Blob):Promise<boolean>{
+    try {
+        
+        const formData = new FormData();
+        formData.append("file", blob);
 
-// export async function SetMyAvatarImageFromDataURL(dataURL:string):Promise<boolean> {
-    
-
-//     return false;
-// }
-
-
-export async function SetMyAvatarImageFromBlob(blob:Blob):Promise<boolean> {
-    
-
-    return false;
+        const res = await api.post('user/avatarBlob',formData,{
+            headers: { 'Content-Type': 'multipart/form-data' }
+        });
+        console.log("SetMyAvatar res:",res)
+        
+        return res.status === 201 ? res.data : false;
+    } catch (error) {
+        console.log("SetMyAvatar error: ",error)
+        return false;
+    }
 }

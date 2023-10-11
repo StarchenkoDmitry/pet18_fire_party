@@ -10,11 +10,19 @@ export async function ConvertDataURLToBlob(dataURL:string){
 }
 
 
-export async function ConvertCanvasToBlob(el: HTMLCanvasElement){
-    const dataUrl = el.toDataURL(undefined,1)
-    const result = await fetch(dataUrl)
-    const blob = await result.blob()
-    return blob;
+// export async function ConvertCanvasToBlob(el: HTMLCanvasElement){
+//     const dataUrl = el.toDataURL(undefined,1)
+//     const result = await fetch(dataUrl)
+//     const blob = await result.blob()
+//     return blob;
+// }
+
+export async function ConvertCanvasToBlob(el: HTMLCanvasElement,quality:number=1):Promise<Blob | null>{
+    return new Promise((res,rej)=>{
+        el.toBlob((blob:Blob| null)=>{
+            res(blob);
+        },undefined,quality);
+    });
 }
 
 

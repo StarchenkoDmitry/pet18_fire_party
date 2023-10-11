@@ -4,14 +4,9 @@ import { useEffect, useState } from "react";
 import { IMe } from "@/common/me.interface";
 import { GetMe } from "@/actions/Me.actions";
 import Avatar from "./ui/Avatar";
-import AvatarEditorModal from "./modals/AvatarEditorModal";
-import axios from "axios";
-import { ConvertBlobToStringBase64 } from "@/utils/Convert";
-import { GetMyAvatarImage } from "@/actions/Image.actions";
-
-
-
-const url = "http://127.0.0.1:3000/api/image/buffer/";
+import AvatarEditorModal from "./avatarEditor/AvatarEditorModal";
+import { ConvertBlobToStringBase64, ConvertDataURLToBlob } from "@/utils/Convert";
+import { GetMyAvatar, SetMyAvatar } from "@/actions/Image.actions";
 
 
 export default function Profile() {
@@ -29,16 +24,21 @@ export default function Profile() {
     const closeAvatarEditor = ()=>setShowAvatarEditor(false);
 
     const getMyImage = async ():Promise<string | undefined>=>{
-        const blob = await GetMyAvatarImage();
+        const blob = await GetMyAvatar();
         if(!blob) return;        
         const imageDataURL = await ConvertBlobToStringBase64(blob)
         return imageDataURL;
     }
   
-    const setMyImage =async (dataURL:string):Promise<boolean> => {
-        const blob = Conv
+    const setMyImage = async (dataURL:string):Promise<boolean> => {
+        const blob = await ConvertDataURLToBlob(dataURL);
+
+        const resUpdateAvatar = await SetMyAvatar(blob);
+        console.log("resUpdateAvatar: ",resUpdateAvatar)
+
         return false;
     }
+
 
     if(me){
         return(
@@ -56,7 +56,12 @@ export default function Profile() {
                     <button className={styles.btn_deleteMe}>Delete me</button>
                 </div>
 
-                {showAvatarEditor && <AvatarEditorModal loadImage={getMyImage} saveImage={} doClose={closeAvatarEditor}/>}
+                {showAvatarEditor && 
+                    <AvatarEditorModal 
+                        loadImage={getMyImage} 
+                        saveImage={setMyImage} 
+                        doClose={closeAvatarEditor}/>
+                }
             </div>
         );
     }
