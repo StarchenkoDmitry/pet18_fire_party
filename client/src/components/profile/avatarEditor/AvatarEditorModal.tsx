@@ -16,7 +16,7 @@ export interface AvatarEditorModalProps{
 }
 
 export default function AvatarEditorModal({doClose,loadImage,saveImage}:AvatarEditorModalProps) {
-    console.log("Rendering AvatarEditorModal")
+    // console.log("Rendering AvatarEditorModal")
 
     const editor = useRef<AvatarEditor>(null);
 

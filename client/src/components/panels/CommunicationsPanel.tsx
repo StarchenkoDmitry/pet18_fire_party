@@ -1,10 +1,13 @@
-import { useEffect, useState } from "react";
-import AddChatModal from "../modals/AddChatModal";
 import styles from "./CommunicationsPanel.module.scss";
+
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "@/api/api";
 import { IMeChats } from "@/common/inerfaces";
-import { useNavigate } from "react-router-dom";
+
+import AddChatModal from "../modals/AddChatModal";
 import Me from "../me/Me";
+
 
 export default function CommunicationsPanel() {
     const navigate = useNavigate();
@@ -21,8 +24,7 @@ export default function CommunicationsPanel() {
             return res.data;
         }
 
-        func1().then((res)=>{
-            
+        func1().then((res)=>{            
             setListChats(res);
         }).catch(()=>{
             setListChats(undefined);
