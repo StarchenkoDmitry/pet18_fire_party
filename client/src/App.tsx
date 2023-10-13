@@ -3,9 +3,9 @@ import '@/styles/global.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Register from './pages/Register'
 import Admin from './pages/panel/Admin'
-import Main from './pages/Main'
-import Chat from './components/message/Chat'
-import SelectChat from './components/panels/ui/SelectChat'
+import CommunicationPage from './pages/CommunicationPage'
+import Chat from './components/communication/сomponents/chat/Chat'
+import SelectChat from './components/communication/ui/SelectChat'
 import NoPage from './pages/NoPage'
 import ProfilePage from './pages/ProfilePage'
 import AdminImages from './pages/panel/AdminImages'
@@ -14,7 +14,7 @@ function App() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path='/' element={<Main/>} >
+                <Route path='/' element={<CommunicationPage/>} >
                     <Route index element={<SelectChat/>} />
 
                     <Route path='/chat' >

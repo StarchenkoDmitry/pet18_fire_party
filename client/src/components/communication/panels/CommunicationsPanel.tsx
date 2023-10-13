@@ -7,8 +7,8 @@ import { GetMeChats } from "@/actions/Actions";
 import { IMeChats } from "@/common/interfaces";
 
 import AddChatModal from "../modals/AddChatModal";
-import ChatView from "./ui/ChatView";
-import Me from "../me/Me";
+import ChatView from "../ui/ChatView";
+import Me from "../сomponents/me/Me";
 
 
 export default function CommunicationsPanel() {

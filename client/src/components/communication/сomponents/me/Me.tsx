@@ -1,7 +1,10 @@
 import styles from "./Me.module.scss";
+
 import { useEffect, useState } from "react";
-import { IMe } from "@/common/me.interface";
+
 import { GetMe } from "@/actions/Me.actions";
+import { IMe } from "@/common/me.interface";
+
 import ProfileModal from "../profile/modals/ProfileModal";
 
 export default function Me() {

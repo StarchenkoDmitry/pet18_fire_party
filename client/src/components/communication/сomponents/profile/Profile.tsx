@@ -10,7 +10,7 @@ import { GetMyAvatar, SetMyAvatar } from "@/actions/Image.actions";
 
 
 export default function Profile() {
-    console.log("Rendering Profile")
+    // console.log("Rendering Profile")
 
     const [showAvatarEditor,setShowAvatarEditor] = useState(false);
 
