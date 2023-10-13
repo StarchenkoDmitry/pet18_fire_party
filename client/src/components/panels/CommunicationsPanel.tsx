@@ -2,44 +2,39 @@ import styles from "./CommunicationsPanel.module.scss";
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "@/api/api";
-import { IMeChats } from "@/common/inerfaces";
+
+import { GetMeChats } from "@/actions/Actions";
+import { IMeChats } from "@/common/interfaces";
 
 import AddChatModal from "../modals/AddChatModal";
+import ChatView from "./ui/ChatView";
 import Me from "../me/Me";
 
 
 export default function CommunicationsPanel() {
     const navigate = useNavigate();
     const [isActiveModal,setActiveModal] = useState(false);
-
     const [listchats,setListChats] = useState<IMeChats>();
 
     useEffect(()=>{
-        const controller = new AbortController();
-        
-        const func1 = async () => {
-            const res = await api.get('chat/me',{signal: controller.signal});
-            console.log("chat/me res: ", res.data);
-            return res.data;
-        }
-
-        func1().then((res)=>{            
+        GetMeChats().then((res)=>{
             setListChats(res);
-        }).catch(()=>{
-            setListChats(undefined);
         });
-
-        return ()=>{controller.abort()}
     },[]);
     
-    const onSelectFriendChat = (chat_pubid:string)=>{
-        navigate(`/chat/${chat_pubid}`);
+    const selectChat = (chatId:string)=>{
+        navigate(`/chat/${chatId}`);
     }
 
-    const rend_chats = listchats?.chats.map(e=><div key={e.id} className={styles.friend_chat} onClick={()=>onSelectFriendChat(e.id)}>
-        <span>{e.user.name}</span>
-    </div>)
+    const closeModal = ()=>{
+        setActiveModal(false);
+    }
+
+    const openModal = ()=>{
+        setActiveModal(true);
+    }
+
+    const rend_chats = listchats?.chats.map(e=><ChatView key={e.id} chat={e} selectChat={selectChat} />)
     
     return (
         <div className={styles.chats_panel}>
@@ -50,11 +45,10 @@ export default function CommunicationsPanel() {
             <div className={styles.list_chats}>
                 { rend_chats }
             </div>
-            {/* <ChatList/> */}
-            <div className={styles.btn_add_chat} onClick={()=>setActiveModal((pa)=>!pa)}>
+            <div className={styles.btn_add_chat} onClick={openModal}>
                 +
             </div>
-            <AddChatModal isActive={isActiveModal} setActive={setActiveModal}/>
+            { isActiveModal && <AddChatModal doClose={closeModal}/> }
         </div>
     );
 }

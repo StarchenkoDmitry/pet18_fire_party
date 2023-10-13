@@ -1,0 +1,31 @@
+.chatview{
+  display: flex;
+
+  margin: .2em;
+  padding: .2em;
+
+  // height: 2.5em;
+
+  border-radius: .5em;
+  background-color: rgb(255, 255, 255);
+  
+  cursor: pointer;
+}
+
+.userImage{
+  display: block;
+  width: 3em;
+  height: 3em;
+  border-radius: 10em;
+  border: 1px solid #383838;
+}
+
+
+.secondBlock{
+  margin-left: .5em;
+}
+
+.userName{
+  user-select: none;
+  font-weight: 500;
+}
