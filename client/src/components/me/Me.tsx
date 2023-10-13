@@ -2,14 +2,12 @@ import styles from "./Me.module.scss";
 import { useEffect, useState } from "react";
 import { IMe } from "@/common/me.interface";
 import { GetMe } from "@/actions/Me.actions";
-import { Link } from "react-router-dom";
 import ProfileModal from "../profile/modals/ProfileModal";
 
 export default function Me() {
     const [showProfile,setShowProfile] = useState(false);
 
     const [me,setMe] = useState<IMe>();
-    // console.log("ME: ",me)
 
     useEffect(()=>{
         GetMe().then(res=>setMe(res));

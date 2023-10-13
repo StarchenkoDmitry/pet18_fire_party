@@ -1,5 +1,5 @@
 import api from "@/api/api";
-import { IMessage } from "@/common/interfaces";
+import { IMeChats, IMessage, IUser } from "@/common/interfaces";
 
 
 export async function CreateChat(friend_id:string):Promise<boolean>{
@@ -42,6 +42,21 @@ export async function GetAllMessage(chatid:string):Promise<IMessage[] | undefine
 }
 
 
+export async function GetMeChats():Promise<IMeChats | undefined>{
+    // const controller = new AbortController();
+    // {signal: controller.signal}
+    try {
+        const res = await api.get('chat/me');
+        console.log("chat/me res: ", res.data);
+        if(res.status === 200){
+            return res.data;
+        }else return undefined;
+    } catch (error) {
+        console.log("Action GetMeChats error: ",error);
+        return undefined;
+    }
+}
+
 
 export async function DeleteMessage(id:string):Promise<boolean>{
     try {
@@ -58,3 +73,17 @@ export async function DeleteMessage(id:string):Promise<boolean>{
     }
 }
 
+export async function FindAllByName(text:string,stoper?:AbortController):Promise<IUser[] | undefined>{
+    try {
+        const res = await api.get(`user/findAllByName/${text}`,{
+            signal: stoper ? stoper.signal : undefined
+        });
+        console.log(`user/findAllByName/(text:${text}) res: `, res.data);
+        if(res.status === 200){
+            return res.data;
+        }else return undefined;
+    } catch (error) {
+        console.log("Action FindAllByName error: ",error);
+        return undefined;
+    }
+}

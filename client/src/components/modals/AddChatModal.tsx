@@ -1,37 +1,30 @@
-import { useEffect, useState } from "react";
 import styles from "./AddChatModal.module.scss";
-import api from "@/api/api";
+
+import { useEffect, useState } from "react";
+
 import { IUser } from "@/common/interfaces";
-import { CreateChat } from "../../actions/Actions";
+import { CreateChat, FindAllByName } from "../../actions/Actions";
+
 
 export interface Props{
-    isActive:boolean;
-    setActive:React.Dispatch<React.SetStateAction<boolean>>;
+    // isActive:boolean;
+    // setActive:React.Dispatch<React.SetStateAction<boolean>>;
+    doClose?:()=>void;
 }
 
-export default function AddChatModal({isActive,setActive}:Props) {
-    const [text,setText] = useState("");
-    // console.log("Text: ",text)
+export default function AddChatModal({doClose}:Props) {
+    const [text,setText] = useState("");    
     const [users,setUsers] = useState<IUser[] | undefined>();
 
-    const closeEvent =()=>{ setActive(false); }
 
     useEffect(()=>{
-        const controller = new AbortController();
-        const func1 = async () => {
-            const res = await api.get(`user/findAllByName/${text}`,{
-                signal: controller.signal
-            });
-            console.log(res.data);
-            return res.data;
-        }
-        func1().then((res)=>{
+        const stoper = new AbortController();
+        FindAllByName(text,stoper).then((res)=>{
             setUsers(res);
         }).catch(()=>{
             setUsers(undefined);
         });
-
-        return ()=>{controller.abort()}
+        return ()=>{stoper.abort()}
     },[text]);
 
 
@@ -40,7 +33,7 @@ export default function AddChatModal({isActive,setActive}:Props) {
     }
 
     return (
-        <div className={styles.modal +" "+ (isActive ? styles.active: "")} onClick={closeEvent}>
+        <div className={styles.modal +" "+ styles.active} onClick={doClose}>
             <div className={styles.modal_content} onClick={(e)=>e.stopPropagation()}>
                 <div>
                     <span className={styles.input_lable}>Add chat</span>
