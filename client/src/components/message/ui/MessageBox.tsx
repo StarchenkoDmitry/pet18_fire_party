@@ -1,5 +1,5 @@
 import styles from "./MessageBox.module.scss";
-import { IMessage as MessageData } from "@/common/inerfaces";
+import { IMessage as MessageData } from "@/common/interfaces";
 
 
 

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./Chat.module.scss";
 import { DeleteMessage, GetAllMessage, SendMessage } from "../../actions/Actions";
-import { IMessage } from "@/common/inerfaces";
+import { IMessage } from "@/common/interfaces";
 import MessageBox from "./ui/MessageBox";
 import { useParams } from "react-router-dom";
 import api from "@/api/api";
@@ -11,7 +11,7 @@ import { IGetChatInfo } from "@/common/chat.interface";
 export default function Chat() {
     let { id:_id } = useParams();
     const id = _id || "";
-    console.log(`Render Chat(${id})`);
+    // console.log(`Render Chat(${id})`);
 
     const refka = useRef<HTMLInputElement>(null);
 

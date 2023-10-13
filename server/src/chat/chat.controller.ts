@@ -7,7 +7,7 @@ import { AuthGuard, REQ_RES_COOKIE_SESSION } from 'src/auth/auth.guard';
 import { UserService } from 'src/user/user.service';
 import { UserDec } from 'src/auth/auth.decorator';
 import { User } from '@prisma/client';
-import { IChatInfoKorotko, IMeChats } from 'src/common/inerfaces';
+import { IChatView, IMeChats } from 'src/common/interfaces';
 import { IGetChatInfo } from 'src/common/chat.interface';
 
 @Controller('chat')
@@ -49,7 +49,7 @@ export class ChatController {
   async getMyChats(@UserDec() user:User):Promise<IMeChats>{
     // console.log("/chat/me");
     const chats = await this.chatService.getMyChats(user.id);
-    const chatskorotko:IChatInfoKorotko[] = chats.map((e,i)=>{
+    const chatskorotko:IChatView[] = chats.map((e,i)=>{
       return {
         id:e.id,
         lastMessageID:e.lastMessageID,

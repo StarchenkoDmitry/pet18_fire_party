@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "./AddChatModal.module.scss";
 import api from "@/api/api";
-import { IUser } from "@/common/inerfaces";
+import { IUser } from "@/common/interfaces";
 import { CreateChat } from "../../actions/Actions";
 
 export interface Props{
