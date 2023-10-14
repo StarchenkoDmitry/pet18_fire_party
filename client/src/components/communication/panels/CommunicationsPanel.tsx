@@ -1,7 +1,7 @@
 import styles from "./CommunicationsPanel.module.scss";
 
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { IMeChats } from "@/common/me.interface";
 import { GetMeChats } from "@/actions/Me.actions";
@@ -11,7 +11,10 @@ import ChatView from "../ui/ChatView";
 import Me from "../сomponents/me/Me";
 
 
-export default function CommunicationsPanel() {
+export default function CommunicationsPanel() {    
+    const params = useParams();
+    console.log("CommunicationsPanel params: ",params)
+    
     const navigate = useNavigate();
     const [isActiveModal,setActiveModal] = useState(false);
     const [meChats,setMeChats] = useState<IMeChats>();

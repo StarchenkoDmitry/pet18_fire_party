@@ -11,7 +11,7 @@ import MessageBox from "./ui/MessageBox";
 export default function Chat() {
     let { id:_id } = useParams();
     const id = _id || "";
-    // console.log(`Render Chat(${id})`);
+    console.log(`Render Chat(${id}) `);
 
     const refka = useRef<HTMLInputElement>(null);
 
