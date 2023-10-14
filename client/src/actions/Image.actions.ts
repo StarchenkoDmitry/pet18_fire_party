@@ -2,21 +2,21 @@ import api from "@/api/api";
 
 
 //вродебы depricated
-export async function GetImage(id:string):Promise<any>{
-    try {
-        const res = await api.get(`image/${id}`);
-        console.log("/image/:id res: ",res.data)
-        if(res.status === 200){
-            return res.data;
-        }
-        else return undefined;
-    } catch (error) {
-        console.log("Action GetImage error: ",error);
-        return undefined;
-    }
-}
+// export async function GetImage(id:string):Promise<any>{
+//     try {
+//         const res = await api.get(`image/${id}`);
+//         console.log("/image/:id res: ",res.data)
+//         if(res.status === 200){
+//             return res.data;
+//         }
+//         else return undefined;
+//     } catch (error) {
+//         console.log("Action GetImage error: ",error);
+//         return undefined;
+//     }
+// }
 
-//depricated
+//вродебы depricated
 export async function UpdateImage(id:string,blob:Blob) {
     try
     {

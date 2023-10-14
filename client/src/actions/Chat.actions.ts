@@ -1,8 +1,5 @@
 import api from "@/api/api";
 import { IMessage } from "@/common/chat.interface";
-import { IMeChats } from "@/common/me.interface";
-import { IUser } from "@/common/user.interface";
-
 
 export async function CreateChat(friend_id:string):Promise<boolean>{
     try {
@@ -29,37 +26,6 @@ export async function SendMessage(chatid:string,message:string):Promise<boolean>
     }
 }
 
-
-export async function GetAllMessage(chatid:string):Promise<IMessage[] | undefined>{
-    try {
-        const res = await api.get(`chat/messages/${chatid}`);
-        console.log("/chat/messages/:chatid res: ",res.data)
-        if(res.status === 200){
-            return res.data;
-        }else return undefined;
-    } catch (error) {
-        console.log("Action GetAllMessage error: ",error);
-        return undefined;
-    }
-}
-
-
-export async function GetMeChats():Promise<IMeChats | undefined>{
-    // const controller = new AbortController();
-    // {signal: controller.signal}
-    try {
-        const res = await api.get('chat/me');
-        console.log("chat/me res: ", res.data);
-        if(res.status === 200){
-            return res.data;
-        }else return undefined;
-    } catch (error) {
-        console.log("Action GetMeChats error: ",error);
-        return undefined;
-    }
-}
-
-
 export async function DeleteMessage(id:string):Promise<boolean>{
     try {
         const res = await api.delete(`chat/message/${id}`);
@@ -75,17 +41,16 @@ export async function DeleteMessage(id:string):Promise<boolean>{
     }
 }
 
-export async function FindAllByName(text:string,stoper?:AbortController):Promise<IUser[] | undefined>{
+export async function GetAllMessage(chatid:string):Promise<IMessage[] | undefined>{
     try {
-        const res = await api.get(`user/findAllByName/${text}`,{
-            signal: stoper ? stoper.signal : undefined
-        });
-        console.log(`user/findAllByName/(text:${text}) res: `, res.data);
+        const res = await api.get(`chat/messages/${chatid}`);
+        console.log("/chat/messages/:chatid res: ",res.data)
         if(res.status === 200){
             return res.data;
         }else return undefined;
     } catch (error) {
-        console.log("Action FindAllByName error: ",error);
+        console.log("Action GetAllMessage error: ",error);
         return undefined;
     }
 }
+

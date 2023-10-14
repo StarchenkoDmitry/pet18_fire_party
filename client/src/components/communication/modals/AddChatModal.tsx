@@ -3,7 +3,7 @@ import styles from "./AddChatModal.module.scss";
 import { useEffect, useState } from "react";
 
 import { IUser } from "@/common/interfaces";
-import { CreateChat, FindAllByName } from "../../../actions/Actions";
+import { CreateChat, FindAllByName } from "../../../actions/Chat.actions";
 
 
 export interface Props{

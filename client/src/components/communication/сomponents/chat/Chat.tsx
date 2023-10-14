@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./Chat.module.scss";
-import { DeleteMessage, GetAllMessage, SendMessage } from "../../../../actions/Actions";
+import { DeleteMessage, GetAllMessage, SendMessage } from "../../../../actions/Chat.actions";
 import MessageBox from "./ui/MessageBox";
 import { useParams } from "react-router-dom";
 import api from "@/api/api";

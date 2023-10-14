@@ -3,7 +3,7 @@ import styles from "./CommunicationsPanel.module.scss";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { GetMeChats } from "@/actions/Actions";
+import { GetMeChats } from "@/actions/Chat.actions";
 import { IMeChats } from "@/common/interfaces";
 
 import AddChatModal from "../modals/AddChatModal";
