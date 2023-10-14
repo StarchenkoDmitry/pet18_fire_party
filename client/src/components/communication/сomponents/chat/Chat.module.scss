@@ -14,14 +14,14 @@
   background-color: #fff;
 }
 
-.img{
+.userAvatar{
   max-width: 2.625em;
   max-height: 2.625em;
   border-radius: 2em;
   border: 1px solid rgb(255, 255, 69);
   overflow: hidden;
 }
-.img img{
+.userAvatar > img{
   display: block;
   max-width: 100%;
   max-height: 100%;
@@ -48,6 +48,7 @@
   flex: 1;
   // overflow: scroll;
   overflow-y: auto;
+  background-color: var(--bg-chat-light);
 }
 
 // .messages p{

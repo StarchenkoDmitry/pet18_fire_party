@@ -14,11 +14,11 @@ import Me from "../сomponents/me/Me";
 export default function CommunicationsPanel() {
     const navigate = useNavigate();
     const [isActiveModal,setActiveModal] = useState(false);
-    const [listchats,setListChats] = useState<IMeChats>();
+    const [meChats,setMeChats] = useState<IMeChats>();
 
     useEffect(()=>{
         GetMeChats().then((res)=>{
-            setListChats(res);
+            setMeChats(res);
         });
     },[]);
     
@@ -34,7 +34,7 @@ export default function CommunicationsPanel() {
         setActiveModal(true);
     }
 
-    const rend_chats = listchats?.chats.map(e=><ChatView key={e.id} chat={e} selectChat={selectChat} />)
+    const rend_chats = meChats?.chats.map(e=><ChatView key={e.id} chat={e} selectChat={selectChat} />)
     
     return (
         <div className={styles.chats_panel}>

@@ -1,5 +1,5 @@
 import api from "@/api/api";
-import { IMessage } from "@/common/chat.interface";
+import { IGetChatInfo, IMessage } from "@/common/chat.interface";
 
 export async function CreateChat(friend_id:string):Promise<boolean>{
     try {
@@ -41,16 +41,29 @@ export async function DeleteMessage(id:string):Promise<boolean>{
     }
 }
 
-export async function GetAllMessage(chatid:string):Promise<IMessage[] | undefined>{
+export async function GetAllMessage(chatid:string,stoper?:AbortController):Promise<IMessage[] | undefined>{
     try {
-        const res = await api.get(`chat/messages/${chatid}`);
-        console.log("/chat/messages/:chatid res: ",res.data)
-        if(res.status === 200){
-            return res.data;
-        }else return undefined;
+        const res = await api.get(`chat/messages/${chatid}`,{
+            signal: stoper? stoper.signal: undefined
+        });
+        console.log("/chat/messages/:chatid res: ",res.data)        
+        return res.status === 200 ? res.data : undefined;
     } catch (error) {
         console.log("Action GetAllMessage error: ",error);
         return undefined;
     }
 }
 
+export async function GetChatInfo(chatid:string,stoper?:AbortController):Promise<IGetChatInfo | undefined>{
+    try {
+        const res = await api.get(`chat/my/${chatid}`,{
+            signal: stoper? stoper.signal : undefined
+        });
+        console.log(`chat/my/${chatid}`, res.data);
+        
+        return res.status === 200 ? res.data : undefined;
+    } catch (error) {
+        console.log("Action GetChatInfo error: ",error);
+        return undefined;
+    }
+}

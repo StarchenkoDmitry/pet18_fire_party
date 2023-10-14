@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from "react";
 import styles from "./Chat.module.scss";
-import { DeleteMessage, GetAllMessage, SendMessage } from "../../../../actions/Chat.actions";
-import MessageBox from "./ui/MessageBox";
+
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import api from "@/api/api";
+
 import { IGetChatInfo, IMessage } from "@/common/chat.interface";
+import { DeleteMessage, GetAllMessage, GetChatInfo, SendMessage } from "../../../../actions/Chat.actions";
+import MessageBox from "./ui/MessageBox";
 
 
 export default function Chat() {
@@ -19,32 +20,25 @@ export default function Chat() {
     const [info,setInfo] = useState<IGetChatInfo>();
 
     useEffect(()=>{
-        const controller = new AbortController();
+        const stoper = new AbortController();
         
-        const getChatInfo = async () => {
-            const res = await api.get(`chat/my/${id}`,{signal: controller.signal});
-            console.log(`chat/my/${id}`, res.data);
-            
-            return res.status === 200 ? res.data : undefined;
-        }
-        getChatInfo().then((res)=>{
+        GetChatInfo(id,stoper).then((res)=>{
             setInfo(res);
         }).catch(()=>{
             setInfo(undefined);
         });
+        
+        GetAllMessage(id,stoper).then(res=>{
+            setMessages(res);
+        }).catch(()=>{
+            setMessages(undefined);
+        });
 
-        return ()=>{controller.abort()}
-    },[id]);
-
-
-    useEffect(()=>{
-
-        GetAllMessage(id).then(res=>{setMessages(res);});
+        return ()=>{stoper.abort()}
     },[id]);
 
     const toRemove = (mesID:string)=>{
         DeleteMessage(mesID).then(res=>{
-            // console.log("DeleteMessage: ",res)
             if(res){
                 GetAllMessage(id).then(res=>{setMessages(res);});
             }
@@ -63,16 +57,16 @@ export default function Chat() {
     return (
         <div className={styles.chat}>
             <div className={styles.header}>
-                <div className={styles.img}>
+                <div className={styles.userAvatar}>
                     <img src="http://127.0.0.1:3000/api/image/buffer/7fcc2423-8ec3-4020-9e70-b976207654a2" />
                 </div>
                 <span className={styles.name}>{info? info.user.name : "Loading"}</span>
-                <span style={{margin:"1em"}}>{id}</span>
+                <span style={{margin:"1em"}}>ChatID: {id}</span>
             </div>
             <div className={styles.messages}>
-                {
-                    messages?.map((e,i)=><MessageBox key={i} mes={e}toRemove={()=>toRemove(e.id)}/>)
-                }
+            {
+                messages?.map((e,i)=><MessageBox key={i} mes={e}toRemove={()=>toRemove(e.id)}/>)
+            }
             </div>
             <div className={styles.container_input}>
                 <div className={styles.block_command_input}>

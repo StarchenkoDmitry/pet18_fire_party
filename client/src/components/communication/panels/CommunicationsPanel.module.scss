@@ -5,9 +5,6 @@
   width: 15em;
   // height: 100%;
   //todo: Доделать grid и flex
-
-  background-color: rgb(46, 192, 131);
-  
 }
 
 
@@ -22,16 +19,13 @@
 .input{
   flex:1;
   margin: .4em;
-  // width: 200px;
-  // width: 100%;
 }
 
 
-
-// .list_chats{
-// }
-
-
+.list_chats{
+  flex: 1;
+  background-color: var(--bg-light);
+}
 
 
 .btn_add_chat{
