@@ -2,13 +2,13 @@ import styles from "./AddChatModal.module.scss";
 
 import { useEffect, useState } from "react";
 
-import { IUser } from "@/common/interfaces";
-import { CreateChat, FindAllByName } from "../../../actions/Chat.actions";
+import { IUser } from "@/common/user.interface";
+import { FindAllByName } from "@/actions/User.actions";
+import { CreateChat } from "@/actions/Chat.actions";
+
 
 
 export interface Props{
-    // isActive:boolean;
-    // setActive:React.Dispatch<React.SetStateAction<boolean>>;
     doClose?:()=>void;
 }
 
