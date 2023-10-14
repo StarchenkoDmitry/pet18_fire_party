@@ -8,7 +8,7 @@ export interface ChatHeaderProps{
 
 export default function ChatHeader({info}:ChatHeaderProps) {
     
-    if(info){        
+    if(info){
         const imageURL = !info.user.imageID ? "/img/user.png" :
         `http://127.0.0.1:3000/api/image/buffer/${info.user.imageID}`;
 

@@ -9,16 +9,18 @@ export interface ChatViewProps{
 }
 
 export default function ChatView({chat,selectChat}:ChatViewProps) {
-    // console.log("ChatView: chat:",chat);
 
     const selectChatEvent = ()=>{
-        // console.log("selected the chat with id: ",chat.id)
         if(selectChat) selectChat(chat.id);
     }
-    
+
+    const imageURL = !chat.user.imageID ? "/img/user.png" : 
+    `http://127.0.0.1:3000/api/image/buffer/${chat.user.imageID}`;
+
+
     return (
         <div className={styles.chatview} onClick={selectChatEvent}>
-            <img className={styles.userImage} src={"/img/user.png"} alt={`the avatar of ${chat.user.name}`} />
+            <img className={styles.userImage} src={imageURL} alt={`the avatar of ${chat.user.name}`} />
 
             <div className={styles.secondBlock}>
                 <span className={styles.userName}>{chat.user.name}</span>

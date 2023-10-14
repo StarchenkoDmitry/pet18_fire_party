@@ -132,7 +132,9 @@ export class ChatService {
         users: users.map(user=>{
           return {
             id: user.id,
-            name: user.name};
+            name: user.name,
+            imageID: user.imageID
+          };
         })
       };
     }));

@@ -5,7 +5,7 @@ export type IMe = Pick<IUser, "id" | "name" | "surname" | "imageID">
 
 export interface IChatView{
     id: string;
-    user: Pick<IUser, "id" | "name">;
+    user: Pick<IUser, "id" | "name" | 'imageID'>;
     lastMessageID: string | null
 }
 

@@ -16,6 +16,6 @@ export interface IMessage{
 
 export interface IChatInfo{
     id: string;
-    users: Pick<IUser, "id" | "name">[];
+    users: Pick<IUser, "id" | "name" | 'imageID'>[];
     lastMessageID: string | null
 }
