@@ -1,21 +1,13 @@
-import { IUserForChatInfo } from "./chat.interface";
+import { IUser } from "./user.interface";
 
-export interface IMe{
-    id:string;
-    
-    name:string;
-    surname:string;
 
-    imageID:string | null;
-} 
-
+export type IMe = Pick<IUser, "id" | "name" | "surname" | "imageID">
 
 export interface IChatView{
     id: string;
-    user: IUserForChatInfo;
+    user: Pick<IUser, "id" | "name">;
     lastMessageID: string | null
 }
-
 
 export interface IMeChats{
     meid:string;

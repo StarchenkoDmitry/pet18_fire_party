@@ -9,4 +9,6 @@ export interface IUser {
 
     name: string | null
     surname: string | null
+
+    imageID: string | null;
 }
