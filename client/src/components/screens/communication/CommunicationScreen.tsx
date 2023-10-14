@@ -1,7 +1,7 @@
 import styles from "./CommunicationScreen.module.scss";
 
-import ContentPanel from "@/components/communication/panels/ContentPanel";
 import CommunicationsPanel from "@/components/communication/panels/CommunicationsPanel";
+import { Outlet } from "react-router-dom";
 
 
 export default function CommunicationScreen() {
@@ -9,7 +9,7 @@ export default function CommunicationScreen() {
     return (
         <div className={styles.page}>
             <CommunicationsPanel/>
-            <ContentPanel/>
+            <Outlet/>
         </div>
     );
 }

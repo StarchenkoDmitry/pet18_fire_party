@@ -1,10 +1,10 @@
+import { IMessage } from "@/common/chat.interface";
 import styles from "./MessageBox.module.scss";
-import { IMessage as MessageData } from "@/common/interfaces";
 
 
 
 export interface MessageProps{
-    mes: MessageData;
+    mes: IMessage;
     toRemove?: ()=>void; 
 }
 

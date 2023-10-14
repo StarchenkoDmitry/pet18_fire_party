@@ -1,0 +1,27 @@
+.container_input{
+  background-color: #587ae7;
+}
+
+.block_command_input{
+  display: flex;
+  margin: .4em;
+  padding: .4em;
+  border-radius: .5em ;
+  background-color: bisque;
+}
+
+.input{
+  flex: 1;
+  padding: .4em;
+  // width: 70%;
+  border-radius: .4em;
+  white-space: pre-wrap;
+}
+
+
+.btn_send{
+  margin-left: .5em;
+  padding: .5em;
+  border-radius: .4em;
+  background-color: #587ae7;
+}
