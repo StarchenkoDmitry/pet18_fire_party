@@ -1,3 +1,5 @@
+import { IUserForChatInfo } from "./chat.interface";
+
 export interface IMe{
     id:string;
     
@@ -6,3 +8,16 @@ export interface IMe{
 
     imageID:string | null;
 } 
+
+
+export interface IChatView{
+    id: string;
+    user: IUserForChatInfo;
+    lastMessageID: string | null
+}
+
+
+export interface IMeChats{
+    meid:string;
+    chats:IChatView[]
+}

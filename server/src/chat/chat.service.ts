@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateChatDto } from './chat.dto';
 import { Chat } from '@prisma/client';
-import { IChatInfo, IMessage } from 'src/common/interfaces';
+import { IChatInfo, IMessage } from 'src/common/chat.interface';
 
 @Injectable()
 export class ChatService {  

@@ -7,8 +7,8 @@ import { AuthGuard, REQ_RES_COOKIE_SESSION } from 'src/auth/auth.guard';
 import { UserService } from 'src/user/user.service';
 import { UserDec } from 'src/auth/auth.decorator';
 import { User } from '@prisma/client';
-import { IChatView, IMeChats } from 'src/common/interfaces';
 import { IGetChatInfo } from 'src/common/chat.interface';
+import { IChatView, IMeChats } from 'src/common/me.interface';
 
 @Controller('chat')
 @UsePipes(new ValidationPipe({whitelist: true}))

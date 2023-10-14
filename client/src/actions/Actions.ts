@@ -1,5 +1,7 @@
 import api from "@/api/api";
-import { IMeChats, IMessage, IUser } from "@/common/interfaces";
+import { IMessage } from "@/common/chat.interface";
+import { IMeChats } from "@/common/me.interface";
+import { IUser } from "@/common/user.interface";
 
 
 export async function CreateChat(friend_id:string):Promise<boolean>{

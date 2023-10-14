@@ -1,6 +1,6 @@
 import styles from "./ChatView.module.scss";
 
-import { IChatView } from "@/common/interfaces";
+import { IChatView } from "@/common/me.interface";
 
 
 export interface ChatViewProps{
