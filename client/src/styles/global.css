@@ -19,7 +19,7 @@ html{
   --text-light: #000;
   --bg-chat-light: #223053;
   --bg-chat-input-light: #3633e2;
-
+  --bg-chat-message-light: #ffffff;
   /* dark theme tokens */
   /* --bg-dark: 25, 48, 66;
   --accent-dark: 90, 182, 204; */
