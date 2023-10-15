@@ -4,22 +4,24 @@ import { IChatView } from "@/common/me.interface";
 
 
 export interface ChatViewProps{
+    selected?: boolean
     chat:IChatView;
     selectChat?:(chatId:string)=>void;
 }
 
-export default function ChatView({chat,selectChat}:ChatViewProps) {
+export default function ChatView({chat,selectChat,selected = false}:ChatViewProps) {
+    // console.log("ChatView selected: ",selected)
 
     const selectChatEvent = ()=>{
         if(selectChat) selectChat(chat.id);
     }
 
     const imageURL = !chat.user.imageID ? "/img/user.png" : 
-    `http://127.0.0.1:3000/api/image/buffer/${chat.user.imageID}`;
+    `http://${window.location.hostname}:3000/api/image/buffer/${chat.user.imageID}`;
 
 
     return (
-        <div className={styles.chatview} onClick={selectChatEvent}>
+        <div className={styles.chatview + ` ${selected ? styles.selected : ""}`} onClick={selectChatEvent}>
             <img className={styles.userImage} src={imageURL} alt={`the avatar of ${chat.user.name}`} />
 
             <div className={styles.secondBlock}>

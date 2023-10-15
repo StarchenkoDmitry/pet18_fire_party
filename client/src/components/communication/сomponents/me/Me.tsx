@@ -15,22 +15,25 @@ export default function Me() {
     useEffect(()=>{
         GetMe().then(res=>setMe(res));
     },[]);
+    
+    const closeModal = ()=>setShowProfile(false);
+    const openModal = ()=>{setShowProfile(true)};
 
-    const imageURL = me && me.imageID ? 
-        `http://127.0.0.1:3000/api/image/buffer/${me.imageID}` : 
-        "/imgraw/3.png";
-
-    const doCloseModal = ()=>setShowProfile(false);
-
-    return (
-        <div className={styles.me}>
-        {
-            me && <>
-                <img className={styles.img} onClick={()=>{setShowProfile(true)}} src={imageURL}/>
+    if(me){
+        const imageURL = !me.imageID ? "/img/user.png" : 
+        `http://${window.location.hostname}:3000/api/image/buffer/${me.imageID}`;
+        
+        return (
+            <div className={styles.me}>
+                <img className={styles.meAvatar} src={imageURL} onClick={openModal}/>
                 <span className={styles.name}>{me.name}</span>
-            </>
-        }
-        { showProfile && <ProfileModal doClose={doCloseModal}/>}
-        </div>
-    );
+                { showProfile && <ProfileModal doClose={closeModal}/>}
+            </div>
+        );
+    }else{
+        return(<div>
+            <img className={styles.meAvatar} src={'/img/user.png'} onClick={openModal}/>
+        </div>);
+    }
+    
 }

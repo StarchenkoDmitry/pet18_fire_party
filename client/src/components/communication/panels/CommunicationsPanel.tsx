@@ -17,12 +17,15 @@ export default function CommunicationsPanel() {
     
     const navigate = useNavigate();
     const [isActiveModal,setActiveModal] = useState(false);
-    
+
     const [meChats,setMeChats] = useState<IMeChats>();
 
     useEffect(()=>{
         GetMeChats().then((res)=>{
-            setMeChats(res);
+            console.log("__GetMeChats: ",res)
+            if(!res)return;
+            const chats = res.chats.filter(e=>e.user !== undefined)
+            setMeChats({meid:res.meid,chats:chats});
         });
     },[]);
     
@@ -38,7 +41,8 @@ export default function CommunicationsPanel() {
         setActiveModal(true);
     }
 
-    const rend_chats = meChats?.chats.map(e=><ChatView key={e.id} chat={e} selectChat={selectChat} />)
+    const rend_chats = meChats?.chats.map(e=><ChatView key={e.id} chat={e} selectChat={selectChat} 
+        selected={params.id === e.id}/>)
     
     return (
         <div className={styles.chats_panel}>

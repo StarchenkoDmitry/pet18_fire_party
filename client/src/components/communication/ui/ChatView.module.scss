@@ -12,6 +12,14 @@
   cursor: pointer;
 }
 
+.chatview:hover{
+  background-color: var(--bg-secondary-light);
+}
+
+.selected{
+  background-color:  #4e51ff !important;
+}
+
 .userImage{
   display: block;
   width: 3em;

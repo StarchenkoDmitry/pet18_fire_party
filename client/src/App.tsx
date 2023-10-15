@@ -25,9 +25,14 @@ function App() {
                 <Route path='/panel/admin' element={<Admin/>}/>
                 <Route path='/panel/adminimages' element={<AdminImages/>}/>
 
-                <Route path='/chat' element={<CommunicationPage/>}>
+            
+                <Route path='/' element={<CommunicationPage/>}>
                     <Route index element={<SelectChat/>} />
-                    <Route path=':id' element={<ChatPanel/>} />
+
+                    <Route path='chat'>
+                        <Route index element={<SelectChat/>} />
+                        <Route path=':id' element={<ChatPanel/>} />
+                    </Route>
                 </Route>
 
                 <Route path="*" element={<NoPage/>} />
