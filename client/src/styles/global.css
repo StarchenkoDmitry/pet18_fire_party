@@ -17,7 +17,8 @@ html{
   --bg-light: #fff;
   --bg-secondary-light: #f3f3f4;
   --text-light: #000;
-  --bg-chat-light: #a9b5fc;
+  --bg-chat-light: #223053;
+  --bg-chat-input-light: #3633e2;
 
   /* dark theme tokens */
   /* --bg-dark: 25, 48, 66;
