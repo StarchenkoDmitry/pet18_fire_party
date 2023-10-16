@@ -1,22 +1,28 @@
-import { IMessage } from "@/common/chat.interface";
 import styles from "./MessageBox.module.scss";
 
-
+import { IMessage } from "@/common/chat.interface";
 
 export interface MessageProps{
-    mes: IMessage;
+    message: IMessage;
     toRemove?: ()=>void; 
 }
 
-export default function MessageBox({mes,toRemove}:MessageProps) {
-   
+export default function MessageBox({message,toRemove}:MessageProps) {
+    const createAtDate = new Date(message.createAt);
+    var createAt = [createAtDate.getHours(), createAtDate.getMinutes()].map((x)=>{
+        return x < 10 ? "0" + x : x
+    }).join(":");
+
     return (
         <div className={styles.message}>
             <div className={styles.message_head}>
-                <div className={styles.message_createAt}>{mes.createAt.toString()}</div>
                 <button onClick={toRemove}>Delete</button>
-            </div>
-            <p className={styles.message_text}>{mes.text}</p>
+            </div>            
+            <p className={styles.message_text}>
+                {message.text}
+                <span className={styles.message_createAt1}>{createAt}</span>
+                <span className={styles.message_createAt2}>{createAt}</span>
+            </p>
         </div>
     )
 }

@@ -1,15 +1,14 @@
-
 .message{
   display: block;
+  position: relative;
 
   margin: 1em;
   padding: .2em;
 
   max-width: 500px;
 
-  // border-radius: .5em;
-  background-color: rgb(2, 194, 114);
-
+  border-radius: .5em;
+  background-color: var(--bg-chat-message-light);
 
   // word-wrap: normal;
   // white-space: pre-wrap;
@@ -20,17 +19,32 @@
   display: flex;
 }
 
-.message_createAt{
-  flex: 1;
-  font-size: .8em;
-  border-radius: .2em;
-  background-color: aliceblue;
+.message_text{
+  position: relative;
+  padding: 0.4em;
 }
 
+.message_createAt1{
+  visibility: hidden;
+  
+  padding-right: 0em;//.8em;
 
+  line-height: 1;
+  font-size: .75em;
+  text-wrap: nowrap;
 
-.message_text{
-  margin-top: .4em;
-  padding: .2em;
-  background-color: rgb(10, 218, 103)
+  // color: #cc3014;
+}
+.message_createAt2{
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+
+  line-height: 1;
+  font-size: .75em;
+  text-wrap: nowrap;
+
+  color: #14cc23;
+
+  user-select: none;
 }

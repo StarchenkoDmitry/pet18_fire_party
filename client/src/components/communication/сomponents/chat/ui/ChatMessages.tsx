@@ -14,7 +14,7 @@ export default function ChatMessages({messages,remove}:ChatMessagesProps) {
         return(
             <div className={styles.messages}>
             {
-                messages.map((e,i)=><MessageBox key={i} mes={e} toRemove={()=>{
+                messages.map((e,i)=><MessageBox key={i} message={e} toRemove={()=>{
                     if(remove) remove(e.id)
                 }}/>)
             }
