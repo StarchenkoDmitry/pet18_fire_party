@@ -15,6 +15,7 @@ import Chat from './components/communication/сomponents/chat/Chat'
 import SelectChat from './components/communication/ui/SelectChat'
 import ChatPanel from './components/communication/panels/ChatPanel'
 
+
 function App() {
     return (
         <BrowserRouter>
@@ -25,7 +26,6 @@ function App() {
                 <Route path='/panel/admin' element={<Admin/>}/>
                 <Route path='/panel/adminimages' element={<AdminImages/>}/>
 
-            
                 <Route path='/' element={<CommunicationPage/>}>
                     <Route index element={<SelectChat/>} />
 

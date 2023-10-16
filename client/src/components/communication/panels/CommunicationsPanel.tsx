@@ -22,10 +22,12 @@ export default function CommunicationsPanel() {
 
     useEffect(()=>{
         GetMeChats().then((res)=>{
-            console.log("__GetMeChats: ",res)
             if(!res)return;
             const chats = res.chats.filter(e=>e.user !== undefined)
-            setMeChats({meid:res.meid,chats:chats});
+            setMeChats({
+                meid:res.meid,
+                chats:chats
+            });
         });
     },[]);
     
@@ -33,13 +35,8 @@ export default function CommunicationsPanel() {
         navigate(`/chat/${chatId}`);
     }
 
-    const closeModal = ()=>{
-        setActiveModal(false);
-    }
-
-    const openModal = ()=>{
-        setActiveModal(true);
-    }
+    const closeModal = ()=>{ setActiveModal(false); }
+    const openModal = ()=>{ setActiveModal(true); }
 
     const rend_chats = meChats?.chats.map(e=><ChatView key={e.id} chat={e} selectChat={selectChat} 
         selected={params.id === e.id}/>)
