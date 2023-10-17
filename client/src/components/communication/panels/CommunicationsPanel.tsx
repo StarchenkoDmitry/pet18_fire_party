@@ -11,7 +11,7 @@ import ChatView from "../ui/ChatView";
 import Me from "../сomponents/me/Me";
 
 
-export default function CommunicationsPanel() {    
+export default function CommunicationsPanel() {
     const params = useParams();
     console.log("CommunicationsPanel params: ",params)
     
@@ -50,9 +50,7 @@ export default function CommunicationsPanel() {
             <div className={styles.list_chats}>
                 { rend_chats }
             </div>
-            <div className={styles.btn_add_chat} onClick={openModal}>
-                +
-            </div>
+            <div className={styles.btn_add_chat} onClick={openModal}>❤</div>
             { isActiveModal && <AddChatModal doClose={closeModal}/> }
         </div>
     );
