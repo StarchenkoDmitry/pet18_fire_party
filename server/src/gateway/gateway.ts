@@ -13,9 +13,12 @@ import { UserSocket } from "./gateway.interface";
 
 
 @WebSocketGateway(3020, { 
-  cors:{ credentials: true },
-  pingInterval: 10000,
-  pingTimeout: 15000,
+  cors:{
+    origin:true,
+    credentials: true,
+  },
+  pingInterval: 1000,
+  pingTimeout: 1500,
 })
 export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
@@ -37,9 +40,17 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
     this.logger.log(`Cliend id:${client.id} disconnected`);
   }
 
+
+
   @SubscribeMessage("test1")
   handleMessageDimka(client: UserSocket, data: any) {
     console.log("test1: ",data)
     return "Good test1"
   }
+
+  @SubscribeMessage("getMeState")
+  messageGetMeState(client: UserSocket, data: any) {
+    console.log("Client Dimka: ",data)
+    return "Nice"
+  } 
 }

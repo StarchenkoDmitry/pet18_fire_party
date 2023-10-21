@@ -5,7 +5,6 @@ import { Outlet } from "react-router-dom";
 
 
 export default function CommunicationScreen() {
-    
     return (
         <div className={styles.page}>
             <CommunicationsPanel/>

@@ -19,6 +19,7 @@ import ChatPanel from './components/communication/panels/ChatPanel'
 function App() {
     return (
         <BrowserRouter>
+        
             <Routes>
                 <Route path='/profile' element={<ProfilePage/>}/>
                 <Route path='/register' element={<Register />}/>
