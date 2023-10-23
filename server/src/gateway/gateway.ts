@@ -9,12 +9,12 @@ import {
 } from "@nestjs/websockets";
 
 import { Server } from "socket.io";
+
 import { UserSocket } from "./gateway.interface";
-import { UserService } from "src/user/user.service";
 import { IUser, IUserForMe } from "src/common/user.interface";
-import { IChatToUsers } from "src/common/chat.interface";
 import { IMyChat } from "src/common/me.interface";
 
+import { UserService } from "src/user/user.service";
 
 @WebSocketGateway(3020, { 
   cors:{
@@ -24,12 +24,10 @@ import { IMyChat } from "src/common/me.interface";
   pingInterval: 1000,
   pingTimeout: 1500,
 })
-export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect{
-  constructor(private readonly userService: UserService,){
+export class Gateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect{
+  constructor(private readonly userService: UserService,) {}
 
-  }
-
-  private readonly logger = new Logger(ChatGateway.name)
+  private readonly logger = new Logger(Gateway.name)
   @WebSocketServer() server: Server
 
   afterInit() {
@@ -47,25 +45,16 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   
   @SubscribeMessage("getMe")
   async getMe(client: UserSocket, data: any):Promise<IUserForMe> {
-    console.log("Client Dimka: ",data,client.userSession)
+    console.log("gateway/getMe",data,client.userSession)
     const user : IUser = await this.userService.findOneBySession(client.userSession)
     const {passwordHash,session, ...me} = user;
     return me;
   }
 
-  @SubscribeMessage("getMeChats")
+  @SubscribeMessage("getMyChats")
   async getMeChats(client: UserSocket, data: any):Promise<IMyChat[]> {
-    console.log("getMeChats data, session: ",data,client.userSession)
-    const chats: IChatToUsers[] =  await this.userService.getChats(client.userId)
-    const meChats: IMyChat[] = chats.map(chat=>{
-      if(chat.users.length === 0) 
-        throw Error("ChatGateway getMeChats lenght of users is zero.");
-      return {
-        id: chat.id,
-        lastMessageID: chat.lastMessageID,
-        user: chat.users[0]
-      }
-    })
-    return meChats;
+    console.log("getMyChats data, session: ",data,client.userSession)
+    
+    return this.userService.getMyChats(client.userId);
   } 
 }

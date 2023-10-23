@@ -47,8 +47,8 @@ export const useMe = create<IMe>((set, get) =>({
                 set(()=>({user:data}))
             })
 
-            socket.timeout(5000).emit('getMeChats',(error:any,data?:IMyChat[]) => {
-                console.log('getMeChats: ',data)
+            socket.timeout(5000).emit('getMyChats',(error:any,data?:IMyChat[]) => {
+                console.log('getMyChats: ',data)
                 set(()=>({chats:data}))
             })
 

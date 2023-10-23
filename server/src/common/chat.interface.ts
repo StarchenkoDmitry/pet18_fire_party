@@ -5,11 +5,11 @@ export interface IChat{
     lastMessageID:string | null
 }
 
-export interface IChatToUsers{
-    id:string
-    lastMessageID:string | null
-    users:Pick<IUser, "id" | "name" | "imageID">[]
-}
+// export interface IChatToUsers{
+//     id:string
+//     lastMessageID:string | null
+//     users:Pick<IUser, "id" | "name" | "imageID">[]
+// }
 
 export interface IMessage{
     id:string;

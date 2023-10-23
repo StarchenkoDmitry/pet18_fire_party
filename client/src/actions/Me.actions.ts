@@ -14,7 +14,7 @@ export async function GetMe():Promise<IMe|undefined> {
 
 export async function GetMyChats():Promise<IMyChat[] | undefined>{
     try {
-        const res = await api.get('chat/me');
+        const res = await api.get('chat/my');
         // console.log("chat/me res: ", res.data);
         if(res.status === 200){
             return res.data;

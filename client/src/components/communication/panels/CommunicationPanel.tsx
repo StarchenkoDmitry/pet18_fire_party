@@ -22,7 +22,8 @@ export default function CommunicationPanel() {
 
     useEffect(()=>{
         GetMyChats().then((res)=>{
-           if(res)setMeChats(res);
+            console.log('CommunicationPanel GetMyChats: ',res)
+            if(res)setMeChats(res)
         });
     },[]);
     

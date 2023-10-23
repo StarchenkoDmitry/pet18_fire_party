@@ -42,10 +42,10 @@ export class ChatController {
     return await this.chatService.getAllMessages(user.id,id);
   }
 
-  @Get("me")
+  @Get("my")
   @UseGuards(AuthGuard)
   async getMyChats(@UserDec() user:User):Promise<IMyChat[]>{
-    // console.log("/chat/me");
+    console.log("/chat/my");
     return await this.userService.getMyChats(user.id);
   }
 

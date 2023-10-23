@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateChatDto } from './chat.dto';
-import { Chat } from '@prisma/client';
-import { IChatToUsers, IMessage } from 'src/common/chat.interface';
+import { IMessage } from 'src/common/chat.interface';
 
 @Injectable()
 export class ChatService {  
@@ -102,43 +100,6 @@ export class ChatService {
 
   getAll() {
     return this.prisma.chat.findMany();
-  }
-
-  async getMyChats(userid:string):Promise<IChatToUsers[]>{
-    const myChats: Chat[] = await this.prisma.chat.findMany({
-      where:{
-        users:{
-          some:{
-            id:userid
-          }
-        }
-      }
-    });
-
-    const list_chatInfo : IChatToUsers[] = await Promise.all(myChats.map(async (chat)=>{
-      const users = await this.prisma.user.findMany({
-        where:{
-          chats:{
-            some:{
-              id:chat.id
-            }
-          }
-        }
-      });
-
-      return {
-        id: chat.id,
-        lastMessageID: chat.lastMessageID,
-        users: users.map(user=>{
-          return {
-            id: user.id,
-            name: user.name,
-            imageID: user.imageID
-          };
-        })
-      };
-    }));
-    return list_chatInfo;
   }
 
   async delete(id:string):Promise<boolean>{

@@ -4,9 +4,8 @@ import { LoginDto } from 'src/auth/dto/auth.dto';
 import { hasher } from 'src/auth/utils/Hasher';
 import { LoginResult, LoginStatus } from './user.interface';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Chat, User } from '@prisma/client';
+import { User } from '@prisma/client';
 import { GenerateSession } from 'src/auth/utils/Session';
-import { IChatToUsers } from 'src/common/chat.interface';
 import { IMyChat } from 'src/common/me.interface';
 
 @Injectable()
@@ -83,30 +82,30 @@ export class UserService {
     return this.prisma.user.findFirst({where:{session:session}})
   }
 
-  async getChats(userId: string):Promise<IChatToUsers[]>{
-    const res = await this.prisma.user.findFirst({
-      where:{id:userId},
-      select:{
-        chats:{
-          include:{
-            users:{
-              where:{
-                id:{
-                  not:userId
-                }
-              },
-              select:{
-                id:true,
-                name:true,
-                imageID:true,
-              }
-            }
-          }
-        }
-      }
-    })
-    return res.chats;
-  }
+  // async getChats(userId: string):Promise<IChatToUsers[]>{
+  //   const res = await this.prisma.user.findFirst({
+  //     where:{id:userId},
+  //     select:{
+  //       chats:{
+  //         include:{
+  //           users:{
+  //             where:{
+  //               id:{
+  //                 not:userId
+  //               }
+  //             },
+  //             select:{
+  //               id:true,
+  //               name:true,
+  //               imageID:true,
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+  //   })
+  //   return res.chats;
+  // }
 
   async getMyChats(userId: string):Promise<IMyChat[]>{
     const res = await this.prisma.user.findFirst({
