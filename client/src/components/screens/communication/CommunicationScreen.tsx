@@ -1,13 +1,24 @@
 import styles from "./CommunicationScreen.module.scss";
 
-import CommunicationsPanel from "@/components/communication/panels/CommunicationsPanel";
 import { Outlet } from "react-router-dom";
+import { useEffect } from "react";
+
+import CommunicationPanel from "@/components/communication/panels/CommunicationPanel";
+
+import { useMe } from "@/store/Me";
 
 
-export default function CommunicationScreen() {
+export default function CommunicationScreen() {    
+    const me = useMe();
+
+    useEffect(()=>{
+        me.connect();
+        return ()=>{me.disconnect();}
+    },[]);
+
     return (
         <div className={styles.page}>
-            <CommunicationsPanel/>
+            <CommunicationPanel/>
             <Outlet/>
         </div>
     );

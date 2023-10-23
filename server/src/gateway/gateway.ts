@@ -10,6 +10,10 @@ import {
 
 import { Server } from "socket.io";
 import { UserSocket } from "./gateway.interface";
+import { UserService } from "src/user/user.service";
+import { IUser, IUserForMe } from "src/common/user.interface";
+import { IChat } from "src/common/chat.interface";
+import { IMyChat } from "src/common/me.interface";
 
 
 @WebSocketGateway(3020, { 
@@ -20,37 +24,48 @@ import { UserSocket } from "./gateway.interface";
   pingInterval: 1000,
   pingTimeout: 1500,
 })
-export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
-{
-  private readonly logger = new Logger(ChatGateway.name);
-  @WebSocketServer() server: Server;
+export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect{
+  constructor(private readonly userService: UserService,){
+
+  }
+
+  private readonly logger = new Logger(ChatGateway.name)
+  @WebSocketServer() server: Server
 
   afterInit() {
-    this.logger.log("Initialized");
+    this.logger.log("Initialized")
   }
 
   handleConnection(client: UserSocket, ...args: any[]) {
-    const { sockets } = this.server.sockets;
-    this.logger.log(`Client id: ${client.id} connected, user: ${client.user}`);
-    this.logger.debug(`Number of connected clients: ${sockets.size}`);
-    // console.log("Client connected: ",client.user,client.id);    
+    const { sockets } = this.server.sockets
+    this.logger.log(`Client id: ${client.id} connected, user: ${client.userSession}`)
+    this.logger.debug(`Number of connected clients: ${sockets.size}`)
   }
-
   handleDisconnect(client: UserSocket) {
-    this.logger.log(`Cliend id:${client.id} disconnected`);
+    this.logger.log(`Cliend id:${client.id} disconnected`)
+  }
+  
+  @SubscribeMessage("getMe")
+  async getMe(client: UserSocket, data: any):Promise<IUserForMe> {
+    console.log("Client Dimka: ",data,client.userSession)
+    const user : IUser = await this.userService.findOneBySession(client.userSession)
+    const {passwordHash,session, ...me} = user;
+    return me;
   }
 
-
-
-  @SubscribeMessage("test1")
-  handleMessageDimka(client: UserSocket, data: any) {
-    console.log("test1: ",data)
-    return "Good test1"
-  }
-
-  @SubscribeMessage("getMeState")
-  messageGetMeState(client: UserSocket, data: any) {
-    console.log("Client Dimka: ",data)
-    return "Nice"
+  @SubscribeMessage("getMeChats")
+  async getMeChats(client: UserSocket, data: any):Promise<IMyChat[]> {
+    console.log("getMeChats data, session: ",data,client.userSession)
+    const chats: IChat[] =  await this.userService.getChats(client.userId)
+    const meChats: IMyChat[] = chats.map(chat=>{
+      if(chat.users.length === 0) 
+        throw Error("ChatGateway getMeChats lenght of users is zero.");
+      return {
+        id: chat.id,
+        lastMessageID: chat.lastMessageID,
+        user: chat.users[0]
+      }
+    })
+    return meChats;
   } 
 }

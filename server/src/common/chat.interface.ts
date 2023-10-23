@@ -1,5 +1,4 @@
-import { IUser } from "./user.interface";
-
+import { IUser } from "./user.interface"
 
 export interface IGetChatInfo{
     id:string;
@@ -16,6 +15,12 @@ export interface IMessage{
 
 export interface IChatInfo{
     id: string;
-    users: Pick<IUser, "id" | "name" | 'imageID'>[];
+    users: Pick<IUser, "id" | "name">[];
     lastMessageID: string | null
+}
+
+export interface IChat{
+    id:string
+    lastMessageID:string | null
+    users:Pick<IUser, "id" | "name" | "imageID">[]
 }

@@ -1,15 +1,9 @@
 import { IUser } from "./user.interface";
 
-
 export type IMe = Pick<IUser, "id" | "name" | "surname" | "imageID">
 
-export interface IChatView{
-    id: string;
-    user: Pick<IUser, "id" | "name" | 'imageID'>;
-    lastMessageID: string | null
-}
-
-export interface IMeChats{
-    meid:string;
-    chats:IChatView[]
+export interface IMyChat{
+    id:string
+    lastMessageID:string | null
+    user:Pick<IUser, "id" | "name" | "imageID">
 }

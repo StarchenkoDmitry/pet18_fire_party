@@ -12,3 +12,5 @@ export interface IUser {
 
     imageID: string | null;
 }
+
+export type IUserForMe = Omit<IUser, "passwordHash" | "session">

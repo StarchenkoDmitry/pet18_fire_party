@@ -1,14 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, UsePipes, Req, UseGuards, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, ValidationPipe, UsePipes, UseGuards, BadRequestException } from '@nestjs/common';
 import { ChatService } from './chat.service';
 import { CreateChatDto, CreateMessageDto } from './chat.dto';
 
-import { Request, Response } from 'express';
-import { AuthGuard, REQ_RES_COOKIE_SESSION } from 'src/auth/auth.guard';
+import { AuthGuard } from 'src/auth/auth.guard';
 import { UserService } from 'src/user/user.service';
 import { UserDec } from 'src/auth/auth.decorator';
 import { User } from '@prisma/client';
-import { IChatInfo, IGetChatInfo } from 'src/common/chat.interface';
-import { IChatView, IMeChats } from 'src/common/me.interface';
+import { IGetChatInfo } from 'src/common/chat.interface';
+import { IMyChat } from 'src/common/me.interface';
 
 @Controller('chat')
 @UsePipes(new ValidationPipe({whitelist: true}))
@@ -46,21 +45,9 @@ export class ChatController {
 
   @Get("me")
   @UseGuards(AuthGuard)
-  async getMyChats(@UserDec() user:User):Promise<IMeChats>{
+  async getMyChats(@UserDec() user:User):Promise<IMyChat[]>{
     // console.log("/chat/me");
-    const chats:IChatInfo[] = await this.chatService.getMyChats(user.id);
-    const chatskorotko:IChatView[] = chats.map((e,i)=>{
-      return {
-        id:e.id,
-        lastMessageID:e.lastMessageID,
-        user:e.users.find(e=>e.id !== user.id)
-      }
-    });
-
-    return {
-      meid:user.id,
-      chats:chatskorotko
-    };
+    return await this.userService.getMyChats(user.id);
   }
 
 

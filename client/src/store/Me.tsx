@@ -1,39 +1,79 @@
-import { Socket } from "socket.io";
-import { io } from "socket.io-client";
 import { create } from "zustand";
+import { io, Socket } from "socket.io-client";
+import { IUserForMe } from "@/common/user.interface";
+import { IMeChat } from "@/common/chat.interface";
+
 
 export interface IMe{
-    initialied:boolean    
-    socket:Socket | null
-    todos:string[]
+    initialized:boolean
+    connected:boolean,
+    socket: Socket | null
+
+    user?:IUserForMe
+    chats?:IMeChat[]
+
+    init:()=>void
 
     connect:()=>void
     disconnect:()=>void
-
-    init:()=>void
-    addTodo:(text:string)=>void
 }
 
 export const useMe = create<IMe>((set, get) =>({
-    initialied: false,
+    initialized: false,
+    connected:false,
     socket: null,
-    todos: [],
 
     init: () => {
-    },
-    connect:()=>{
-        const socket = io("http://127.0.0.1:3020",{
-            withCredentials:true,
-        },)
-        socket.on('connect',()=>{
-            console.log("Socket connected.")
-        })
-        socket.on('error',()=>{
 
-        })
     },
-    disconnect:()=>{},
-    addTodo: function (text: string): void {
-        set(state=>({todos:[...state.todos,text]}))
-    }
+    connect:async ()=>{
+        const socket :Socket= io("http://127.0.0.1:3020",{
+            autoConnect:false,
+            withCredentials:true,
+            timeout:2000,
+            reconnection:false
+        })
+
+        socket.on("connect", () => {
+            console.log("connect:", socket.id)
+
+            set(state=>({
+                connected:true,
+                socket:socket
+            }))
+
+            socket.timeout(5000).emit('getMe',(error:any,data?:IUserForMe) => {
+                console.log('getMe: ',data)
+                set(()=>({user:data}))
+            })
+
+            socket.timeout(5000).emit('getMeChats',(error:any,data?:IMeChat[]) => {
+                console.log('getMeChats: ',data)
+                set(()=>({chats:data}))
+            })
+
+        });
+
+        socket.on("connect_error", () => {
+            console.log("Socket connect_error1: ")
+        });
+
+        socket.on('error',(error)=>{
+            console.log('socket error');
+        })
+
+        socket.on("disconnect", (reason) => {
+            console.log('socket disconnect reason: ',reason);
+        });
+        
+        console.log("Socket connectiong...")
+        socket.connect();
+    },
+
+    disconnect:async ()=>{
+        const {socket} = get();
+        if(socket){
+           socket.disconnect() 
+        }
+    },
 }))
