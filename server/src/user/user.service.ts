@@ -6,7 +6,7 @@ import { LoginResult, LoginStatus } from './user.interface';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Chat, User } from '@prisma/client';
 import { GenerateSession } from 'src/auth/utils/Session';
-import { IChat } from 'src/common/chat.interface';
+import { IChatToUsers } from 'src/common/chat.interface';
 import { IMyChat } from 'src/common/me.interface';
 
 @Injectable()
@@ -83,7 +83,7 @@ export class UserService {
     return this.prisma.user.findFirst({where:{session:session}})
   }
 
-  async getChats(userId: string):Promise<IChat[]>{
+  async getChats(userId: string):Promise<IChatToUsers[]>{
     const res = await this.prisma.user.findFirst({
       where:{id:userId},
       select:{

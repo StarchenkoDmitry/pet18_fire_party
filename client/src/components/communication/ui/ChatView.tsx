@@ -1,11 +1,11 @@
 import styles from "./ChatView.module.scss";
 
-import { IChatView } from "@/common/me.interface";
+import { IMyChat } from "@/common/me.interface";
 
 
 export interface ChatViewProps{
     selected?: boolean
-    chat:IChatView;
+    chat:IMyChat;
     selectChat?:(chatId:string)=>void;
 }
 

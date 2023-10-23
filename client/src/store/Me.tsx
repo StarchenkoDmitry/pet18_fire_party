@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { io, Socket } from "socket.io-client";
 import { IUserForMe } from "@/common/user.interface";
-import { IMeChat } from "@/common/chat.interface";
+import { IMyChat } from "@/common/me.interface";
 
 
 export interface IMe{
@@ -10,7 +10,7 @@ export interface IMe{
     socket: Socket | null
 
     user?:IUserForMe
-    chats?:IMeChat[]
+    chats?:IMyChat[]
 
     init:()=>void
 
@@ -47,7 +47,7 @@ export const useMe = create<IMe>((set, get) =>({
                 set(()=>({user:data}))
             })
 
-            socket.timeout(5000).emit('getMeChats',(error:any,data?:IMeChat[]) => {
+            socket.timeout(5000).emit('getMeChats',(error:any,data?:IMyChat[]) => {
                 console.log('getMeChats: ',data)
                 set(()=>({chats:data}))
             })

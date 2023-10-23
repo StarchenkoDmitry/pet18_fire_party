@@ -6,7 +6,6 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { UserService } from 'src/user/user.service';
 import { UserDec } from 'src/auth/auth.decorator';
 import { User } from '@prisma/client';
-import { IGetChatInfo } from 'src/common/chat.interface';
 import { IMyChat } from 'src/common/me.interface';
 
 @Controller('chat')
@@ -53,7 +52,7 @@ export class ChatController {
 
   @Get("my/:id")
   @UseGuards(AuthGuard)
-  async getChatInfo(@Param('id') id: string,@UserDec() user:User):Promise<IGetChatInfo>{
+  async getChatInfo(@Param('id') id: string,@UserDec() user:User):Promise<IMyChat>{
     console.log("/chat/my/:id ",id);
 
     const chat = await this.chatService.get(id);

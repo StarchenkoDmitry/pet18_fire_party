@@ -12,7 +12,7 @@ import { Server } from "socket.io";
 import { UserSocket } from "./gateway.interface";
 import { UserService } from "src/user/user.service";
 import { IUser, IUserForMe } from "src/common/user.interface";
-import { IChat } from "src/common/chat.interface";
+import { IChatToUsers } from "src/common/chat.interface";
 import { IMyChat } from "src/common/me.interface";
 
 
@@ -56,7 +56,7 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   @SubscribeMessage("getMeChats")
   async getMeChats(client: UserSocket, data: any):Promise<IMyChat[]> {
     console.log("getMeChats data, session: ",data,client.userSession)
-    const chats: IChat[] =  await this.userService.getChats(client.userId)
+    const chats: IChatToUsers[] =  await this.userService.getChats(client.userId)
     const meChats: IMyChat[] = chats.map(chat=>{
       if(chat.users.length === 0) 
         throw Error("ChatGateway getMeChats lenght of users is zero.");

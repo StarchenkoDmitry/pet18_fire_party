@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateChatDto } from './chat.dto';
 import { Chat } from '@prisma/client';
-import { IChatInfo, IMessage } from 'src/common/chat.interface';
+import { IChatToUsers, IMessage } from 'src/common/chat.interface';
 
 @Injectable()
 export class ChatService {  
@@ -104,7 +104,7 @@ export class ChatService {
     return this.prisma.chat.findMany();
   }
 
-  async getMyChats(userid:string):Promise<IChatInfo[]>{
+  async getMyChats(userid:string):Promise<IChatToUsers[]>{
     const myChats: Chat[] = await this.prisma.chat.findMany({
       where:{
         users:{
@@ -115,7 +115,7 @@ export class ChatService {
       }
     });
 
-    const list_chatInfo : IChatInfo[] = await Promise.all(myChats.map(async (chat)=>{
+    const list_chatInfo : IChatToUsers[] = await Promise.all(myChats.map(async (chat)=>{
       const users = await this.prisma.user.findMany({
         where:{
           chats:{
