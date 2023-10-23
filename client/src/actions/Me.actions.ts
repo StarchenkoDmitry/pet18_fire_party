@@ -1,7 +1,8 @@
 import api from "@/api/api";
-import { IMe, IMyChat } from "@/common/me.interface";
+import { IMyChat } from "@/common/me.interface";
+import { IUserForMe } from "@/common/user.interface";
 
-export async function GetMe():Promise<IMe|undefined> {
+export async function GetMe():Promise<IUserForMe|undefined> {
     try {
         const res = await api.get("user/me");
         if(res.status === 200){

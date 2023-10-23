@@ -4,7 +4,7 @@ import { IUserForMe } from "@/common/user.interface";
 import { IMyChat } from "@/common/me.interface";
 
 
-export interface IMe{
+export interface IMeStore{
     initialized:boolean
     connected:boolean,
     socket: Socket | null
@@ -18,7 +18,7 @@ export interface IMe{
     disconnect:()=>void
 }
 
-export const useMe = create<IMe>((set, get) =>({
+export const useMe = create<IMeStore>((set, get) =>({
     initialized: false,
     connected:false,
     socket: null,

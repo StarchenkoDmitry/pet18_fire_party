@@ -1,20 +1,21 @@
 import styles from "./Profile.module.scss";
+
 import { useEffect, useState } from "react";
 
-import { IMe } from "@/common/me.interface";
-import { GetMe } from "@/actions/Me.actions";
 import Avatar from "./ui/Avatar";
 import AvatarEditorModal from "./avatarEditor/AvatarEditorModal";
+
 import { ConvertBlobToStringBase64, ConvertDataURLToBlob } from "@/utils/Convert";
 import { GetMyAvatar, SetMyAvatar } from "@/actions/Image.actions";
 
+import { IUserForMe } from "@/common/user.interface";
+import { GetMe } from "@/actions/Me.actions";
 
 export default function Profile() {
     // console.log("Rendering Profile")
 
     const [showAvatarEditor,setShowAvatarEditor] = useState(false);
-
-    const [me,setMe] = useState<IMe>();
+    const [me,setMe] = useState<IUserForMe>();
 
     useEffect(()=>{
         GetMe().then(res=>setMe(res));
@@ -38,7 +39,6 @@ export default function Profile() {
 
         return false;
     }
-
 
     if(me){
         return(

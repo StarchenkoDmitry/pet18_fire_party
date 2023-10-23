@@ -3,14 +3,14 @@ import styles from "./Me.module.scss";
 import { useEffect, useState } from "react";
 
 import { GetMe } from "@/actions/Me.actions";
-import { IMe } from "@/common/me.interface";
 
 import ProfileModal from "../profile/modals/ProfileModal";
+import { IUserForMe } from "@/common/user.interface";
 
 export default function Me() {
     const [showProfile,setShowProfile] = useState(false);
 
-    const [me,setMe] = useState<IMe>();
+    const [me,setMe] = useState<IUserForMe>();
 
     useEffect(()=>{
         GetMe().then(res=>setMe(res));

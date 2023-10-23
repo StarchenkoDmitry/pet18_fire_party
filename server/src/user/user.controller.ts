@@ -5,10 +5,10 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { ImageService } from 'src/image/image.service';
 import { UserDec } from 'src/auth/auth.decorator';
 import { User } from '@prisma/client';
-import { IMe } from 'src/common/me.interface';
 
 import { Response } from "express"
 import { ExpressFIle } from 'src/image/image.interface';
+import { IUserForMe } from 'src/common/user.interface';
 
 @Controller('user')
 export class UserController {
@@ -26,13 +26,15 @@ export class UserController {
 
   @Get('me')
   @UseGuards(AuthGuard)
-  getMe(@UserDec() user:User) {
+  getMe(@UserDec() user:User):IUserForMe {
     // console.log("user/me");
-    const me: IMe = {
+    const me: IUserForMe = {
       id:user.id,
       name:user.name,
       surname:user.surname,
-      imageID:user.imageID
+      imageID:user.imageID,
+      email:user.email,
+      login:user.login
     };
     return me;
   }
