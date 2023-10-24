@@ -12,7 +12,7 @@ import { IMyChat } from "@/common/me.interface";
 
 
 export default function Chat({id}:{id:string}) {
-    console.log(`Render Chat(${id}) `);
+    // console.log(`Render Chat(${id}) `);
 
     const [info,setInfo] = useState<IMyChat>();    
     const [messages,setMessages] = useState<IMessage[]>();

@@ -5,6 +5,6 @@ import Chat from "../сomponents/chat/Chat";
 
 export default function ChatPanel() {    
     let { id } = useParams();
-    console.log(`Render ContentPanel(${id}) `);
+    // console.log(`Render ChatPanel(${id}) `);
     return( <Chat key={id} id={id || ""} /> );
 }

@@ -5,51 +5,49 @@ import { IMyChat } from "@/common/me.interface";
 
 
 export interface IMeStore{
-    initialized:boolean
-    connected:boolean,
+    connected:boolean
     socket: Socket | null
 
-    user?:IUserForMe
+    me?:IUserForMe
     chats?:IMyChat[]
+    selectedChatId: string
 
-    init:()=>void
 
     connect:()=>void
     disconnect:()=>void
+
+    selectChat:(chatId:string)=>void
 }
 
 export const useMe = create<IMeStore>((set, get) =>({
-    initialized: false,
     connected:false,
     socket: null,
+    selectedChatId:'',
 
-    init: () => {
-
-    },
     connect:async ()=>{
         const socket :Socket= io("http://127.0.0.1:3020",{
             autoConnect:false,
             withCredentials:true,
             timeout:2000,
-            reconnection:false
+            reconnection:true
         })
 
         socket.on("connect", () => {
             console.log("connect:", socket.id)
 
-            set(state=>({
+            set({
                 connected:true,
                 socket:socket
-            }))
+            })
 
             socket.timeout(5000).emit('getMe',(error:any,data?:IUserForMe) => {
                 console.log('getMe: ',data)
-                set(()=>({user:data}))
+                set({me:data})
             })
 
             socket.timeout(5000).emit('getMyChats',(error:any,data?:IMyChat[]) => {
                 console.log('getMyChats: ',data)
-                set(()=>({chats:data}))
+                set({chats:data})
             })
 
         });
@@ -59,21 +57,26 @@ export const useMe = create<IMeStore>((set, get) =>({
         });
 
         socket.on('error',(error)=>{
-            console.log('socket error');
+            console.log('socket error: ',error)
         })
 
         socket.on("disconnect", (reason) => {
-            console.log('socket disconnect reason: ',reason);
+            console.log('socket disconnect reason: ',reason)
+            set({connected:false})
         });
         
         console.log("Socket connectiong...")
-        socket.connect();
+        socket.connect()
     },
 
     disconnect:async ()=>{
-        const {socket} = get();
+        const {socket} = get()
         if(socket){
            socket.disconnect() 
         }
+    },
+
+    selectChat: (chatId)=>{
+        set({selectedChatId:chatId})
     },
 }))

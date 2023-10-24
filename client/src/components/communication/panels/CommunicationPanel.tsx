@@ -1,41 +1,32 @@
 import styles from "./CommunicationPanel.module.scss";
 
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-import { GetMyChats } from "@/actions/Me.actions";
-
+import Me from "../сomponents/me/Me";
 import AddChatModal from "../modals/AddChatModal";
 import ChatView from "../ui/ChatView";
-import Me from "../сomponents/me/Me";
-import { IMyChat } from "@/common/me.interface";
 
+import { useMe } from "@/store/Me";
 
 export default function CommunicationPanel() {
-    const params = useParams();
-    // console.log("CommunicationsPanel params: ",params)
+    console.log("Render CommunicationsPanel")
+    const navigate = useNavigate()
     
-    const navigate = useNavigate();
-    const [isActiveModal,setActiveModal] = useState(false);
+    const chats = useMe((state)=>state.chats)
+    const selectedChatId = useMe((state)=>state.selectedChatId)
 
-    const [meChats,setMeChats] = useState<IMyChat[]>();
-
-    useEffect(()=>{
-        GetMyChats().then((res)=>{
-            console.log('CommunicationPanel GetMyChats: ',res)
-            if(res)setMeChats(res)
-        });
-    },[]);
+    const [isActiveModal,setActiveModal] = useState(false)
     
-    const selectChat = (chatId:string)=>{
-        navigate(`/chat/${chatId}`);
+    const navigateChat = (chatId:string)=>{
+        navigate(`/chat/${chatId}`)
     }
 
-    const closeModal = ()=>{ setActiveModal(false); }
-    const openModal = ()=>{ setActiveModal(true); }
+    const closeModal = ()=>{ setActiveModal(false) }
+    const openModal = ()=>{ setActiveModal(true) }
 
-    const rend_chats = meChats?.map(e=><ChatView key={e.id} chat={e} selectChat={selectChat} 
-        selected={params.id === e.id}/>)
+    const rend_chats = chats?.map(e=><ChatView key={e.id} chat={e} selectChat={navigateChat} 
+        selected={e.id === selectedChatId}/>)
     
     return (
         <div className={styles.communication_panel}>
@@ -49,5 +40,5 @@ export default function CommunicationPanel() {
             <div className={styles.btn_add_chat} onClick={openModal}>❤</div>
             { isActiveModal && <AddChatModal doClose={closeModal}/> }
         </div>
-    );
+    )
 }

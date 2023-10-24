@@ -55,6 +55,14 @@ export class Gateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDis
   async getMeChats(client: UserSocket, data: any):Promise<IMyChat[]> {
     console.log("getMyChats data, session: ",data,client.userSession)
     
-    return this.userService.getMyChats(client.userId);
-  } 
+    return this.userService.getMyChats(client.userId)
+  }
+
+  @SubscribeMessage("subscribeChat")
+  async subscribeChat(client: UserSocket, data: any){
+    console.log("subscribeChat data:",data)
+    
+
+  }
+
 }
