@@ -1,9 +1,9 @@
-import { IGetChatInfo } from "@/common/chat.interface";
+import { IMyChat } from "@/common/me.interface";
 import styles from "./ChatHeader.module.scss";
 
 
 export interface ChatHeaderProps{
-    info?:IGetChatInfo;
+    info?:IMyChat;
 }
 
 export default function ChatHeader({info}:ChatHeaderProps) {
@@ -14,7 +14,7 @@ export default function ChatHeader({info}:ChatHeaderProps) {
 
         return(
             <div className={styles.header}>
-                <img className={styles.userAvatar} src={imageURL} />
+                <img className={styles.userAvatar} src={imageURL} alt="avatar" />
                 <span className={styles.name}>Name: {info.user.name}</span>
                 <span>ChatID: {info.id}</span>
             </div>
