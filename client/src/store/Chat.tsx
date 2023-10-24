@@ -1,4 +1,4 @@
-import { GetAllMessage, GetChatInfo } from "@/actions/Chat.actions";
+import { DeleteMessage, GetAllMessage, GetChatInfo, SendMessage } from "@/actions/Chat.actions";
 import { IMessage } from "@/common/chat.interface";
 import { IMyChat } from "@/common/me.interface";
 import { create } from "zustand";
@@ -19,7 +19,7 @@ export interface IChatStore{
 export const useChat = create<IChatStore>((set, get) =>({
     id:"",
 
-    init:(chatId:string)=>{
+    init:(chatId)=>{
         console.log("IChatStore init chatId: ",chatId)
         set({id:chatId})
 
@@ -47,17 +47,21 @@ export const useChat = create<IChatStore>((set, get) =>({
         })
     },
     addMessage(text) {
-        // SendMessage(id,text).then((res)=>{
-        //     if(res){
-        //         GetAllMessage(id).then(res=>{setMessages(res);});
-        //     }
-        // });
+        SendMessage(get().id, text).then((res)=>{
+            if(res){
+                GetAllMessage(get().id).then(res=>{
+                    set({messages:res})
+                })
+            }
+        });
     },
     removeMessage(messageId) {
-        // DeleteMessage(messageId).then(res=>{
-        //     if(res){
-        //         GetAllMessage(id).then(res=>{setMessages(res);});
-        //     }
-        // });
+        DeleteMessage(messageId).then(res=>{
+            if(res){
+                GetAllMessage(get().id).then(res=>{
+                    set({messages:res})
+                })
+            }
+        });
     },
 }))
