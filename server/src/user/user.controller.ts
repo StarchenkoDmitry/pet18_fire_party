@@ -74,7 +74,7 @@ export class UserController {
   @Get("avatarBlob")
   @UseGuards(AuthGuard)
   async getMyAvatar(@UserDec() user:User, @Res() res:Response) {
-    console.log("/user/avatarBlob");
+    // console.log("/user/avatarBlob");
     if(!user.imageID){
       res.status(204).send(undefined);//.json({error:"I have not a avatar"});
       return;
@@ -92,7 +92,7 @@ export class UserController {
   @UseGuards(AuthGuard)
   @UseInterceptors(FileInterceptor('file'))
   async setMyAvatar(@UploadedFile() file: Express.Multer.File, @UserDec() user:User){
-    console.log("[POST] user/avatarBlob file:",file);
+    // console.log("[POST] user/avatarBlob file:",file);
 
     const newImage : ExpressFIle = {
       originalname: file.originalname,

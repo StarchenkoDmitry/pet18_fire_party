@@ -30,7 +30,7 @@ export class WebsocketAdapter extends IoAdapter {
                     socket.userSession = session
 
                     const user = await this.userService.findOneBySession(session)
-                    console.log("WebsocketAdapter user: ",user)
+                    // console.log("WebsocketAdapter user: ",user)
                     if(user){
                         socket.user = user
                         socket.userId = user.id

@@ -61,8 +61,11 @@ export class Gateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDis
   @SubscribeMessage("subscribeChat")
   async subscribeChat(client: UserSocket, data: any){
     console.log("subscribeChat data:",data)
-    
-
+  }
+  
+  @SubscribeMessage("message")
+  async subscribeChat2(client: UserSocket, data: any){
+    console.log("subscribeChat data:",data)
   }
 
 }

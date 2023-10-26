@@ -13,11 +13,6 @@ export default function Chat({id}:{id:string}) {
 
     const { info, messages, init, clear, addMessage, removeMessage } = useChat()
 
-    useEffect(()=>{
-        init(id)
-        return ()=>clear()
-    },[id]);    
-
     return (
         <div className={styles.chat}>
             <ChatHeader info={info}/>

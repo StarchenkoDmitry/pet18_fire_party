@@ -45,7 +45,7 @@ export class ChatController {
   @Get("my")
   @UseGuards(AuthGuard)
   async getMyChats(@UserDec() user:User):Promise<IMyChat[]>{
-    console.log("/chat/my");
+    // console.log("/chat/my");
     return await this.userService.getMyChats(user.id);
   }
 
@@ -53,7 +53,7 @@ export class ChatController {
   @Get("my/:id")
   @UseGuards(AuthGuard)
   async getChatInfo(@Param('id') id: string,@UserDec() user:User):Promise<IMyChat>{
-    console.log("/chat/my/:id ",id);
+    // console.log("/chat/my/:id ",id);
 
     const chat = await this.chatService.get(id);
     if(!chat) throw new BadRequestException(`Chat(id: ${id}) is not exist.`)

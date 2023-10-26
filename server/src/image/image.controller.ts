@@ -15,7 +15,7 @@ export class ImageController {
 
   @Get('buffer/:id')
   async test(@Param('id') id:string, @Res() res:Response) {
-    console.log("/image/buffer/:id ", id);
+    // console.log("/image/buffer/:id ", id);
     const imgres =  await this.imageService.get(id);
     if(!imgres)return
     const buff = Buffer.from(imgres.buffer);
