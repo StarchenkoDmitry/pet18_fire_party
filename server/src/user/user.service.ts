@@ -12,7 +12,7 @@ import { IMyChat } from 'src/common/me.interface';
 export class UserService {
   constructor(private prisma: PrismaService) {
     console.log("constructor UserService")
-  } 
+  }
 
   async get(id:string){
     return await this.prisma.user.findFirst({

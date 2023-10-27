@@ -15,15 +15,10 @@ export interface IChatStore{
     init:(chatId:string,socket:Socket|null)=>void
     clear:()=>void
     
-
     addMessage:(text:string)=>void
     removeMessage:(messageId:string)=>void
 }
 
-
-export function sfdf(){
-
-}
 
 export const useChat = create<IChatStore>((set, get) =>({
     id:"",
@@ -40,18 +35,21 @@ export const useChat = create<IChatStore>((set, get) =>({
 
         GetChatInfo(get().id).then(res=>{
             set({ info:res })
-        }).catch(()=>{
-
-        })
+        }).catch(()=>{ })
         
         GetAllMessage(get().id).then(res=>{
             set({ messages:res })
-        }).catch(()=>{
-
-        })
+        }).catch(()=>{ })
         if(!socket) return
-        socket.emit("subscribeChat","datachated"+ Math.random())
-        socket.send("TESTCLIENT ghrthrt-"+Math.random())
+
+        // socket.emit("subscribeChat","datachated"+ Math.random())
+        // socket.send("TESTCLIENT ghrthrt-"+Math.random())
+
+        socket.emit("subChat",{
+            chatId:get().id
+        },(data:any)=>{
+            console.log("EMIT: ",data)
+        })
     },
     clear() {
         console.log("IChatStore clear")

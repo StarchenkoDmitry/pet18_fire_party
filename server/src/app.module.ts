@@ -7,7 +7,14 @@ import { ImageModule } from './image/image.module';
 import { GatewayModule } from './gateway/gateway.module';
 
 @Module({
-  imports: [AuthModule,UserModule, ChatModule, PrismaModule, ImageModule,GatewayModule],
+  imports: [
+    PrismaModule,
+    UserModule,
+    ChatModule,
+    ImageModule,
+    AuthModule,
+    GatewayModule
+  ],
   controllers: [],
   providers: [],  
   exports:[]

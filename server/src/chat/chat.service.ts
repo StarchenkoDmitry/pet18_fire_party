@@ -1,10 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { IMessage } from 'src/common/chat.interface';
+import { IMyChat } from 'src/common/me.interface';
 
 @Injectable()
 export class ChatService {  
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) {
+    console.log("constructor ChatService")
+  }
 
   async create(id1:string,id2:string) {    
     const ress = await this.prisma.chat.create({
@@ -17,13 +20,36 @@ export class ChatService {
     return ress;
   }
 
-  async get(id:string){
+  async get(chatId:string){
     return await this.prisma.chat.findFirst({
-      where:{id:id},
+      where:{id:chatId},
       include:{
         users:true
       }
     })
+  }
+  
+  async getMy(chatId:string,userId:string):Promise<IMyChat>{
+    const data = await this.prisma.chat.findFirst({
+      where:{id:chatId},
+      include:{
+        users:{
+          where:{
+            id:{
+              not:userId
+            }
+          },
+          select:{
+            id:true,
+            name:true,
+            imageID:true,
+          }
+        },
+      }
+    })
+    const {users, ...othData } = data
+    if(users.length !== 1) throw ""
+    return {...othData, user: users[0]}
   }
 
   async createMessage(userid:string, chatid:string,message:string) {

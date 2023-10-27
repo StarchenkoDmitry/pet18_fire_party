@@ -1,6 +1,5 @@
 import { IoAdapter } from '@nestjs/platform-socket.io'
-import { INestApplicationContext } from '@nestjs/common'
-
+import { INestApplicationContext, forwardRef ,Inject} from '@nestjs/common'
 import { UserService } from 'src/user/user.service'
 
 import { UserSocket } from './gateway.interface'
@@ -10,7 +9,9 @@ import * as cookie from 'cookie'
 
 export class WebsocketAdapter extends IoAdapter {
 
+    // @Inject(forwardRef(() => UserService))
     private readonly userService: UserService
+
     constructor(private app: INestApplicationContext) {
       super(app)
       this.userService = app.get(UserService)

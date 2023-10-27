@@ -10,7 +10,7 @@ import ChatView from "../ui/ChatView";
 import { useMe } from "@/store/Me";
 
 export default function CommunicationPanel() {
-    console.log("Render CommunicationsPanel")
+    // console.log("Render CommunicationsPanel")
     const navigate = useNavigate()
     
     const chats = useMe((state)=>state.chats)

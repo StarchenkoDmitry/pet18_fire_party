@@ -15,6 +15,8 @@ import { IUser, IUserForMe } from "src/common/user.interface";
 import { IMyChat } from "src/common/me.interface";
 
 import { UserService } from "src/user/user.service";
+import { ChatService } from "src/chat/chat.service";
+import { ReqSubChat, ResSubChat } from "src/common/gateway.interfaces";
 
 @WebSocketGateway(3020, { 
   cors:{
@@ -25,10 +27,15 @@ import { UserService } from "src/user/user.service";
   pingTimeout: 1500,
 })
 export class Gateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect{
-  constructor(private readonly userService: UserService,) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly chatService: ChatService,
+    ) {}
 
   private readonly logger = new Logger(Gateway.name)
   @WebSocketServer() server: Server
+  
+  chats: Map<string,any> = new Map();
 
   afterInit() {
     this.logger.log("Initialized")
@@ -58,14 +65,21 @@ export class Gateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDis
     return this.userService.getMyChats(client.userId)
   }
 
-  @SubscribeMessage("subscribeChat")
-  async subscribeChat(client: UserSocket, data: any){
+  @SubscribeMessage("subChat")
+  async subscribeChat(client: UserSocket, data: ReqSubChat):Promise<ResSubChat>{
     console.log("subscribeChat data:",data)
+
+    const myChat = await this.chatService.getMy(data.chatId,client.userId);
+    const chat =  { 
+      info: myChat,
+      messages: this.chats[data.chatId]
+    }
+    console.log("CHAT: ",chat)
+    return chat;
   }
   
   @SubscribeMessage("message")
-  async subscribeChat2(client: UserSocket, data: any){
+  async subscribeChat2(client: UserSocket, data:any){
     console.log("subscribeChat data:",data)
   }
-
 }

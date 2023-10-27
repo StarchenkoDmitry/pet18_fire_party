@@ -5,7 +5,7 @@ import { useChat } from "@/store/Chat";
 
 
 export default function ChatPanel() {
-    console.log('Render ChatPanel')
+    // console.log('Render ChatPanel')
 
     const chatId = useMe(state=>state.selectedChatId)
     const socket = useMe(state=>state.socket)
