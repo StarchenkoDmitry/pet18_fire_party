@@ -4,9 +4,9 @@ import { IMessage } from 'src/common/chat.interface';
 import { IMyChat } from 'src/common/me.interface';
 
 @Injectable()
-export class ChatService {  
+export class ChatRepository {  
   constructor(private prisma: PrismaService) {
-    console.log("constructor ChatService")
+    console.log("constructor ChatRepository")
   }
 
   async create(id1:string,id2:string) {    

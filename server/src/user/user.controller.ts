@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Param, UseGuards, UseInterceptors, UploadedFile, Res } from '@nestjs/common';
-import { UserService } from './user.service';
+import { UserRepository } from './user.repository';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ImageService } from 'src/image/image.service';
+import { ImageRepository } from 'src/image/image.repository';
 import { UserDec } from 'src/auth/auth.decorator';
 import { User } from '@prisma/client';
 
@@ -13,15 +13,15 @@ import { IUserForMe } from 'src/common/user.interface';
 @Controller('user')
 export class UserController {
   constructor(
-    private readonly userService: UserService,
-    private readonly imageService: ImageService
+    private readonly userRepository: UserRepository,
+    private readonly imageRepository: ImageRepository
   ) {}
 
   @Get('all')
   @UseGuards(AuthGuard)
   getAll() {
     // console.log("user/all");
-    return this.userService.findAll();
+    return this.userRepository.findAll();
   }
 
   @Get('me')
@@ -43,7 +43,7 @@ export class UserController {
   @UseGuards(AuthGuard)
   async findAllByName(@Param("text") text:string){
     // console.log(`user/findAllByName/:text text: ${text}`);
-    return await this.userService.findAllByName(text);
+    return await this.userRepository.findAllByName(text);
   }
   
   @Post('img')
@@ -52,9 +52,9 @@ export class UserController {
   async uploadFile(@UploadedFile() file: Express.Multer.File,@UserDec() user:User) {
     // console.log("user/img");
     const {originalname, mimetype, buffer, size } = file;
-    const res_img = await this.imageService.create({originalname, mimetype, buffer, size});
+    const res_img = await this.imageRepository.create({originalname, mimetype, buffer, size});
     if(res_img){
-      const res_changed = await this.userService.changeImage(user.id,res_img.id);
+      const res_changed = await this.userRepository.changeImage(user.id,res_img.id);
       return res_changed ? res_img.id : undefined;
     }
     else return;
@@ -65,7 +65,7 @@ export class UserController {
   @Get('buffer/:id')
   async test(@Param('id') id:string, @Res() res:Response) {
     console.log("/image/buffer/:id ", id);
-    const imgres =  await this.imageService.get(id);
+    const imgres =  await this.imageRepository.get(id);
     if(!imgres)return
     const buff = Buffer.from(imgres.buffer);
     return res.send(buff);
@@ -79,7 +79,7 @@ export class UserController {
       res.status(204).send(undefined);//.json({error:"I have not a avatar"});
       return;
     }
-    const myImage =  await this.imageService.get(user.imageID);
+    const myImage =  await this.imageRepository.get(user.imageID);
     if(!myImage){
       res.status(204).send(undefined);
       return;
@@ -102,12 +102,12 @@ export class UserController {
     };
 
     if(user.imageID){
-      const resUpdate = await this.imageService.update(user.imageID,newImage);
+      const resUpdate = await this.imageRepository.update(user.imageID,newImage);
       console.log("[POST] user/avatarBlob resUpdate:",resUpdate);
       return user.imageID;
     }else{
-      const resImage = await this.imageService.create(newImage);
-      const resChanged = await this.userService.changeImage(user.id,resImage.id);    
+      const resImage = await this.imageRepository.create(newImage);
+      const resChanged = await this.userRepository.changeImage(user.id,resImage.id);    
       return resChanged ? resImage.id : undefined;
     }
   }

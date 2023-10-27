@@ -1,6 +1,6 @@
 import { CanActivate, ExecutionContext, Inject, Injectable, forwardRef } from "@nestjs/common"
 import {Request} from "express"
-import { UserService } from "src/user/user.service"
+import { UserRepository } from "src/user/user.repository"
 
 
 
@@ -11,8 +11,8 @@ export const REQ_KEY_USER = Symbol("User");
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
-    @Inject(forwardRef(() => UserService))
-    private readonly userService: UserService
+    @Inject(forwardRef(() => UserRepository))
+    private readonly userService: UserRepository
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean>{

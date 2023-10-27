@@ -1,6 +1,6 @@
 import { IoAdapter } from '@nestjs/platform-socket.io'
 import { INestApplicationContext, forwardRef ,Inject} from '@nestjs/common'
-import { UserService } from 'src/user/user.service'
+import { UserRepository } from 'src/user/user.repository'
 
 import { UserSocket } from './gateway.interface'
 
@@ -8,13 +8,11 @@ import * as cookieParser from 'cookie-parser'
 import * as cookie from 'cookie'
 
 export class WebsocketAdapter extends IoAdapter {
-
-    // @Inject(forwardRef(() => UserService))
-    private readonly userService: UserService
+    private readonly userRepository: UserRepository
 
     constructor(private app: INestApplicationContext) {
       super(app)
-      this.userService = app.get(UserService)
+      this.userRepository = app.get(UserRepository)
     }
 
     createIOServer(port: number, options?: any) {
@@ -30,7 +28,7 @@ export class WebsocketAdapter extends IoAdapter {
                 if(session){
                     socket.userSession = session
 
-                    const user = await this.userService.findOneBySession(session)
+                    const user = await this.userRepository.findOneBySession(session)
                     // console.log("WebsocketAdapter user: ",user)
                     if(user){
                         socket.user = user

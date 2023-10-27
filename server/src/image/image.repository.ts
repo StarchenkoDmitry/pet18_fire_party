@@ -6,9 +6,9 @@ import { Image } from '@prisma/client';
 
 
 @Injectable()
-export class ImageService {
+export class ImageRepository {
   constructor(private prisma: PrismaService) {
-    console.log("constructor ImageService")
+    console.log("constructor ImageRepository")
   }
 
   async create(file:ExpressFIle):Promise<Image>{

@@ -1,6 +1,6 @@
 import { Body, Controller, Get, HttpException, Post, Res, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { LoginDto, SignUpDto } from './dto/auth.dto';
-import { UserService } from 'src/user/user.service';
+import { UserRepository } from 'src/user/user.repository';
 import { hasher } from './utils/Hasher';
 import { Request, Response } from 'express';
 import { LoginStatus } from 'src/user/user.interface';
@@ -14,7 +14,7 @@ import { User } from '@prisma/client';
 @Controller('auth')
 @UsePipes(new ValidationPipe({whitelist: true}))
 export class AuthController {
-    constructor(private readonly userService: UserService) {}
+    constructor(private readonly userService: UserRepository) {}
 
     @Post('register')
     async register(@Body() dto:SignUpDto, @Res({ passthrough: true }) res:Response){

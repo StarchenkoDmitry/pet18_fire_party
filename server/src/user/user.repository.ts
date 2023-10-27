@@ -9,9 +9,9 @@ import { GenerateSession } from 'src/auth/utils/Session';
 import { IMyChat } from 'src/common/me.interface';
 
 @Injectable()
-export class UserService {
+export class UserRepository {
   constructor(private prisma: PrismaService) {
-    console.log("constructor UserService")
+    console.log("constructor UserRepository")
   }
 
   async get(id:string){
