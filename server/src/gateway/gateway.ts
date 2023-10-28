@@ -74,7 +74,7 @@ export class Gateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDis
       info: myChat,
       messages: this.chats[data.chatId]
     }
-    console.log("CHAT: ",chat)
+    // console.log("CHAT: ",chat)
     return chat;
   }
   

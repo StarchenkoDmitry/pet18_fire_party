@@ -27,9 +27,14 @@ export async function SendMessage(chatid:string,message:string):Promise<boolean>
     }
 }
 
-export async function DeleteMessage(id:string):Promise<boolean>{
+export async function DeleteMessage(chatId:string, messageId:string):Promise<boolean>{
     try {
-        const res = await api.delete(`chat/message/${id}`);
+        const res = await api.delete(`chat/message`,{
+            data:{
+                messageId:messageId,
+                chatId:chatId,
+            }
+        });
         // console.log("/chat/message/:id res: ",res.data)
         if(res.status ===200){            
             return res.data;

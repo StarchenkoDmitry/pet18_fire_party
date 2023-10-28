@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { IMessage } from 'src/common/chat.interface';
 import { IMyChat } from 'src/common/me.interface';
+import { Chat } from '@prisma/client';
+import { constants } from 'buffer';
 
 @Injectable()
 export class ChatRepository {  
@@ -9,18 +11,46 @@ export class ChatRepository {
     console.log("constructor ChatRepository")
   }
 
-  async create(id1:string,id2:string) {    
-    const ress = await this.prisma.chat.create({
+  async create(userId:string,friendId:string) {
+    if(userId === friendId){
+      throw "You can not to create a chat with yourself"
+    }
+
+    const chat = await this.prisma.chat.findFirst({
+      where:{
+        AND:[{
+          users:{
+            some:{
+              id:userId
+            }
+          }
+        },{
+          users:{
+            some:{
+              id:friendId
+            }
+          }
+        }]
+      }
+    })
+    
+    if(chat){
+      console.log(`ChatRepository create(${userId}, ${friendId}) error chat is exist.`)
+      console.log("Chat: ",chat)
+      return
+    }
+
+    const newChat = await this.prisma.chat.create({
       data:{
         users:{
-          connect:[{id:id1},{id:id2}]
+          connect:[{id:userId},{id:friendId}]
         }
       },
-    });
-    return ress;
+    })
+    return newChat
   }
 
-  async get(chatId:string){
+  async getIncludeUsers(chatId:string){
     return await this.prisma.chat.findFirst({
       where:{id:chatId},
       include:{
@@ -52,7 +82,7 @@ export class ChatRepository {
     return {...othData, user: users[0]}
   }
 
-  async createMessage(userid:string, chatid:string,message:string) {
+  async createMessage(chatid:string, userid:string, message:string):Promise<boolean> {
     const chat = await this.prisma.chat.findFirst({
       where:{
         id:chatid,
@@ -86,7 +116,7 @@ export class ChatRepository {
     return false;
   }
 
-  async getAllMessages(userid:string ,chatid:string):Promise<IMessage[] | undefined>{
+  async getAllMessages(chatid:string, userid:string):Promise<IMessage[]>{
     const chat = await this.prisma.chat.findFirst({
       where:{
         id:chatid,
@@ -124,41 +154,107 @@ export class ChatRepository {
     return;
   }
 
-  getAll() {
+  async getAll():Promise<Chat[]> {
     return this.prisma.chat.findMany();
   }
 
-  async delete(id:string):Promise<boolean>{
-    const curMes = await this.prisma.message.findFirst({where:{id:id}});
-    if(!curMes) return false;
-    // if(!curMes) throw new Error(`Message(id:${id}) is not exist!`)
+  // async getChatFromMessage(messageId:string,userId:string)
 
-    const prevMesID = curMes.prevMessageID;
+  async removeMessage(chatId:string,messageId:string,userId:string):Promise<boolean>{
+    // const message = await this.prisma.message.findFirst({
+    //   where:{
+    //     id:messageId,
+    //     onChat:{
+    //       some:{
+    //         id:chatId,
+    //         users:{
+    //           some:{
+    //             id:userId
+    //           }
+    //         }
+    //       }
+    //     }
+    //   },
+    //   include:{
+    //     nextMessage:true
+    //   }
+    // })
+    
 
-    const nextMess = await this.prisma.message.findFirst({where:{prevMessageID:id}});
-    if(!nextMess){
-      //curMes Это последний message
-      const curChat = await this.prisma.chat.findFirst({where:{lastMessageID:id}});
-      if(!curChat) throw new Error("Chat не существует Это ошибка!!!")
-      
-      this.prisma.chat.update({data:{lastMessageID:prevMesID},where:{id:curChat.id}});
+    //TODO: доделать проверку, что это сообщение есть в том чате где есть наш пользователь
+    const message = await this.prisma.message.findFirst({
+      where:{
+        id:messageId,
+      },
+      include:{
+        nextMessage:true
+      }
+    })
+
+    if(!message){
+      console.error(`ChatRepository removeMessage(${chatId}, ${messageId}, ${userId}) message is not exist`)
+      return false;
+    }
+
+    if(message.nextMessage.length > 1){
+      console.error(`ChatRepository removeMessage messageId(${message.id}): ${message} (lenght > 1) nextMessage[${message.nextMessage}]`)
+      return false;
+    }
+
+
+    const nextMessageId = message.nextMessage.length === 1 ? message.nextMessage[0].id : null
+    const prevMessageId = message.prevMessageID
+    console.log("nextMessageId, prevMessageID: ",nextMessageId,prevMessageId)
+    if(nextMessageId){
+      if(prevMessageId){
+        const resNextMessage = await this.prisma.message.update({
+          data:{
+            prevMessageID: prevMessageId
+          },
+          where:{
+            id: nextMessageId
+          }
+        })
+      }
+      else{
+        const resMess = await this.prisma.message.update({
+          data:{
+            prevMessageID: null
+          },
+          where:{
+            id: nextMessageId
+          }
+        })
+      }
     }
     else{
-      await this.prisma.message.update({data:{prevMessageID:prevMesID},where:{id:nextMess.id}});
+      if(prevMessageId){
+        const resChadft = await this.prisma.chat.update({
+          data:{
+            lastMessageID: prevMessageId
+          },
+          where:{
+            id: chatId
+          }
+        })
+      }
+      else{
+        const resChadft = await this.prisma.chat.update({
+          data:{
+            lastMessageID: null
+          },
+          where:{
+            id: chatId
+          }
+        })
+      }
     }
 
-    const delres = await this.prisma.message.delete({where:{id:id}});    
-    return delres !== null;
+    const deletedMessage = await this.prisma.message.delete({
+      where:{
+        id:messageId
+      }
+    })
+    return true;
   }
 }
-
-
-//TODO: потом проверить Добавление нового учасника в чат
-// const dfd = await this.prisma.chat.update({
-//   where:{id:5},
-//   data:{
-//     users:{
-//       connect:{pubid:""}
-//     }
-//   }
-// })

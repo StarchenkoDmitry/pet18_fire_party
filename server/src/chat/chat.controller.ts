@@ -27,7 +27,7 @@ export class ChatController {
   async createMessage(@Body() {id, message}: CreateMessageDto,@UserDec() user:User) {
     // console.log("/chat/createmessage dto: ",{id, message});
     
-    return await this.chatRepository.createMessage(user.id,id,message);
+    return await this.chatRepository.createMessage(id, user.id, message);
   }
 
   @Get()
@@ -39,7 +39,7 @@ export class ChatController {
   @UseGuards(AuthGuard)
   async getAllMessages(@Param("id") id:string, @UserDec() user:User) {
     // console.log("/chat/messages id: ", id)
-    return await this.chatRepository.getAllMessages(user.id,id);
+    return await this.chatRepository.getAllMessages(id, user.id);
   }
 
   @Get("my")
@@ -55,7 +55,7 @@ export class ChatController {
   async getChatInfo(@Param('id') id: string,@UserDec() user:User):Promise<IMyChat>{
     // console.log("/chat/my/:id ",id);
 
-    const chat = await this.chatRepository.get(id);
+    const chat = await this.chatRepository.getIncludeUsers(id);
     if(!chat) throw new BadRequestException(`Chat(id: ${id}) is not exist.`)
     
     const rawUser = chat.users.find(e=>e.id!== user.id);
@@ -73,9 +73,20 @@ export class ChatController {
   }
 
   
-  @Delete('message/:id')
-  async toDelete(@Param('id') id: string) {
-    // console.log(`/chat/message/:id ${id}`)
-    return await this.chatRepository.delete(id);
+  // @Delete('message/:id')
+  // @UseGuards(AuthGuard)
+  // async toDelete(@Param('id') messageId: string,@UserDec() user:User) {
+  //   // console.log(`/chat/message/:id ${id}`)
+  //   return await this.chatRepository.removeMessage(messageId,user.id);
+  // }
+
+  @Delete('message')
+  @UseGuards(AuthGuard)
+  async toDelete(
+    @Body('messageId') messageId: string,
+    @Body('chatId') chatId: string,
+    @UserDec() user:User) {
+    console.log(`/chat/message: `,chatId,messageId,user.id)
+    return await this.chatRepository.removeMessage(chatId,messageId,user.id)
   }
 }

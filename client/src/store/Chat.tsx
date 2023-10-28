@@ -69,7 +69,7 @@ export const useChat = create<IChatStore>((set, get) =>({
         });
     },
     removeMessage(messageId) {
-        DeleteMessage(messageId).then(res=>{
+        DeleteMessage(get().id,messageId).then(res=>{
             if(res){
                 GetAllMessage(get().id).then(res=>{
                     set({messages:res})
