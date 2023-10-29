@@ -26,9 +26,8 @@ model User {
   chats Chat[]
   messages Message[]
 
-  imageID String?
   image Image? @relation(fields: [imageID],references: [id])
-  
+  imageID String?  
 }
 
 model Chat {
@@ -36,25 +35,28 @@ model Chat {
 
   users User[]
 
-  lastMessage Message? @relation("ChatOnMessage",fields: [lastMessageID],references: [id])
+  messages Message[] @relation("MessagesOfChat")
+
+  lastMessage Message? @relation("lastMessageOfChat",fields: [lastMessageID],references: [id])
   lastMessageID String?
 }
 
 
 model Message{
   id String @id @unique @default(uuid())
-
-  text String
   createAt DateTime @default(now())
 
+  text String
 
   user User @relation( fields: [userID],references: [id])
   userID String
 
+  chat Chat @relation("MessagesOfChat", fields: [chatId],references: [id])
+  chatId String
 
-  onChat Chat[] @relation("ChatOnMessage")
-
+  lastMessageOfChat Chat[] @relation("lastMessageOfChat")
   nextMessage Message[] @relation("MessageRef")
+
   prevMessage Message? @relation("MessageRef", fields: [prevMessageID],references: [id])
   prevMessageID String?
 }
