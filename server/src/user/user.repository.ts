@@ -108,7 +108,7 @@ export class UserRepository {
   // }
 
   async getMyChats(userId: string):Promise<IMyChat[]>{
-    const res = await this.prisma.user.findFirst({
+    const chats = await this.prisma.user.findFirst({
       where:{id:userId},
       select:{
         chats:{
@@ -129,7 +129,10 @@ export class UserRepository {
         }
       }
     })
-    const meChats: IMyChat[] = res.chats.map(chat=>{
+
+    if(!chats)return;
+
+    const meChats: IMyChat[] = chats.chats.map(chat=>{
       if(chat.users.length !== 1) 
         throw Error("[UserService.getMyChats] lenght of users is not one (1).");
       return {

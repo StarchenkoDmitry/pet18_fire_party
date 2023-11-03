@@ -2,8 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { IMessage } from 'src/common/chat.interface';
 import { IMyChat } from 'src/common/me.interface';
-import { Chat } from '@prisma/client';
+import { Chat, Message } from '@prisma/client';
 import { constants } from 'buffer';
+import { IChatIncludeUsers } from './chat.interface';
 
 @Injectable()
 export class ChatRepository {  
@@ -50,7 +51,7 @@ export class ChatRepository {
     return newChat
   }
 
-  async getIncludeUsers(chatId:string){
+  async getIncludeUsers(chatId:string):Promise<IChatIncludeUsers>{
     return await this.prisma.chat.findFirst({
       where:{id:chatId},
       include:{
@@ -60,6 +61,7 @@ export class ChatRepository {
   }
   
   async getMy(chatId:string,userId:string):Promise<IMyChat>{
+    // console.log("getMy chatId, userId:",chatId,userId)
     const data = await this.prisma.chat.findFirst({
       where:{id:chatId},
       include:{
@@ -82,25 +84,27 @@ export class ChatRepository {
     return {...othData, user: users[0]}
   }
 
-  async createMessage(chatid:string, userid:string, message:string):Promise<boolean> {
+  async createMessage(chatId:string, userId:string, text:string):Promise<Message> {
     const chat = await this.prisma.chat.findFirst({
       where:{
-        id:chatid,
+        id:chatId,
         AND:{
           users:{
             some:{
-              id:userid
+              id:userId
             }
           }
         }
       }
-    });
+    });    
     if(chat){
+      //TODO: сделать транзакцию.
       const newMessage = await this.prisma.message.create({
         data:{
-          text:message,
-          userID:userid,
-          prevMessageID:chat.lastMessageID
+          text:text,
+          chatId:chatId,
+          userID:userId,
+          prevMessageID:chat.lastMessageID,
         }
       });      
 
@@ -111,9 +115,9 @@ export class ChatRepository {
           lastMessageID: newMessage.id
         }
       });
-      return true;
-    }    
-    return false;
+      return newMessage;
+    }
+    return
   }
 
   async getAllMessages(chatid:string, userid:string):Promise<IMessage[]>{
@@ -145,7 +149,9 @@ export class ChatRepository {
           id:message.id,
           text:message.text,
           createAt: message.createAt,
-          prevMessageID: message.prevMessageID
+          prevMessageID: message.prevMessageID,
+          chatId: message.chatId,
+          userId: message.userID
         })
         lastMessageID = message.prevMessageID;
       }

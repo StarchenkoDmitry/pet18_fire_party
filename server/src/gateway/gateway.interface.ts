@@ -5,4 +5,7 @@ export interface UserSocket extends Socket {
   userSession?: string
   user?: User
   userId?: string
+
+  currentChatId?:string
+  subChat?:()=>void
 }

@@ -5,7 +5,7 @@ import { hasher } from './utils/Hasher';
 import { Request, Response } from 'express';
 import { LoginStatus } from 'src/user/user.interface';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
-import { AuthGuard, REQ_RES_COOKIE_SESSION } from './auth.guard';
+import { AuthGuard, COOKIE_SESSION } from './auth.guard';
 import { GenerateSession } from './utils/Session';
 import { UserDec } from './auth.decorator';
 import { User } from '@prisma/client';
@@ -29,7 +29,7 @@ export class AuthController {
         }
 
         const created = this.userService.create(createUserDto);
-        if(created){ res.cookie(REQ_RES_COOKIE_SESSION,createUserDto.session,{signed:true}); }
+        if(created){ res.cookie(COOKIE_SESSION,createUserDto.session,{signed:true}); }
 
         return created;
     }
@@ -40,7 +40,7 @@ export class AuthController {
         if(status === LoginStatus.passwordWrong || status === LoginStatus.userNotFound){
             throw new HttpException("Error incorrect login or password",400);
         }else if(session){
-            res.cookie(REQ_RES_COOKIE_SESSION,session,{signed:true});
+            res.cookie(COOKIE_SESSION,session,{signed:true});
         }
     }
 
@@ -50,7 +50,7 @@ export class AuthController {
         console.log("@logout");
         //TODO: удалить session из базы данных User
         const isDone = await this.userService.logout(user.session);
-        if(isDone) res.clearCookie(REQ_RES_COOKIE_SESSION);
+        if(isDone) res.clearCookie(COOKIE_SESSION);
         return true;
     }
 }

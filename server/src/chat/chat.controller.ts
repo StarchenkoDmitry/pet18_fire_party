@@ -1,5 +1,4 @@
 import { Controller, Get, Post, Body, Param, Delete, ValidationPipe, UsePipes, UseGuards, BadRequestException } from '@nestjs/common';
-import { ChatRepository } from './chat.repository';
 import { CreateChatDto, CreateMessageDto } from './chat.dto';
 
 import { AuthGuard } from 'src/auth/auth.guard';
@@ -7,11 +6,12 @@ import { UserRepository } from 'src/user/user.repository';
 import { UserDec } from 'src/auth/auth.decorator';
 import { User } from '@prisma/client';
 import { IMyChat } from 'src/common/me.interface';
+import { ChatService } from './chat.service';
 
 @Controller('chat')
 @UsePipes(new ValidationPipe({whitelist: true}))
 export class ChatController {
-  constructor(private readonly chatRepository: ChatRepository,
+  constructor(private readonly chatService: ChatService,
               private readonly userRepository: UserRepository) {}
 
   @Post("create")
@@ -19,7 +19,7 @@ export class ChatController {
   async create(@Body() { id }: CreateChatDto,@UserDec() user:User) {
     const myid = user.id;
     // console.log("/chat/create dto: ",{id});
-    return await this.chatRepository.create(myid,id);
+    return await this.chatService.create(myid,id);
   }
 
   @Post("createmessage")
@@ -27,19 +27,19 @@ export class ChatController {
   async createMessage(@Body() {id, message}: CreateMessageDto,@UserDec() user:User) {
     // console.log("/chat/createmessage dto: ",{id, message});
     
-    return await this.chatRepository.createMessage(id, user.id, message);
+    return await this.chatService.createMessage(id, user.id, message);
   }
 
   @Get()
   findAll() {
-    return this.chatRepository.getAll();
+    return this.chatService.getAll();
   }
 
   @Get("messages/:id")
   @UseGuards(AuthGuard)
   async getAllMessages(@Param("id") id:string, @UserDec() user:User) {
     // console.log("/chat/messages id: ", id)
-    return await this.chatRepository.getAllMessages(id, user.id);
+    return await this.chatService.getAllMessages(id, user.id);
   }
 
   @Get("my")
@@ -55,7 +55,7 @@ export class ChatController {
   async getChatInfo(@Param('id') id: string,@UserDec() user:User):Promise<IMyChat>{
     // console.log("/chat/my/:id ",id);
 
-    const chat = await this.chatRepository.getIncludeUsers(id);
+    const chat = await this.chatService.getIncludeUsers(id);
     if(!chat) throw new BadRequestException(`Chat(id: ${id}) is not exist.`)
     
     const rawUser = chat.users.find(e=>e.id!== user.id);
@@ -87,6 +87,6 @@ export class ChatController {
     @Body('chatId') chatId: string,
     @UserDec() user:User) {
     console.log(`/chat/message: `,chatId,messageId,user.id)
-    return await this.chatRepository.removeMessage(chatId,messageId,user.id)
+    return await this.chatService.removeMessage(chatId,messageId,user.id)
   }
 }

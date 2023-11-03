@@ -21,6 +21,10 @@ export class WebsocketAdapter extends IoAdapter {
         server.use(async (socket: UserSocket, next) => {
             try {
                 const cookies = socket.handshake.headers.cookie
+                if(!cookies){
+                    console.log("error cookies is null")
+                    return
+                }
 
                 const parsedCookies = cookie.parse(cookies)
                 const sessionCookie = parsedCookies.session
@@ -35,7 +39,6 @@ export class WebsocketAdapter extends IoAdapter {
                         socket.userId = user.id
                     }
                 }
-
             } catch (error) {
                 console.log("WebsocketAdapter error: ",error)
             }

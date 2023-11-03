@@ -15,71 +15,79 @@ import { IUser, IUserForMe } from "src/common/user.interface";
 import { IMyChat } from "src/common/me.interface";
 
 import { UserRepository } from "src/user/user.repository";
-import { ChatRepository } from "src/chat/chat.repository";
-import { ReqSubChat, ResSubChat } from "src/common/gateway.interfaces";
+import { ISubOnChat, IResSubOnChat } from "src/common/gateway.interfaces";
+import { ChatService } from "src/chat/chat.service";
 
-@WebSocketGateway(3020, { 
-  cors:{
-    origin:true,
-    credentials: true,
-  },
+@WebSocketGateway(3020, {
+  cors:{ origin:true, credentials: true, },
   pingInterval: 1000,
   pingTimeout: 1500,
 })
 export class Gateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect{
   constructor(
     private readonly userRepository: UserRepository,
-    private readonly chatRepository: ChatRepository,
+    private readonly chatService: ChatService,
     ) {}
 
   private readonly logger = new Logger(Gateway.name)
+
   @WebSocketServer() server: Server
-  
-  chats: Map<string,any> = new Map();
+  private readonly users = new Map<string,UserSocket>()
 
   afterInit() {
-    this.logger.log("Initialized")
+    // this.logger.log("Initialized")
   }
 
   handleConnection(client: UserSocket, ...args: any[]) {
-    const { sockets } = this.server.sockets
-    this.logger.log(`Client id: ${client.id} connected, user: ${client.userSession}`)
-    this.logger.debug(`Number of connected clients: ${sockets.size}`)
+    // const { sockets } = this.server.sockets
+    // this.logger.log(`Client id: ${client.id} connected, user: ${client.userSession}`)
+    // this.logger.debug(`Number of connected clients: ${sockets.size}`)
+    this.logger.log(`Connected id:${client.id}`)
+    this.users.set(client.id,client)
   }
   handleDisconnect(client: UserSocket) {
-    this.logger.log(`Cliend id:${client.id} disconnected`)
+    // this.logger.log(`Cliend id:${client.id} disconnected`)
+    this.logger.log(`Disconnected id:${client.id}`)
+
+    if(!this.users.delete(client.id)){
+      throw new Error('UserSocket dont exist in users')
+    }
+
+    if(client.subChat) client.subChat()
   }
-  
+
   @SubscribeMessage("getMe")
   async getMe(client: UserSocket, data: any):Promise<IUserForMe> {
-    console.log("gateway/getMe",data,client.userSession)
-    const user : IUser = await this.userRepository.findOneBySession(client.userSession)
-    const {passwordHash,session, ...me} = user;
-    return me;
+    // console.log("gateway/getMe",data,client.userSession)
+    const user: IUser = await this.userRepository.findOneBySession(client.userSession)
+    if(!user) return
+    const {passwordHash,session, ...me} = user
+    return me
   }
 
   @SubscribeMessage("getMyChats")
   async getMeChats(client: UserSocket, data: any):Promise<IMyChat[]> {
-    console.log("getMyChats data, session: ",data,client.userSession)
-    
-    return this.userRepository.getMyChats(client.userId)
+    // console.log("getMyChats data, session: ",data,client.userSession)
+    return await this.userRepository.getMyChats(client.userId)
   }
 
-  @SubscribeMessage("subChat")
-  async subscribeChat(client: UserSocket, data: ReqSubChat):Promise<ResSubChat>{
-    console.log("subscribeChat data:",data)
-
-    const myChat = await this.chatRepository.getMy(data.chatId,client.userId);
-    const chat =  { 
-      info: myChat,
-      messages: this.chats[data.chatId]
+  @SubscribeMessage("subOnChat")
+  async subsOnChat(client: UserSocket, {chatId}: ISubOnChat):Promise<IResSubOnChat>{
+    // console.log("subOnChat data:",data)
+    if(client.subChat){
+      client.subChat()
+      client.subChat = undefined
     }
-    // console.log("CHAT: ",chat)
-    return chat;
-  }
-  
-  @SubscribeMessage("message")
-  async subscribeChat2(client: UserSocket, data:any){
-    console.log("subscribeChat data:",data)
+
+    const resSub = await this.chatService.subOnChat(chatId,client.userId,
+      (newMessage)=>{
+        console.log("NewMessage: ", newMessage.text)
+        client.emit("onNewMessage", newMessage)
+      }
+    )
+    if(!resSub) return
+
+    client.subChat = resSub.unsub
+    return resSub.chat
   }
 }

@@ -3,6 +3,7 @@ import { ChatRepository } from './chat.repository';
 import { ChatController } from './chat.controller';
 import { UserModule } from 'src/user/user.module';
 import { PrismaModule } from 'src/prisma/prisma.module';
+import { ChatService } from './chat.service';
 
 @Module({
   imports:[
@@ -10,7 +11,7 @@ import { PrismaModule } from 'src/prisma/prisma.module';
     UserModule,
   ],
   controllers: [ChatController],
-  providers: [ChatRepository],
-  exports:[ChatRepository]
+  providers: [ChatRepository,ChatService],
+  exports:[ChatRepository,ChatService]
 })
 export class ChatModule {}
