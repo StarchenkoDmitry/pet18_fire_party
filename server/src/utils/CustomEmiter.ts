@@ -1,10 +1,5 @@
-export type ICallback = (data)=>void
-export type ICallbackCancel = (data)=>void
-
-
 export class CustomEmiter<TCallback extends Function>{    
     private events = new Map<string,TCallback[]>()
-
 
     async emit(eventName:string, ...data){
         const callbacks = this.events.get(eventName);
