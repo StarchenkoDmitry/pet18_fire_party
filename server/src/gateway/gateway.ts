@@ -71,6 +71,18 @@ export class Gateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDis
     return await this.userRepository.getMyChats(client.userId)
   }
 
+  @SubscribeMessage("addMessage")
+  async addMessage(client: UserSocket, data: any){
+    console.log("addMessage data:", data)
+    return await this.chatService.createMessage(data.chatId,client.userId,data.text)
+  }
+
+  @SubscribeMessage("removeMessage")
+  async removeMessage(client: UserSocket, { chatId, messageId }: any){
+    console.log("removeMessage:", { chatId, messageId })
+    return await this.chatService.removeMessage(chatId,messageId,client.userId)
+  }
+
   @SubscribeMessage("subOnChat")
   async subsOnChat(client: UserSocket, {chatId}: ISubOnChat):Promise<IResSubOnChat>{
     // console.log("subOnChat data:",data)
@@ -81,10 +93,12 @@ export class Gateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDis
 
     const resSub = await this.chatService.subOnChat(chatId,client.userId,
       (newMessage)=>{
-        console.log("NewMessage: ", newMessage.text)
-        client.emit("onNewMessage", newMessage)
+        console.log("new message: ", newMessage)
+        client.emit("addMessage", newMessage)
       }
     )
+
+    
     if(!resSub) return
 
     client.subChat = resSub.unsub
