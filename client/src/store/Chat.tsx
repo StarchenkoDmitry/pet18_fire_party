@@ -47,19 +47,19 @@ export const useChat = create<IChatStore>((set, get) =>({
     },
     loadStore(){
         const { id } = get()
-        if(id){
-            const chatStr = localStorage.getItem(`chat(${id})`)
-            if(chatStr){
-                const obj = JSON.parse(chatStr)
-                set({
-                    info: obj.info,
-                    messages: obj.messages,
-                })
-            }
+        if(!id) return
+        const chatStr = localStorage.getItem(`chat(${id})`)
+        if(chatStr){
+            const obj = JSON.parse(chatStr)
+            set({
+                info: obj.info,
+                messages: obj.messages,
+            })
         }
     },
     saveStore(){
-        const { id, info, messages } = get()        
+        const { id, info, messages } = get()
+        if(!id) return
         localStorage.setItem(`chat(${id})`,JSON.stringify({
             info:info,
             messages:messages,
@@ -85,7 +85,7 @@ export const useChat = create<IChatStore>((set, get) =>({
                 try {
                     loadStore()
 
-                    const req = await newSocket?.timeout(2000).emitWithAck("subOnChat",{ chatId: newId })
+                    const req = await newSocket?.timeout(1000).emitWithAck("subOnChat",{ chatId: newId })
                     console.log("subOnChat req:", req)
                     set({
                         info: req.info,
@@ -103,7 +103,7 @@ export const useChat = create<IChatStore>((set, get) =>({
             try {
                 loadStore()
 
-                const req = await newSocket?.timeout(2000).emitWithAck("subOnChat",{ chatId: newId })
+                const req = await newSocket?.timeout(1000).emitWithAck("subOnChat",{ chatId: newId })
                 console.log("subOnChat req:", req)
                 set({
                     info: req.info,
@@ -174,13 +174,6 @@ export const useChat = create<IChatStore>((set, get) =>({
     },
     removeMessage:(messageId)=>{
         get().socket?.emit("removeMessage", { chatId:get().id, messageId:messageId })
-        // DeleteMessage(get().id,messageId).then(res=>{
-        //     if(res){
-        //         GetAllMessage(get().id).then(res=>{
-        //             set({messages:res})
-        //         })
-        //     }
-        // });
     },
 }))
 
