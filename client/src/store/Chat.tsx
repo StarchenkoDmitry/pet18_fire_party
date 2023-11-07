@@ -18,9 +18,7 @@ export interface IChatStore{
     messages?:IMessage[]
 
     init:(chatId:string,socket:Socket|null)=>void
-    loadStore:()=>void
-    saveStore:()=>void
-    
+
     doChange:()=>void
     clear:()=>void
 
@@ -29,6 +27,35 @@ export interface IChatStore{
     
     addMessage:(text:string)=>void
     removeMessage:(messageId:string)=>void
+}
+
+
+
+type IChatGET = () => IChatStore
+type IChatSET =  (partial: IChatStore | Partial<IChatStore> | ((state: IChatStore) => IChatStore | Partial<IChatStore>), replace?: boolean | undefined) => void
+
+
+
+
+
+function loadStore(id:string, set:IChatSET){
+    if(!id) return
+    const chatStr = localStorage.getItem(`chat(${id})`)
+    if(chatStr){
+        const obj = JSON.parse(chatStr)
+        set({
+            info: obj.info,
+            messages: obj.messages,
+        })
+    }
+}
+function saveStore(get:IChatGET){
+    const { id, info, messages } = get()
+    if(!id) return
+    localStorage.setItem(`chat(${id})`,JSON.stringify({
+        info:info,
+        messages:messages,
+    }))
 }
 
 
@@ -45,29 +72,9 @@ export const useChat = create<IChatStore>((set, get) =>({
         
         get().doChange()
     },
-    loadStore(){
-        const { id } = get()
-        if(!id) return
-        const chatStr = localStorage.getItem(`chat(${id})`)
-        if(chatStr){
-            const obj = JSON.parse(chatStr)
-            set({
-                info: obj.info,
-                messages: obj.messages,
-            })
-        }
-    },
-    saveStore(){
-        const { id, info, messages } = get()
-        if(!id) return
-        localStorage.setItem(`chat(${id})`,JSON.stringify({
-            info:info,
-            messages:messages,
-        }))
-    },
     async doChange(){
         const { newId, id, newSocket, socket, doingChange,
-            subOnChat, unsubOnChat, loadStore } = get()
+            subOnChat, unsubOnChat } = get()
 
         if(doingChange) return;
         if(newId === id && newSocket === socket) return;
@@ -83,7 +90,7 @@ export const useChat = create<IChatStore>((set, get) =>({
 
             if(newSocket){
                 try {
-                    loadStore()
+                    loadStore(newId,set)
 
                     const req = await newSocket?.timeout(1000).emitWithAck("subOnChat",{ chatId: newId })
                     console.log("subOnChat req:", req)
@@ -101,7 +108,7 @@ export const useChat = create<IChatStore>((set, get) =>({
             unsubOnChat(newSocket)
 
             try {
-                loadStore()
+                loadStore(newId,set)
 
                 const req = await newSocket?.timeout(1000).emitWithAck("subOnChat",{ chatId: newId })
                 console.log("subOnChat req:", req)
@@ -137,7 +144,7 @@ export const useChat = create<IChatStore>((set, get) =>({
                             messages:messages.filter((m)=>m.id !== data.id)
                         })
                     }
-                    break;                    
+                    break;
                 }
                 default:{
                 
@@ -153,7 +160,7 @@ export const useChat = create<IChatStore>((set, get) =>({
     clear:()=>{
         console.log("IChatStore clear")
         
-        get().saveStore()
+        saveStore(get)
 
         get().socket?.off('onChatEvent')
 
