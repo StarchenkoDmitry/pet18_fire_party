@@ -2,11 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { Mutex, MutexKeys } from 'src/utils/Mutex';
 import { ChatRepository } from './chat.repository';
 import { IMyChat } from 'src/common/me.interface';
-import { IMessage, OnChangeChat } from 'src/common/chat.interface';
-import { IChatIncludeUsers, ISubscribeOnChat } from './chat.interface';
-import { Chat } from '@prisma/client';
+import { IMessage } from 'src/common/chat.interface';
+import { IChatIncludeUsers, ISubscribeOnChat, OnChangeChat } from './chat.interface';
+import { Chat, Message } from '@prisma/client';
 import { CustomEmiter } from 'src/utils/CustomEmiter';
-
+import { CHAT_EVENT_ADDMESSAGE, CHAT_EVENT_REMOVEMESSAGE } from 'src/common/gateway.interfaces';
+type fgfh = Parameters<OnChangeChat>
 @Injectable()
 export class ChatService {
   constructor(
@@ -61,20 +62,30 @@ export class ChatService {
     const newMessage = await this.chatRepo.createMessage(chatId,userId,text)
 
     if(newMessage){
-      this.emiterCreatedNewMessage.emit(chatId, newMessage)
+      this.emiterCreatedNewMessage.emit(chatId, {
+        type:CHAT_EVENT_ADDMESSAGE,
+        data:newMessage
+      })
     }
 
     this.mutexMessagesChats.unlock(chatId)
     return newMessage
   }
 
-  async removeMessage(chatId:string, messageId:string,userId:string):Promise<boolean>{
+  async removeMessage(chatId:string, messageId:string,userId:string):Promise<Message>{
     await this.mutexMessagesChats.lock(chatId)
 
-    const removed = await this.chatRepo.removeMessage(chatId,messageId,userId)
+    const removedMessage = await this.chatRepo.removeMessage(chatId,messageId,userId)
+
+    if(removedMessage){
+      this.emiterCreatedNewMessage.emit(chatId, {
+        type:CHAT_EVENT_REMOVEMESSAGE,
+        data:removedMessage
+      })
+    }
 
     this.mutexMessagesChats.unlock(chatId)
-    return removed
+    return removedMessage
   }
 
   async getAllMessages(chatId:string, userId:string):Promise<IMessage[]>{

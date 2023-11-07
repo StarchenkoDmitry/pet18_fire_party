@@ -92,9 +92,9 @@ export class Gateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDis
     }
 
     const resSub = await this.chatService.subOnChat(chatId,client.userId,
-      (newMessage)=>{
-        console.log("new message: ", newMessage)
-        client.emit("addMessage", newMessage)
+      (event)=>{
+        console.log("onChatEvent event:", event)
+        client.emit("onChatEvent", event)
       }
     )
 

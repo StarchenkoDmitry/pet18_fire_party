@@ -151,7 +151,7 @@ export class ChatRepository {
           createAt: message.createAt,
           prevMessageID: message.prevMessageID,
           chatId: message.chatId,
-          userId: message.userID
+          userID: message.userID
         })
         lastMessageID = message.prevMessageID;
       }
@@ -166,7 +166,7 @@ export class ChatRepository {
 
   // async getChatFromMessage(messageId:string,userId:string)
 
-  async removeMessage(chatId:string,messageId:string,userId:string):Promise<boolean>{
+  async removeMessage(chatId:string,messageId:string,userId:string):Promise<Message>{
     // const message = await this.prisma.message.findFirst({
     //   where:{
     //     id:messageId,
@@ -199,12 +199,12 @@ export class ChatRepository {
 
     if(!message){
       console.error(`ChatRepository removeMessage(${chatId}, ${messageId}, ${userId}) message is not exist`)
-      return false;
+      return;
     }
 
     if(message.nextMessage.length > 1){
       console.error(`ChatRepository removeMessage messageId(${message.id}): ${message} (lenght > 1) nextMessage[${message.nextMessage}]`)
-      return false;
+      return;
     }
 
 
@@ -261,6 +261,6 @@ export class ChatRepository {
         id:messageId
       }
     })
-    return true;
+    return deletedMessage;
   }
 }

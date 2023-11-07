@@ -1,7 +1,7 @@
-export class CustomEmiter<TCallback extends Function>{    
-    private events = new Map<string,TCallback[]>()
+export class CustomEmiter<Tcallback extends (...args:any[])=>any>{
+    private events = new Map<string,Tcallback[]>()
 
-    async emit(eventName:string, ...data){
+    async emit(eventName:string, ...data:Parameters<Tcallback>){
         const callbacks = this.events.get(eventName);
         if(!callbacks)return
         callbacks.forEach(call=>{
@@ -9,7 +9,7 @@ export class CustomEmiter<TCallback extends Function>{
         })
     }
 
-    sub(eventName:string,callback:TCallback):()=>void{
+    sub(eventName:string,callback:Tcallback):()=>void{
         let callbacks = this.events.get(eventName)
         if(!callbacks){
             callbacks = [callback]

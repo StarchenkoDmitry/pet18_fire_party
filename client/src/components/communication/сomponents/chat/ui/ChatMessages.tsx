@@ -9,7 +9,6 @@ export interface ChatMessagesProps{
 }
 
 export default function ChatMessages({messages,remove}:ChatMessagesProps) {
-    
     if(messages){
         return(
             <div className={styles.messages}>

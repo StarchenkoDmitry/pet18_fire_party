@@ -8,10 +8,7 @@ export interface IMessage{
     createAt: Date
     text: string
 
-    userId: string
+    userID: string
     chatId: string
     prevMessageID: string | null
 }
-
-
-export type OnChangeChat = (newMessage:IMessage)=>void

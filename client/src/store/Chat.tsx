@@ -1,5 +1,6 @@
 import { DeleteMessage, GetAllMessage } from "@/actions/Chat.actions";
 import { IMessage } from "@/common/chat.interface";
+import { CHAT_EVENT_ADDMESSAGE, CHAT_EVENT_REMOVEMESSAGE, ChatEvent } from "@/common/gateway.interfaces";
 import { IMyChat } from "@/common/me.interface";
 import { Socket } from "socket.io-client";
 import { create } from "zustand";
@@ -17,6 +18,9 @@ export interface IChatStore{
     messages?:IMessage[]
 
     init:(chatId:string,socket:Socket|null)=>void
+    loadStore:()=>void
+    saveStore:()=>void
+    
     doChange:()=>void
     clear:()=>void
 
@@ -41,8 +45,29 @@ export const useChat = create<IChatStore>((set, get) =>({
         
         get().doChange()
     },
+    loadStore(){
+        const { id } = get()
+        if(id){
+            const chatStr = localStorage.getItem(`chat(${id})`)
+            if(chatStr){
+                const obj = JSON.parse(chatStr)
+                set({
+                    info: obj.info,
+                    messages: obj.messages,
+                })
+            }
+        }
+    },
+    saveStore(){
+        const { id, info, messages } = get()        
+        localStorage.setItem(`chat(${id})`,JSON.stringify({
+            info:info,
+            messages:messages,
+        }))
+    },
     async doChange(){
-        const { newId, id, newSocket, socket, doingChange, subOnChat, unsubOnChat } = get()
+        const { newId, id, newSocket, socket, doingChange,
+            subOnChat, unsubOnChat, loadStore } = get()
 
         if(doingChange) return;
         if(newId === id && newSocket === socket) return;
@@ -52,23 +77,14 @@ export const useChat = create<IChatStore>((set, get) =>({
             socket:newSocket,
             doingChange:true,
         })
-
-        if(newId !== id && newId){
-            const chatStr = localStorage.getItem(`chat(${newId})`)
-            if(chatStr){
-                const obj = JSON.parse(chatStr)
-                set({
-                    info: obj.info,
-                    messages: obj.messages,
-                })
-            }
-        }
        
         if(newSocket !== socket){
             if(socket) unsubOnChat(socket)
 
             if(newSocket){
                 try {
+                    loadStore()
+
                     const req = await newSocket?.timeout(2000).emitWithAck("subOnChat",{ chatId: newId })
                     console.log("subOnChat req:", req)
                     set({
@@ -85,6 +101,8 @@ export const useChat = create<IChatStore>((set, get) =>({
             unsubOnChat(newSocket)
 
             try {
+                loadStore()
+
                 const req = await newSocket?.timeout(2000).emitWithAck("subOnChat",{ chatId: newId })
                 console.log("subOnChat req:", req)
                 set({
@@ -100,33 +118,44 @@ export const useChat = create<IChatStore>((set, get) =>({
     },
 
     subOnChat(socket){
-        socket.on("addMessage", (mes:IMessage)=>{
-            console.log("addMessage:", mes)
-            const { messages , id } = get();
-            if(id === mes.chatId)
-            set({
-                messages:[ mes, ...messages ?? [] ]
-            })
-        })
-
-        socket.on("removeMessage", (mes:IMessage)=>{
-            console.log("removeMessage:", mes)
-            const { messages , id } = get();
-            if(id === mes.chatId)
-            set({
-                messages:[ mes, ...messages ?? [] ]
-            })
+        socket.on("onChatEvent", ({type, data}:ChatEvent)=>{
+            console.log("onChatEvent data:", {type, data})
+            switch(type){
+                case CHAT_EVENT_ADDMESSAGE:{
+                    const { id, messages } = get();
+                    if(id === data.chatId){
+                        set({
+                            messages:[data,...messages?? []]
+                        })
+                    }
+                    break;
+                }
+                case CHAT_EVENT_REMOVEMESSAGE:{
+                    const { id, messages } = get();
+                    if(id === data.chatId && messages){
+                        set({
+                            messages:messages.filter((m)=>m.id !== data.id)
+                        })
+                    }
+                    break;                    
+                }
+                default:{
+                
+                    break;
+                }
+            }
         })
     },
     unsubOnChat(socket){
-        socket.off('addMessage')
-        socket.off('removeMessage')
+        socket.off('onChatEvent')
     },
 
     clear:()=>{
         console.log("IChatStore clear")
+        
+        get().saveStore()
 
-        get().socket?.off('addMessage')
+        get().socket?.off('onChatEvent')
 
         set({
             id:"",
