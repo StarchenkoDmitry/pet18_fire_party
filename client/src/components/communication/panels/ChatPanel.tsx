@@ -2,19 +2,21 @@ import { useMe } from "@/store/Me";
 import Chat from "../сomponents/chat/Chat";
 import { useEffect } from "react";
 import { useChat } from "@/store/Chat";
+import { useParams } from "react-router-dom";
 
 
 export default function ChatPanel() {
     // console.log('Render ChatPanel')
 
-    const chatId = useMe(state=>state.selectedChatId)
-    const socket = useMe(state=>state.socket)
-
+    const { id } = useParams();
     const chatStore = useChat()
+
     useEffect(()=>{
-        chatStore.init(chatId, socket)
-        return ()=>{chatStore.clear()}
-    },[chatId, socket])
+        chatStore.open(id || "")
+        return ()=>{chatStore.close()}
+    },[id])
     
-    return(<Chat key={chatId} id={chatId} />)
+
+
+    return(<Chat key={id || ""} id={id || ""} />)
 }

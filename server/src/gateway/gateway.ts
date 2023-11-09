@@ -89,7 +89,7 @@ export class Gateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDis
     if(client.subChat){
       client.subChat()
       client.subChat = undefined
-    }
+    } 
 
     const resSub = await this.chatService.subOnChat(chatId,client.userId,
       (event)=>{

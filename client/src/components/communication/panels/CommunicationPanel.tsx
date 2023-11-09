@@ -8,13 +8,14 @@ import AddChatModal from "../modals/AddChatModal";
 import ChatView from "../ui/ChatView";
 
 import { useMe } from "@/store/Me";
+import { useChat } from "@/store/Chat";
 
 export default function CommunicationPanel() {
     // console.log("Render CommunicationsPanel")
     const navigate = useNavigate()
     
     const chats = useMe((state)=>state.chats)
-    const selectedChatId = useMe((state)=>state.selectedChatId)
+    const selectedChatId = useChat((state)=>state.id)
 
     const [isActiveModal,setActiveModal] = useState(false)
     
