@@ -18,12 +18,12 @@ export const useMe = create<IMeStore>((set, get) =>({
   
     onConnect(newSocket) {
         newSocket.timeout(5000).emit('getMe',(error:any,data?:IUserForMe) => {
-            console.log('getMe: ',data)
+            // console.log('getMe: ',data)
             set({me:data})
         })
 
         newSocket.timeout(5000).emit('getMyChats',(error:any,data?:IMyChat[]) => {
-            console.log('getMyChats: ',data)
+            // console.log('getMyChats: ',data)
             set({chats:data})
         })
 

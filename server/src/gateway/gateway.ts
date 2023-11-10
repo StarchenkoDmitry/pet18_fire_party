@@ -104,4 +104,10 @@ export class Gateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDis
     client.subChat = resSub.unsub
     return resSub.chat
   }
+  
+  @SubscribeMessage("subOnChangeOnline")
+  async subOnChangeOnline(client: UserSocket, {chatId}: ISubOnChat){
+    return "BOOOOB"
+  }
 }
+
