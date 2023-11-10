@@ -11,7 +11,7 @@ import { useMe } from "@/store/Me";
 import { useChat } from "@/store/Chat";
 
 export default function CommunicationPanel() {
-    console.log("Render CommunicationsPanel")
+    // console.log("Render CommunicationsPanel")
     const navigate = useNavigate()
     
     const chats = useMe((state)=>state.chats)

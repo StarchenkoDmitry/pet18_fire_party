@@ -97,7 +97,6 @@ export class Gateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDis
         client.emit("onChatEvent", event)
       }
     )
-
     
     if(!resSub) return
 

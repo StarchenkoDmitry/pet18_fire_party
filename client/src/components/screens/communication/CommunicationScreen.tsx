@@ -1,7 +1,7 @@
 import styles from "./CommunicationScreen.module.scss";
 
 import { Outlet } from "react-router-dom";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 import CommunicationPanel from "@/components/communication/panels/CommunicationPanel";
 
@@ -12,39 +12,31 @@ import { useFriendsOnline } from "@/store/FriendsOnline";
 
 
 export default function CommunicationScreen() {
-    console.log("Render CommunicationScreen")
-    // const refff = useRef<any>()
+    // console.log("Render CommunicationScreen")
 
-    const me = useMe()
-    const chat = useChat()
-    const friendsOnline = useFriendsOnline()
+    const me = useMe.getState()
+    const chat = useChat.getState()
+    const friendsOnline = useFriendsOnline.getState()
 
-    const { connect, disconnect, subConnect } = useConnect()
-
-    // console.log("TEST ", refff.current === chat,refff.current,chat)
-    // console.log("TEST ", refff.current === chat)
-    // refff.current = chat
+    const { connect, disconnect, subConnect } = useConnect.getState()
 
     useEffect(()=>{
         connect()
-        
+
         subConnect(chat)
         subConnect(me)
         subConnect(friendsOnline)
 
         return ()=>{
-            console.log("Distroed CommunicationScreen")
+            // console.log("Distroed CommunicationScreen")
             disconnect()
         }
     },[]);
 
-    return (
-        <>
-            <div className={styles.page}>
-                <CommunicationPanel/>
-                <Outlet/>
-            </div>
-        </>
-        
+    return(
+        <div className={styles.page}>
+            <CommunicationPanel/>
+            <Outlet/>
+        </div>
     )
 }
