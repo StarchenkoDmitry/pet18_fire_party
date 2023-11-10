@@ -2,112 +2,93 @@ import { create } from "zustand";
 import { io, Socket } from "socket.io-client";
 
 
-
 export interface IUseConnect{
     onConnect:(newSocket:Socket)=>void
     onDisconnect:()=>void
 }
 
-
 export interface IConnect{
     isConnected: boolean
     _socket: Socket | null
 
-    _listeners:IUseConnect[]
+    _subscribers:IUseConnect[]
 
     connect:()=>void
     disconnect: ()=>void
 
-    subConnect:(ob:IUseConnect)=>void
-    unnsubConnect:(ob:IUseConnect)=>void
+    subConnect:(newSub:IUseConnect)=>void
+    unsubConnect:(oldSub:IUseConnect)=>void
 }
-
 
 export const useConnect = create<IConnect>((set, get) =>({
     isConnected:false,
     _socket: null,
 
-    _listeners:[],
+    _subscribers:[],
 
     connect:async ()=>{
-        let { _socket: socket }= get();
+        let { _socket }= get();
+
+        const UnsubscribeAll = ()=>{
+            const { _subscribers } = get()
+            _subscribers.forEach(s=>s.onDisconnect())
+            set({ _subscribers:[] })
+        }
         
-        if(!socket){
-            socket = io("http://127.0.0.1:3020",{
+        if(!_socket){
+            _socket = io("http://127.0.0.1:3020",{
                 autoConnect:false,
                 withCredentials:true,
                 timeout:2000,
                 reconnection:true
             })
+            set({ _socket: _socket })
 
-            socket.on("connect", () => {
+            _socket.on("connect", () => {
                 console.log("SOCKET: connect")
-                const { _socket: socket, _listeners: _listener } = get()
+                set({ isConnected:true })
+                const { _socket: socket, _subscribers: _listener } = get()
                 if(socket)
                 _listener.forEach(s=>s.onConnect(socket))
             });
 
-            socket.on("connect_error", () => {
+            _socket.on("connect_error", () => {
                 console.log("SOCKET: connect_error")
             });
 
-            socket.on('error',(error)=>{
+            _socket.on('error',(error)=>{
                 console.log("SOCKET: error")
-                socket?.close()
+                UnsubscribeAll()
+                _socket?.close()
             })
 
-            socket.on("disconnect", (reason) => {
+            _socket.on("disconnect", (reason) => {
                 console.log("SOCKET: disconnect")
-                const { _socket: socket, _listeners: _listener } = get()
-                _listener.forEach(s=>s.onDisconnect())                
+                UnsubscribeAll()
             });
         }
 
         console.log("Socket connecting...")
-        socket.connect()
-        set({ _socket: socket })
+        _socket.connect()
     },
     async disconnect(){
-        const {_socket: socket} = get()
-        if(socket){
-           socket.disconnect()
-           socket.close()
+        const { _socket } = get()
+        if(_socket){
+           _socket.disconnect()
+           _socket.close()
         }
     },
-    subConnect(newListener) {
-        const { _listeners, isConnected, _socket } = get()
-        _listeners.push(newListener);
+    subConnect(newSub) {
+        const { _subscribers, isConnected, _socket } = get()
+        _subscribers.push(newSub);
         if(isConnected && _socket){
-            newListener.onConnect(_socket)
+            newSub.onConnect(_socket)
         }
     },
-    unnsubConnect(newListener) {
-        const { _listeners, isConnected,_socket: socket } = get()
-        const _newlistener = _listeners.filter(lr=>lr!== newListener);
-        set({_listeners:_newlistener})
-        newListener.onDisconnect()
+    unsubConnect(oldSub) {
+        const { _subscribers } = get()
+        const _newlistener = _subscribers.filter(aSub=>aSub!== oldSub)
+        set({_subscribers:_newlistener})
+        oldSub.onDisconnect()
     },
 }))
-
-
-
-    
-// connection:{
-//     send(data){
-//         const { socket } = get()
-//         socket?.send(JSON.stringify(data))
-//     }
-// },
-
-
-
-// connection: IConnection
-
-// export interface IConnection{
-//     send:(data:any)=>void
-
-//     // on:(eventName:string, func:(data:any)=>void)=>void
-//     // ons:(eventNames:string[], func:(eventName:string, data:any)=>void)=>void 
-//     // onConnect:()=>void
-//     // onDisconnect:(func:()=>void)=>void
-// }
