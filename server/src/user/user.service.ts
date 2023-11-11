@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UserRepository } from './user.repository';
 
-//test commite
 
 @Injectable()
 export class UserService {
