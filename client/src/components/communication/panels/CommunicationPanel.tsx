@@ -9,11 +9,14 @@ import ChatView from "../ui/ChatView";
 
 import { useMe } from "@/store/Me";
 import { useChat } from "@/store/Chat";
+import { useFriendsOnline } from "@/store/FriendsOnline";
 
 export default function CommunicationPanel() {
     // console.log("Render CommunicationsPanel")
     const navigate = useNavigate()
     
+    const online = useFriendsOnline(state=>state.onlines)
+    // console.log("CommunicationsPanel online:",online)
     const chats = useMe((state)=>state.chats)
     const selectedChatId = useChat((state)=>state.id)
 
@@ -26,8 +29,17 @@ export default function CommunicationPanel() {
     const closeModal = ()=>{ setActiveModal(false) }
     const openModal = ()=>{ setActiveModal(true) }
 
-    const rend_chats = chats?.map(e=><ChatView key={e.id} chat={e} selectChat={navigateChat} 
-        selected={e.id === selectedChatId}/>)
+    const rend_chats = chats?.map(e=>{
+        const isOnline  = online.includes(e.user.id)
+        console.log("isOnline:",isOnline)
+        return (<ChatView 
+            key={e.id}
+            chat={e}
+            selectChat={navigateChat}
+            online={isOnline}
+            selected={e.id === selectedChatId}
+        />)
+    })
     
     return (
         <div className={styles.communication_panel}>

@@ -34,6 +34,11 @@
 }
 
 .userName{
+  border-radius: .2em;
   user-select: none;
   font-weight: 500;
+}
+
+.userNameOnline{
+  background-color: rgb(116, 255, 123);
 }

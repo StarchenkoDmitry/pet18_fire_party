@@ -29,43 +29,39 @@ export const useConnect = create<IConnect>((set, get) =>({
     connect:async ()=>{
         let { _socket }= get();
 
-        const UnsubscribeAll = ()=>{
-            const { _subscribers } = get()
-            _subscribers.forEach(s=>s.onDisconnect())
-            set({ _subscribers:[] })
-        }
-        
         if(!_socket){
             _socket = io("http://127.0.0.1:3020",{
                 autoConnect:false,
                 withCredentials:true,
                 timeout:2000,
-                reconnection:true
+                reconnection:true,
             })
             set({ _socket: _socket })
-
             _socket.on("connect", () => {
                 console.log("SOCKET: connect")
                 set({ isConnected:true })
-                const { _socket: socket, _subscribers: _listener } = get()
-                if(socket)
-                _listener.forEach(s=>s.onConnect(socket))
-            });
+                const { _socket, _subscribers } = get()
+                if(_socket)
+                _subscribers.forEach(s=>s.onConnect(_socket))
+            })
 
-            _socket.on("connect_error", () => {
-                console.log("SOCKET: connect_error")
-            });
+            _socket.on("connect_error", (error) => {
+                console.log("SOCKET connect_error:",error.message)
+            })
 
             _socket.on('error',(error)=>{
-                console.log("SOCKET: error")
-                UnsubscribeAll()
+                console.log("SOCKET error:",error.message)
+                // UnsubscribeAll()
+                // _socket?.disconnect()
                 _socket?.close()
             })
 
             _socket.on("disconnect", (reason) => {
-                console.log("SOCKET: disconnect")
-                UnsubscribeAll()
-            });
+                console.log("SOCKET disconnect:",reason)
+                set({ isConnected:false })
+                const { _subscribers } = get()
+                _subscribers.forEach(s=>s.onDisconnect())
+            })
         }
 
         console.log("Socket connecting...")

@@ -17,43 +17,34 @@ import { IMyChat } from "src/common/me.interface";
 import { UserRepository } from "src/user/user.repository";
 import { ISubOnChat, IResSubOnChat } from "src/common/gateway.interfaces";
 import { ChatService } from "src/chat/chat.service";
+import { UsersOnlineService } from "./usersOnline.service";
 
 @WebSocketGateway(3020, {
   cors:{ origin:true, credentials: true, },
   pingInterval: 1000,
   pingTimeout: 1500,
 })
-export class Gateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect{
+export class Gateway implements OnGatewayConnection, OnGatewayDisconnect{
   constructor(
     private readonly userRepository: UserRepository,
     private readonly chatService: ChatService,
+    private readonly onlines: UsersOnlineService
     ) {}
 
   private readonly logger = new Logger(Gateway.name)
-
   @WebSocketServer() server: Server
-  private readonly users = new Map<string,UserSocket>()
 
-  afterInit() {
-    // this.logger.log("Initialized")
+  handleConnection(user: UserSocket, ...args: any[]) {
+    this.logger.log(`Connected id:${user.id}`)
+
+    this.onlines.setUserOnline(user)
   }
+  handleDisconnect(user: UserSocket) {
+    this.logger.log(`Disconnected id:${user.id}`)
 
-  handleConnection(client: UserSocket, ...args: any[]) {
-    // const { sockets } = this.server.sockets
-    // this.logger.log(`Client id: ${client.id} connected, user: ${client.userSession}`)
-    // this.logger.debug(`Number of connected clients: ${sockets.size}`)
-    this.logger.log(`Connected id:${client.id}`)
-    this.users.set(client.id,client)
-  }
-  handleDisconnect(client: UserSocket) {
-    // this.logger.log(`Cliend id:${client.id} disconnected`)
-    this.logger.log(`Disconnected id:${client.id}`)
+    this.onlines.setUserOffline(user)
 
-    if(!this.users.delete(client.id)){
-      throw new Error('UserSocket dont exist in users')
-    }
-
-    if(client.subChat) client.subChat()
+    if(user.subChat) user.subChat()
   }
 
   @SubscribeMessage("getMe")
@@ -83,13 +74,14 @@ export class Gateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDis
     return await this.chatService.removeMessage(chatId,messageId,client.userId)
   }
 
+
   @SubscribeMessage("subOnChat")
   async subsOnChat(client: UserSocket, {chatId}: ISubOnChat):Promise<IResSubOnChat>{
     // console.log("subOnChat data:",data)
     if(client.subChat){
       client.subChat()
       client.subChat = undefined
-    } 
+    }
 
     const resSub = await this.chatService.subOnChat(chatId,client.userId,
       (event)=>{
@@ -105,8 +97,9 @@ export class Gateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDis
   }
   
   @SubscribeMessage("subOnChangeOnline")
-  async subOnChangeOnline(client: UserSocket, {chatId}: ISubOnChat){
-    return "BOOOOB"
+  async subOnChangeOnline(client: UserSocket, data:any){
+    const myFriends = await this.userRepository.getMyFriends(client.userId)
+    const myFriendsOnline = this.onlines.subOnOnline(client,myFriends)
+    return myFriendsOnline
   }
 }
-

@@ -21,3 +21,14 @@ type TYPE_RES_CHAT_EVENT_ADDMESSAGE = IMessage
 
 export const CHAT_EVENT_REMOVEMESSAGE = "CHAT_EVENT_REMOVEMESSAGE"
 type TYPE_RES_CHAT_EVENT_REMOVEMESSAGE = IMessage
+
+
+
+// FRIENDS_ONLINE
+export interface ResSubOnChangeOnline{
+    users:string[]
+}
+export interface EventFriendOnline{
+    isOnline:boolean
+    userId:string
+}

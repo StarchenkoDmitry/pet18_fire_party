@@ -82,31 +82,6 @@ export class UserRepository {
     return this.prisma.user.findFirst({where:{session:session}})
   }
 
-  // async getChats(userId: string):Promise<IChatToUsers[]>{
-  //   const res = await this.prisma.user.findFirst({
-  //     where:{id:userId},
-  //     select:{
-  //       chats:{
-  //         include:{
-  //           users:{
-  //             where:{
-  //               id:{
-  //                 not:userId
-  //               }
-  //             },
-  //             select:{
-  //               id:true,
-  //               name:true,
-  //               imageID:true,
-  //             }
-  //           }
-  //         }
-  //       }
-  //     }
-  //   })
-  //   return res.chats;
-  // }
-
   async getMyChats(userId: string):Promise<IMyChat[]>{
     const chats = await this.prisma.user.findFirst({
       where:{id:userId},
@@ -142,6 +117,31 @@ export class UserRepository {
       }
     })
     return meChats;
+  }
+
+  async getMyFriends(userId:string){
+    const friendsId = await this.prisma.user.findMany({
+      where:{
+        chats:{
+          some:{
+            users:{
+              some:{
+                id:userId
+              }
+            }
+          }
+        },
+        NOT:{
+          id:userId
+        }
+      },
+      select:{
+        id:true,
+      }
+    })
+    // console.log("UserRepository user: ",userId)
+    // console.log("UserRepository getMyFriends: ",friendsId)
+    return friendsId.map(f=>{return f.id})
   }
 
   async login(dto:LoginDto):Promise<LoginResult>{
