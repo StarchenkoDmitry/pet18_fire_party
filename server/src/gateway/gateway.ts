@@ -2,7 +2,6 @@ import { Logger } from "@nestjs/common";
 import {
   OnGatewayConnection,
   OnGatewayDisconnect,
-  OnGatewayInit,
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
@@ -89,7 +88,6 @@ export class Gateway implements OnGatewayConnection, OnGatewayDisconnect{
         client.emit("onChatEvent", event)
       }
     )
-    
     if(!resSub) return
 
     client.subChat = resSub.unsub
