@@ -10,7 +10,7 @@ export interface ChatViewProps{
     online?:boolean
 }
 
-export default function ChatView({chat,selectChat,selected = false,online}:ChatViewProps) {
+export default function ChatView({ chat, selectChat, selected = false, online }:ChatViewProps) {
     // console.log("ChatView selected: ",selected)
     const selectChatEvent = ()=>{
         if(selectChat) selectChat(chat.id);
@@ -30,5 +30,5 @@ export default function ChatView({chat,selectChat,selected = false,online}:ChatV
                 <span>this is a last message</span>
             </div>
         </div>
-    );
+    )
 }

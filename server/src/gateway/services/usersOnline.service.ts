@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { UserSocket } from "./gateway.interface";
+import { UserSocket } from "../gateway.interface";
 import { EventFriendOnline } from "src/common/gateway.interfaces";
 
 

@@ -17,7 +17,7 @@ import { IMyChat } from "src/common/me.interface";
 import { UserRepository } from "src/user/user.repository";
 import { ISubOnChat, IResSubOnChat } from "src/common/gateway.interfaces";
 import { ChatService } from "src/chat/chat.service";
-import { UsersOnlineService } from "./usersOnline.service";
+import { UsersOnlineService } from "./services/usersOnline.service";
 
 @WebSocketGateway(3020, {
   cors:{ origin:true, credentials: true, },
