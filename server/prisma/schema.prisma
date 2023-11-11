@@ -10,16 +10,68 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User{
-  id  Int   @id @default(autoincrement())
-  // createdAt DateTime @default(now()) @map("created_at")
-  // updatedAt DateTime @updatedAt @map("updated_at")
 
-  login String @unique
-  email String @unique
+model User {
+  id String @id @unique @default(uuid())
+
+  login        String  @unique
+  email        String  @unique
   passwordHash String
-  token String?
 
-  name String?
+  session String? @unique
+
+  name    String?
   surname String?
+
+  chats Chat[]
+  messages Message[]
+
+  image Image? @relation(fields: [imageID],references: [id])
+  imageID String?  
+}
+
+model Chat {
+  id String @id @unique @default(uuid())
+
+  users User[]
+
+  messages Message[] @relation("MessagesOfChat")
+
+  lastMessage Message? @relation("lastMessageOfChat",fields: [lastMessageID],references: [id])
+  lastMessageID String?
+}
+
+
+model Message{
+  id String @id @unique @default(uuid())
+  createAt DateTime @default(now())
+
+  text String
+
+  user User @relation( fields: [userID],references: [id])
+  userID String
+
+  chat Chat @relation("MessagesOfChat", fields: [chatId],references: [id])
+  chatId String
+
+  lastMessageOfChat Chat[] @relation("lastMessageOfChat")
+  nextMessage Message[] @relation("MessageRef")
+
+  prevMessage Message? @relation("MessageRef", fields: [prevMessageID],references: [id])
+  prevMessageID String?
+}
+
+
+
+model Image{
+  id String @id @unique @default(uuid())
+
+  createAt DateTime @default(now())
+
+  originalname String?
+  mimetype String?
+  buffer Bytes?
+  size Int
+
+  user User[]
 }

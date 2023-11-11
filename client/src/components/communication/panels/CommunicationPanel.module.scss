@@ -1,0 +1,57 @@
+.communication_panel{
+  flex: none;
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  width: 15em;
+  // height: 100%;
+  //todo: Доделать grid и flex
+}
+
+.block_poisk{
+  // flex: 1;
+  background-color: rgb(196, 54, 209);
+  display: flex;
+}
+
+.input{
+  flex:1;
+  margin: .4em;
+}
+
+
+.list_chats{
+  flex: 1;
+  background-color: var(--bg-light);
+}
+
+
+.btn_add_chat{
+  position: absolute;
+  left: 0;
+  bottom: 0;
+
+  margin: .2em;
+  
+  //сделать ширину и высоту в 3.375em(ах)
+  width: 54px;
+  height: 54px;
+
+  text-align: center;
+  font-size: 2.5em;
+
+  border-radius: 1000em;
+  color: aliceblue;
+  background-color: var(--primary-color);
+
+  transition: all .2s;
+
+  user-select: none;
+  cursor: pointer;
+}
+.btn_add_chat:hover{
+  background-color: aqua;
+}
+

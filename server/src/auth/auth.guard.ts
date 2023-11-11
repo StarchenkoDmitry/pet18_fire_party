@@ -1,37 +1,36 @@
-import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
-import {Request} from "express"
+import { CanActivate, ExecutionContext, Inject, Injectable, forwardRef } from "@nestjs/common"
+import { Request } from "express"
+import { UserRepository } from "src/user/user.repository"
 
-export const REQ_KET_TOKEN = "token";
+
+export const COOKIE_SESSION = "session";
+export const REQ_KEY_SESSION = Symbol("Session");
+export const REQ_KEY_USER = Symbol("User");
 
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  canActivate(context: ExecutionContext): boolean{
+  constructor(
+    @Inject(forwardRef(() => UserRepository))
+    private readonly userRepository: UserRepository
+  ) {}
+
+  async canActivate(context: ExecutionContext): Promise<boolean>{
     try{
       const request:Request = context.switchToHttp().getRequest();
+      const session = request.signedCookies[COOKIE_SESSION];
+      request[REQ_KEY_SESSION] = session;
+      // console.log("DoAuthUser session: ",session);
 
-      const token = request.cookies[REQ_KET_TOKEN];
-      console.log(`${REQ_KET_TOKEN}: `,token);
+      if(!session) return false;
 
-      return token !== undefined;
-    }catch(error){
-      console.log("Error: ",error);
-      return false;
-    }
-  }
-}
+      const user = await this.userRepository.findOneBySession(session);
+      // console.log("DoAuthUser user: ",user);
 
+      if(!user) return false;
 
-@Injectable()
-export class NotAuthGuard implements CanActivate {
-  canActivate(context: ExecutionContext): boolean{
-    try{
-      const request:Request = context.switchToHttp().getRequest();
-
-      const token = request.cookies[REQ_KET_TOKEN];
-      console.log(`${REQ_KET_TOKEN}: `,token);
-
-      return token === undefined;
+      request[REQ_KEY_USER] = user;
+      return user.session === session;
     }catch(error){
       console.log("Error: ",error);
       return false;

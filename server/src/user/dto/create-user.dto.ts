@@ -1,6 +1,10 @@
-import { User } from "../entities/user.entity";
+export class CreateUserDto{
+    login:string;
+    passwordHash:string;
+    email:string;
 
+    session?:string;
 
-export class CreateUserDto extends User{
-
+    name?:string;
+    surname?:string;
 }

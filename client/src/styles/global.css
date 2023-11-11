@@ -1,42 +1,55 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-:root {
-  --max-width: 1000px;
-
-  /* --main-color: rgb(50, 67, 218); */
-  /* --pane-padding: 5px 42px; */
-}
-
 html{
-  /* font-family: "gg sans", "Noto Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; */
   font-family: Roboto, -apple-system, "apple color emoji", BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
 
-body {
-  background-color: rgb(55 51 67);
-  
-  width: 100vw;
-  height: 100vh;
-
-  /* padding: 4rem; */
-  /* overflow: hidden; */
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 
+:root {
+  /* --max-width: 1000px;
+  --main-color-bg: rgb(152, 255, 161); */
+
+  /* light theme tokens */
+  --bg-light: #fff;
+  --bg-secondary-light: #f3f3f4;
+  --text-light: #000;
+
+  --bg-chat-light: #223053;
+  --bg-chat-input-light: #3633e2;
+  --bg-chat-message-light: #ffffff;
+  
+  --primary-color: #3390ec;
+  
+  
+  /* dark theme tokens */
+  /* --bg-dark: 25, 48, 66;
+  --accent-dark: 90, 182, 204; */
+
+  
 
 
 
+  --surface-color: #212121;
+  
+  --font-monospace: "Roboto Mono", monospace;
+  --font-weight-bold: 500;
+  --font-weight-normal: 400;
 
+  --line-height-20: 26px;
+  --line-height-16: 21px;
+  --line-height-14: 18px;
+  --line-height-12: 16px;
+  --line-height: 1.3125;
+  --font-size-20: 20px;
+  --font-size-16: 16px;
+  --font-size-15: 15px;
+  --font-size-14: 14px;
+  --font-size-12: 12px;
+  --font-size: var(--font-size-16);
 
-/* .fireui_scrollbar_novisibl::-webkit-scrollbar {
-  width: 0px;
-  height: 0px;
-} */
-
-
-.fireui_scroll1::-webkit-scrollbar {
-  width: 0px;
-  height: 0px;
+  
 }
