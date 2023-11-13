@@ -17,6 +17,7 @@ import { UserRepository } from "src/user/user.repository";
 import { ISubOnChat, IResSubOnChat } from "src/common/gateway.interfaces";
 import { ChatService } from "src/chat/chat.service";
 import { UsersOnlineService } from "./services/usersOnline.service";
+import { UserService } from "src/user/user.service";
 
 @WebSocketGateway(3020, {
   cors:{ origin:true, credentials: true, },
@@ -26,6 +27,7 @@ import { UsersOnlineService } from "./services/usersOnline.service";
 export class Gateway implements OnGatewayConnection, OnGatewayDisconnect{
   constructor(
     private readonly userRepository: UserRepository,
+    private readonly userService: UserService,
     private readonly chatService: ChatService,
     private readonly onlines: UsersOnlineService
     ) {}
@@ -85,5 +87,27 @@ export class Gateway implements OnGatewayConnection, OnGatewayDisconnect{
     const myFriends = await this.userRepository.getMyFriends(client.userId)
     const myFriendsOnline = this.onlines.subscribeOnOnline(client,myFriends)
     return myFriendsOnline
+  }
+
+  @SubscribeMessage("changeName")
+  async changeName(client: UserSocket, data:string){
+    console.log("changeName data:",data)
+    const res = await this.userService.setName(client.userId,data)
+    client.emit("changeMe",{
+      type:"setName",
+      payload:data
+    })
+    return !!res
+  }
+
+  @SubscribeMessage("changeSurname")
+  async changeSurname(client: UserSocket, data:string){
+    console.log("changeSurname data:",data)
+    const res = await this.userService.setSurname(client.userId,data)
+    client.emit("changeMe",{
+      type:"setSurname",
+      payload:data
+    })
+    return !!res
   }
 }

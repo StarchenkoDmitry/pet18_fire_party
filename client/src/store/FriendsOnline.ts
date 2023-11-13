@@ -18,8 +18,6 @@ export const useFriendsOnline = create<IFriendsOnlineStore>((set, get) =>({
         set({_socket:newSocket})
 
         newSocket.timeout(5000).emit('subOnChangeOnline',(error:any,data:string[]) => {
-            // console.log(`subOnChangeOnline data: ${data}, error:${error}`)
-            // console.log(`subOnChangeOnline data:`,data)
             set({onlines:[...data]})
         })
 

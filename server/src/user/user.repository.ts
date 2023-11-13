@@ -178,4 +178,38 @@ export class UserRepository {
       return false;
     }
   }
+
+  async setName(userId:string,name:string | null){
+    try {
+      const res = await this.prisma.user.update({
+        where:{
+          id:userId,
+        },
+        data:{
+          name:name
+        }
+      })
+      return res
+    } catch (error) {
+      console.error(error)
+      return
+    }
+  }
+
+  async setSurname(userId:string,surname:string | null){
+    try {
+      const res = await this.prisma.user.update({
+        where:{
+          id:userId,
+        },
+        data:{
+          surname:surname
+        }
+      })
+      return res
+    } catch (error) {
+      console.error(error)
+      return
+    }
+  }
 }

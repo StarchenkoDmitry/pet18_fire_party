@@ -11,6 +11,9 @@ export interface IMeStore extends IUseConnect{
 
     me?:IUserForMe
     chats?:IMyChat[]
+
+    changeName:(name:String)=>void
+    changeSurname:(surname:String)=>void
 }
 
 export const useMe = create<IMeStore>((set, get) =>({
@@ -20,6 +23,27 @@ export const useMe = create<IMeStore>((set, get) =>({
         newSocket.timeout(5000).emit('getMe',(error:any,data?:IUserForMe) => {
             // console.log('getMe: ',data)
             set({me:data})
+            
+            newSocket.on("changeMe",({type, payload}:{type:string,payload:any})=>{
+                console.log('changeMe data:', {type, payload})
+                switch(type){
+                    case "setName":{
+                        const me = get().me
+                        if(!me)return
+                        set({me:{...me, name:payload}})
+                        break
+                    }
+                    case "setSurname":{
+                        const me = get().me
+                        if(!me)return
+                        set({me:{...me, surname:payload}})
+                        break
+                    }
+                    default:{
+                        break
+                    }
+                }
+            })
         })
 
         newSocket.timeout(5000).emit('getMyChats',(error:any,data?:IMyChat[]) => {
@@ -31,5 +55,13 @@ export const useMe = create<IMeStore>((set, get) =>({
     },
     onDisconnect() {
         set({_socket:null})
+    },
+    changeName(name) {
+        const { _socket } = get()
+        _socket?.emit("changeName",name)
+    },
+    changeSurname(surname) {
+        const { _socket } = get()
+        _socket?.emit("changeSurname",surname)
     },
 }))

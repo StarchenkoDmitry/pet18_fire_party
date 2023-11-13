@@ -1,23 +1,18 @@
 import styles from "./Me.module.scss";
 
-import { useEffect, useState } from "react";
-
-import { GetMe } from "@/actions/Me.actions";
+import { useState } from "react";
 
 import ProfileModal from "../profile/modals/ProfileModal";
-import { IUserForMe } from "@/common/user.interface";
+import { useMe } from "@/store/Me";
+
 
 export default function Me() {
     const [showProfile,setShowProfile] = useState(false);
 
-    const [me,setMe] = useState<IUserForMe>();
-
-    useEffect(()=>{
-        GetMe().then(res=>setMe(res));
-    },[]);
+    const me = useMe(state=>state.me)
     
-    const closeModal = ()=>setShowProfile(false);
-    const openModal = ()=>{setShowProfile(true)};
+    const closeProfile = ()=>setShowProfile(false);
+    const openProfile = ()=>{setShowProfile(true)};
 
     if(me){
         const imageURL = !me.imageID ? "/img/user.png" : 
@@ -25,14 +20,14 @@ export default function Me() {
         
         return (
             <div className={styles.me}>
-                <img className={styles.meAvatar} src={imageURL} onClick={openModal}/>
+                <img className={styles.meAvatar} src={imageURL} onClick={openProfile}/>
                 <span className={styles.name}>{me.name}</span>
-                { showProfile && <ProfileModal doClose={closeModal}/>}
+                { showProfile && <ProfileModal doClose={closeProfile}/>}
             </div>
         );
     }else{
         return(<div>
-            <img className={styles.meAvatar} src={'/img/user.png'} onClick={openModal}/>
+            <img className={styles.meAvatar} src={'/img/user.png'} onClick={openProfile}/>
         </div>);
     }
     
