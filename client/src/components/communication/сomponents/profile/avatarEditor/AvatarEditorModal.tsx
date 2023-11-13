@@ -127,10 +127,14 @@ export default function AvatarEditorModal({doClose,loadImage,saveImage}:AvatarEd
     const imageReadyEvent = async (event: Event)=>{
         startUpdatePreviewImage();
     }
-    
+
+    const eventStopPropagation = (event: React.MouseEvent<HTMLDivElement, MouseEvent>)=>{
+        event.stopPropagation()
+    }
+
     return (
         <div className={styles.modal} onClick={doClose}>
-            <div className={styles.content} onClick={(e)=>e.stopPropagation()}>
+            <div className={styles.content} onClick={eventStopPropagation}>
                 <h2>EditorAvatar</h2>
                 <div className={styles.editor}>
                     <AvatarEditor
