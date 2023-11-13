@@ -42,8 +42,8 @@ export class Gateway implements OnGatewayConnection, OnGatewayDisconnect{
     this.logger.log(`Disconnected id:${user.id}`)
 
     this.onlines.setUserOffline(user)
-
     if(user.subChat) user.subChat()
+    this.onlines.unsubOnOnline(user)
   }
 
   @SubscribeMessage("getMe")
