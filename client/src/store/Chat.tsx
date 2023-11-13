@@ -174,7 +174,7 @@ export const useChat = create<IChatStore>((set, get) =>({
         })
     },
     addMessage:(text)=>{
-        get().socket?.emit("addMessage", { chatId:get().id, text: text })
+        get().socket?.emit("createMessage", { chatId:get().id, text: text })
     },
     removeMessage:(messageId)=>{
         // console.log("IChatStore removeMessage")

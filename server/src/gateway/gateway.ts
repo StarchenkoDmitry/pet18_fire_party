@@ -61,8 +61,8 @@ export class Gateway implements OnGatewayConnection, OnGatewayDisconnect{
     return await this.userRepository.getMyChats(client.userId)
   }
 
-  @SubscribeMessage("addMessage")
-  async addMessage(client: UserSocket, data: any){
+  @SubscribeMessage("createMessage")
+  async createMessage(client: UserSocket, data: any){
     console.log("addMessage data:", data)
     return await this.chatService.createMessage(data.chatId,client.userId,data.text)
   }
@@ -73,31 +73,17 @@ export class Gateway implements OnGatewayConnection, OnGatewayDisconnect{
     return await this.chatService.removeMessage(chatId,messageId,client.userId)
   }
 
-
   @SubscribeMessage("subOnChat")
-  async subsOnChat(client: UserSocket, {chatId}: ISubOnChat):Promise<IResSubOnChat>{
-    // console.log("subOnChat data:",data)
-    if(client.subChat){
-      client.subChat()
-      client.subChat = undefined
-    }
-
-    const resSub = await this.chatService.subOnChat(chatId,client.userId,
-      (event)=>{
-        console.log("onChatEvent event:", event)
-        client.emit("onChatEvent", event)
-      }
-    )
-    if(!resSub) return
-
-    client.subChat = resSub.unsub
-    return resSub.chat
+  async subscribeOnChat(client: UserSocket, {chatId}: ISubOnChat):Promise<IResSubOnChat>{
+    console.log("subOnChat data:",{chatId})
+    const chatData = await this.chatService.subscribeOnChat(chatId, client.userId, client)
+    return chatData
   }
   
   @SubscribeMessage("subOnChangeOnline")
-  async subOnChangeOnline(client: UserSocket, data:any){
+  async subscribeOnChangeOnline(client: UserSocket, data:any){
     const myFriends = await this.userRepository.getMyFriends(client.userId)
-    const myFriendsOnline = this.onlines.subOnOnline(client,myFriends)
+    const myFriendsOnline = this.onlines.subscribeOnOnline(client,myFriends)
     return myFriendsOnline
   }
 }

@@ -47,7 +47,7 @@ export class UsersOnlineService {
     }
   }
 
-  subOnOnline(user:UserSocket,friends:string[]){
+  subscribeOnOnline(user:UserSocket,friends:string[]){
     friends.forEach(f=>{
         let onlic = this.usersOnline.get(f)
         if(!onlic){

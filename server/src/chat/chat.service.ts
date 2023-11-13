@@ -3,11 +3,13 @@ import { Mutex, MutexKeys } from 'src/utils/Mutex';
 import { ChatRepository } from './chat.repository';
 import { IMyChat } from 'src/common/me.interface';
 import { IMessage } from 'src/common/chat.interface';
-import { IChatIncludeUsers, ISubscribeOnChat, OnChangeChat } from './chat.interface';
+import { IChatIncludeUsers, OnChangeChat } from './chat.interface';
 import { Chat, Message } from '@prisma/client';
 import { CustomEmiter } from 'src/utils/CustomEmiter';
-import { CHAT_EVENT_ADDMESSAGE, CHAT_EVENT_REMOVEMESSAGE } from 'src/common/gateway.interfaces';
-type fgfh = Parameters<OnChangeChat>
+import { CHAT_EVENT_ADDMESSAGE, CHAT_EVENT_REMOVEMESSAGE, IResSubOnChat } from 'src/common/gateway.interfaces';
+import { UserSocket } from 'src/gateway/gateway.interface';
+
+
 @Injectable()
 export class ChatService {
   constructor(
@@ -15,7 +17,7 @@ export class ChatService {
     console.log("constructor ChatService")
   }
 
-  private emiterCreatedNewMessage = new CustomEmiter<OnChangeChat>()
+  private eventChats = new CustomEmiter<OnChangeChat>()
 
   private mutexChats = new MutexKeys()
   private mutexMessagesChats = new MutexKeys()
@@ -62,7 +64,7 @@ export class ChatService {
     const newMessage = await this.chatRepo.createMessage(chatId,userId,text)
 
     if(newMessage){
-      this.emiterCreatedNewMessage.emit(chatId, {
+      this.eventChats.emit(chatId, {
         type:CHAT_EVENT_ADDMESSAGE,
         data:newMessage
       })
@@ -73,12 +75,13 @@ export class ChatService {
   }
 
   async removeMessage(chatId:string, messageId:string,userId:string):Promise<Message>{
+    // if(!chatId || !messageId || !userId) throw new Error("params is not corect")
     await this.mutexMessagesChats.lock(chatId)
 
     const removedMessage = await this.chatRepo.removeMessage(chatId,messageId,userId)
 
     if(removedMessage){
-      this.emiterCreatedNewMessage.emit(chatId, {
+      this.eventChats.emit(chatId, {
         type:CHAT_EVENT_REMOVEMESSAGE,
         data:removedMessage
       })
@@ -97,9 +100,12 @@ export class ChatService {
     return messages
   }
 
+  async subscribeOnChat(chatId:string, userId:string, client:UserSocket):Promise<IResSubOnChat>{    
+    if(client.subChat){
+      client.subChat()
+      client.subChat = undefined
+    }
 
-
-  async subOnChat(chatId:string,userId:string,onChange:OnChangeChat):Promise<ISubscribeOnChat>{
     await this.mutexChats.lock(chatId)
 
     const resMyChat = await this.chatRepo.getMy(chatId,userId)
@@ -109,14 +115,14 @@ export class ChatService {
     
     if(!resMyChat) return
     
-    const unsub = this.emiterCreatedNewMessage.sub(chatId,onChange);
-
+    client.subChat = this.eventChats.sub(chatId, (event)=>{
+      // console.log("onChatEvent event:", event)
+      client.emit("onChatEvent", event)
+    })
+    
     return {
-      chat:{
         info: resMyChat,
         messages:messages
-      },
-      unsub: unsub
     }
   }
 }
