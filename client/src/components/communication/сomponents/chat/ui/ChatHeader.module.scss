@@ -8,27 +8,26 @@
 
 .userAvatar{
   display: block;
+  flex: none;
 
   width: 2.625em;
   height: 2.625em;
 
   border-radius: 2em;
-  border: 1px solid rgb(255, 255, 69);
+  background-color: #ededed;
   overflow: hidden;
 }
 
-.name{
+.userInfo{
   margin-left: 1em;
-  margin-right: 1em;
-  // padding: .5em;
+}
 
+.name{
   font-size: 1em;
   font-weight: 500;
 
   white-space: nowrap;
   text-overflow: ellipsis;
-  line-height: 21px;
 
-  // unicode-bidi: plaintext;
   user-select: none;
 }

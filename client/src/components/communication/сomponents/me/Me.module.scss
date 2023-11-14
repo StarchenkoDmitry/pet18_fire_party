@@ -5,21 +5,35 @@
   padding-left: .5em;
 
   height: 3.5em;
-  background-color: #dbdbdb;
+  background-color: #f4f4f4;
 }
 
 .meAvatar{
   display: block;
   
-  width: 3em;
-  height: 3em;
+  width: 3.2em;
+  height: 3.2em;
   
-  border-radius: 2.5em;
-  border: .125em solid #fff;
+  border-radius: .6em;
+  // border: .125em solid #fff;
+  background-color: #ededed;
+  user-select: none;
+  cursor: pointer;
 }
 
 .name{
-  padding: .5em;
-  font-size: 1.25em;
+  // padding: .5em;
+  padding: .25em;
+  // font-size: 1.25em;
   font-weight: 500;
+  user-select: none;
+}
+
+
+.setting{
+  margin-left: auto;
+  width: 3em;
+  height: 3em;
+  user-select: none;
+  cursor: pointer;
 }

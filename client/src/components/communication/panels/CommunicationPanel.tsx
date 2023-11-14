@@ -13,10 +13,10 @@ import { useFriendsOnline } from "@/store/FriendsOnline";
 
 export default function CommunicationPanel() {
     // console.log("Render CommunicationsPanel")
+    
     const navigate = useNavigate()
     
     const online = useFriendsOnline(state=>state.onlines)
-    // console.log("CommunicationsPanel online:",online)
     const chats = useMe((state)=>state.chats)
     const selectedChatId = useChat((state)=>state.id)
 
@@ -30,8 +30,7 @@ export default function CommunicationPanel() {
     const openModal = ()=>{ setActiveModal(true) }
 
     const rend_chats = chats?.map(e=>{
-        const isOnline  = online.includes(e.user.id)
-        console.log("isOnline:",isOnline)
+        const isOnline = online.includes(e.user.id)
         return (<ChatView 
             key={e.id}
             chat={e}
@@ -44,9 +43,9 @@ export default function CommunicationPanel() {
     return (
         <div className={styles.communication_panel}>
             <Me/>
-            <div className={styles.block_poisk}>
+            {/* <div className={styles.block_poisk}>
                 <input className={styles.input} type="text" />
-            </div>
+            </div> */}
             <div className={styles.list_chats}>
                 { rend_chats }
             </div>

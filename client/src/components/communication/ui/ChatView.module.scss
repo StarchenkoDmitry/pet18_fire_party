@@ -4,21 +4,21 @@
   margin: .2em;
   padding: .2em;
 
-  // height: 2.5em;
-
   border-radius: .5em;
   background-color: rgb(255, 255, 255);
   
   cursor: pointer;
 }
-
 .chatview:hover{
   background-color: var(--bg-secondary-light);
 }
-
-.selected{
-  background-color: var(--primary-color) !important;
+.chatview[data-selected="true"]{
+  background-color: #36ddff;//#1dfcc6;
 }
+.chatview[data-selected="true"]:hover{
+  background-color: #36e8ff;
+}
+
 
 .userImage{
   display: block;
@@ -26,19 +26,23 @@
   height: 3em;
   border-radius: 10em;
   border: 1px solid #383838;
+
+  user-select: none;
 }
 
-
-.secondBlock{
+.userInfo{
   margin-left: .5em;
 }
 
 .userName{
   border-radius: .2em;
-  user-select: none;
   font-weight: 500;
+  user-select: none;
+}
+.userName[data-isOnline="true"]{
+  background-color: rgb(116, 255, 123);
 }
 
-.userNameOnline{
-  background-color: rgb(116, 255, 123);
+.lastMessage{
+  user-select: none;
 }

@@ -5,29 +5,36 @@ import { IMyChat } from "@/common/me.interface";
 
 export interface ChatViewProps{
     selected?: boolean
-    chat:IMyChat;
-    selectChat?:(chatId:string)=>void;
-    online?:boolean
+    chat: IMyChat
+    selectChat?: (chatId:string)=>void
+    online?: boolean
 }
 
 export default function ChatView({ chat, selectChat, selected = false, online }:ChatViewProps) {
     // console.log("ChatView selected: ",selected)
+
     const selectChatEvent = ()=>{
-        if(selectChat) selectChat(chat.id);
+        if(selectChat) selectChat(chat.id)
     }
 
     const imageURL = !chat.user.imageID ? "/img/user.png" : 
-    `http://${window.location.hostname}:3000/api/image/buffer/${chat.user.imageID}`;
+    `http://${window.location.hostname}:3000/api/image/buffer/${chat.user.imageID}`
 
 
     return (
-        <div className={styles.chatview + ` ${selected ? styles.selected : ""}`} onClick={selectChatEvent}>
-            <img className={styles.userImage} src={imageURL} alt={`the avatar of ${chat.user.name}`} />
+        <div data-selected={selected} className={styles.chatview} onClick={selectChatEvent}>
+            <img
+                className={styles.userImage} 
+                src={imageURL}
+                alt={`the avatar of ${chat.user.name}`}
+            />
 
-            <div className={styles.secondBlock}>
-                <span className={styles.userName + (online ? ` ${styles.userNameOnline} ` : "")}>{chat.user.name}</span>
-                <br/>
-                <span>this is a last message</span>
+            <div className={styles.userInfo}>
+                <span 
+                    data-isOnline={online} 
+                    className={styles.userName}
+                >{chat.user.name}</span>                
+                <div className={styles.lastMessage}>this is a last message</div>
             </div>
         </div>
     )
