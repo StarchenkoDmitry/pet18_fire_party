@@ -31,7 +31,7 @@ export default function ChatView({ chat, selectChat, selected = false, online }:
 
             <div className={styles.userInfo}>
                 <span 
-                    data-isOnline={online} 
+                    data-online={online} 
                     className={styles.userName}
                 >{chat.user.name}</span>                
                 <div className={styles.lastMessage}>this is a last message</div>

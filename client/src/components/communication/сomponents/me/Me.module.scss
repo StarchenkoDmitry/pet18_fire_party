@@ -21,9 +21,14 @@
   cursor: pointer;
 }
 
+.meInfo{
+  margin-left: .4em;
+}
+
 .name{
+  display: block;
   // padding: .5em;
-  padding: .25em;
+  // padding: .25em;
   // font-size: 1.25em;
   font-weight: 500;
   user-select: none;
