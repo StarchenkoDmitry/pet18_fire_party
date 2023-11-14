@@ -18,6 +18,7 @@ import { ISubOnChat, IResSubOnChat } from "src/common/gateway.interfaces";
 import { ChatService } from "src/chat/chat.service";
 import { UsersOnlineService } from "./services/usersOnline.service";
 import { UserService } from "src/user/user.service";
+import { verifyName, verifySurname } from "src/utils/validations";
 
 @WebSocketGateway(3020, {
   cors:{ origin:true, credentials: true, },
@@ -90,23 +91,25 @@ export class Gateway implements OnGatewayConnection, OnGatewayDisconnect{
   }
 
   @SubscribeMessage("changeName")
-  async changeName(client: UserSocket, data:string){
-    console.log("changeName data:",data)
-    const res = await this.userService.setName(client.userId,data)
+  async changeName(client: UserSocket, name:string){
+    console.log("changeName data:",name)
+    if(!verifyName(name)) return false
+    const res = await this.userService.setName(client.userId,name)
     client.emit("changeMe",{
       type:"setName",
-      payload:data
+      payload:name
     })
     return !!res
   }
 
   @SubscribeMessage("changeSurname")
-  async changeSurname(client: UserSocket, data:string){
-    console.log("changeSurname data:",data)
-    const res = await this.userService.setSurname(client.userId,data)
+  async changeSurname(client: UserSocket, surname:string){
+    console.log("changeSurname data:",surname)
+    if(!verifySurname(surname)) return false
+    const res = await this.userService.setSurname(client.userId,surname)
     client.emit("changeMe",{
       type:"setSurname",
-      payload:data
+      payload:surname
     })
     return !!res
   }
