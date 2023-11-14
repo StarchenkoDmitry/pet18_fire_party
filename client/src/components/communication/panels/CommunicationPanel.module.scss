@@ -7,13 +7,7 @@
 
   width: 15em;
   // height: 100%;
-  //todo: Доделать grid и flex
-}
-
-.block_poisk{
-  // flex: 1;
-  background-color: rgb(196, 54, 209);
-  display: flex;
+  //TODO: Доделать grid и flex
 }
 
 .input{
@@ -24,9 +18,11 @@
 
 .list_chats{
   flex: 1;
+  padding-bottom: 4em;//пустое пространство внизу
   background-color: var(--bg-light);
+  
+  overflow-y: scroll;
 }
-
 
 .btn_add_chat{
   position: absolute;
@@ -35,7 +31,7 @@
 
   margin: .2em;
   
-  //сделать ширину и высоту в 3.375em(ах)
+  //TODO:(наверно это ненужно) сделать ширину и высоту в 3.375em(ах)
   width: 54px;
   height: 54px;
 

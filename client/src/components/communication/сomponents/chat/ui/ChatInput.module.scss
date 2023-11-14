@@ -1,27 +1,63 @@
 .container_input{
-  background-color: #587ae7;
-}
-
-.block_command_input{
   display: flex;
   margin: .4em;
+  margin-top: .1em;
+  margin-bottom: .5em;
   padding: .4em;
   border-radius: .5em ;
-  background-color: bisque;
+}
+
+.cloudInput{
+  display: flex;
+  flex: 1;
+  // padding: 1em;
+  padding: .4em;
+  border-radius: 1em;
+  background-color: rgb(255, 255, 255);
+}
+
+.selectSmile{
+  border-radius: 1em;
+  border: 0px;
 }
 
 .input{
   flex: 1;
-  padding: .4em;
+  padding: .5em;
+  padding-left: .75em;
   // width: 70%;
-  border-radius: .4em;
+  // border-radius: .4em;
+  background-color: #ffffff00;
+  border: 0px;
+  font-size: 1em;
   white-space: pre-wrap;
 }
+.input:focus{
+  outline: none;
+}
+
+// .btn_send{
+//   margin-left: .5em;
+//   padding: .5em;
+//   border-radius: .4em;
+//   background-color: #587ae7;
+// }
 
 
-.btn_send{
+.send{
   margin-left: .5em;
-  padding: .5em;
-  border-radius: .4em;
-  background-color: #587ae7;
+  padding: .4em;
+  width: 3em;
+  height: 3em;
+
+  background-color: #fff;
+  border-radius: 10em;
+  transition: all .2s;
+  cursor: pointer;
+}
+.send:hover{
+  transform: scale(1.15);
+}
+.send:active{
+  transform: scale(.85);
 }

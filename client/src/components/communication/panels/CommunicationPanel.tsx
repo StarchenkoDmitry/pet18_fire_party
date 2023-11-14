@@ -43,10 +43,7 @@ export default function CommunicationPanel() {
     return (
         <div className={styles.communication_panel}>
             <Me/>
-            {/* <div className={styles.block_poisk}>
-                <input className={styles.input} type="text" />
-            </div> */}
-            <div className={styles.list_chats}>
+            <div className={styles.list_chats + " scrollbar1"}>
                 { rend_chats }
             </div>
             <div className={styles.btn_add_chat} onClick={openModal}>❤</div>

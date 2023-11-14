@@ -8,11 +8,7 @@ export interface MessageProps{
 }
 
 export default function MessageBox({message,toRemove}:MessageProps) {
-    const createAtDate = new Date(message.createAt);
-    var createAt = [createAtDate.getHours(), createAtDate.getMinutes()].map((x)=>{
-        return x < 10 ? "0" + x : x
-    }).join(":");
-
+    const createAt = convertCustomData(message.createAt)
     return (
         <div className={styles.message}>
             <div className={styles.message_head}>
@@ -25,4 +21,12 @@ export default function MessageBox({message,toRemove}:MessageProps) {
             </p>
         </div>
     )
+}
+
+function convertCustomData(dataStr:string | Date):string{
+    const data = typeof dataStr === "string" ? new Date(dataStr) : dataStr
+    const createAt = [data.getHours(), data.getMinutes()].map((x)=>{
+        return x < 10 ? "0" + x : x
+    }).join(":")
+    return createAt
 }

@@ -3,22 +3,27 @@
   align-items: center;
 
   padding-left: .5em;
-
   height: 3.5em;
+
   background-color: #f4f4f4;
 }
 
 .meAvatar{
   display: block;
   
-  width: 3.2em;
-  height: 3.2em;
+  width: 3em;
+  height: 3em;
   
-  border-radius: .6em;
-  // border: .125em solid #fff;
+  border-radius: .8em;
   background-color: #ededed;
+  
+  transition: all .2s;
+
   user-select: none;
   cursor: pointer;
+}
+.meAvatar:hover{
+  box-shadow: 0px 0px .6em 0px #00000052;
 }
 
 .meInfo{
@@ -27,18 +32,14 @@
 
 .name{
   display: block;
-  // padding: .5em;
-  // padding: .25em;
-  // font-size: 1.25em;
   font-weight: 500;
   user-select: none;
 }
 
-
 .setting{
   margin-left: auto;
   width: 3em;
-  height: 3em;
+  height: 3em;  
   user-select: none;
   cursor: pointer;
 }

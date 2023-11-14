@@ -10,15 +10,12 @@ html{
 
 
 :root {
-  /* --max-width: 1000px;
-  --main-color-bg: rgb(152, 255, 161); */
-
   /* light theme tokens */
   --bg-light: #fff;
   --bg-secondary-light: #f3f3f4;
   --text-light: #000;
 
-  --bg-chat-light: #223053;
+  --bg-chat-light: #389ce8;
   --bg-chat-input-light: #3633e2;
   --bg-chat-message-light: #ffffff;
   
@@ -30,7 +27,6 @@ html{
   --accent-dark: 90, 182, 204; */
 
   
-
 
 
   --surface-color: #212121;
@@ -50,6 +46,31 @@ html{
   --font-size-14: 14px;
   --font-size-12: 12px;
   --font-size: var(--font-size-16);
+}
 
-  
+
+
+
+/*Custome a scrollbar*/
+.scrollbar1{
+  /* for firfox */
+  scrollbar-width: thin;
+}
+
+.scrollbar1::-webkit-scrollbar {
+  width: 0.3125em;
+}
+
+.scrollbar1::-webkit-scrollbar-track {
+  background-color: #ffffff00;
+  border-radius: 0.3125em;
+}
+
+.scrollbar1::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0);
+  border-radius: 0.3125em;
+}
+
+.scrollbar1:hover::-webkit-scrollbar-thumb{
+  background-color: rgba(0, 0, 0, .2);
 }

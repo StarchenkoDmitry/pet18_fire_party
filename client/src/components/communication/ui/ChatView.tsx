@@ -11,8 +11,6 @@ export interface ChatViewProps{
 }
 
 export default function ChatView({ chat, selectChat, selected = false, online }:ChatViewProps) {
-    // console.log("ChatView selected: ",selected)
-
     const selectChatEvent = ()=>{
         if(selectChat) selectChat(chat.id)
     }
@@ -24,7 +22,8 @@ export default function ChatView({ chat, selectChat, selected = false, online }:
     return (
         <div data-selected={selected} className={styles.chatview} onClick={selectChatEvent}>
             <img
-                className={styles.userImage} 
+                data-online={online}
+                className={styles.userImage}
                 src={imageURL}
                 alt={`the avatar of ${chat.user.name}`}
             />
@@ -33,7 +32,7 @@ export default function ChatView({ chat, selectChat, selected = false, online }:
                 <span 
                     data-online={online} 
                     className={styles.userName}
-                >{chat.user.name}</span>                
+                >{chat.user.name}</span>
                 <div className={styles.lastMessage}>this is a last message</div>
             </div>
         </div>

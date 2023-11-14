@@ -1,8 +1,10 @@
 .header{
   display: flex;
   align-items: center;
-  padding: 0 1em;
+
+  padding: 0 1em;  
   height: 3.5em;
+
   background-color: #fff;
 }
 
@@ -10,10 +12,10 @@
   display: block;
   flex: none;
 
-  width: 2.625em;
-  height: 2.625em;
+  width: 3em;
+  height: 3em;
 
-  border-radius: 2em;
+  border-radius: .8em;
   background-color: #ededed;
   overflow: hidden;
 }
@@ -23,11 +25,14 @@
 }
 
 .name{
-  font-size: 1em;
   font-weight: 500;
 
   white-space: nowrap;
   text-overflow: ellipsis;
 
   user-select: none;
+}
+
+.statusOnline{
+  font-size: .75em;
 }

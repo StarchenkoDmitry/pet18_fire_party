@@ -1,7 +1,8 @@
 .chatview{
   display: flex;
 
-  margin: .2em;
+  margin: .1em;
+  margin-left: 0.3125em;
   padding: .2em;
 
   border-radius: .5em;
@@ -10,13 +11,13 @@
   cursor: pointer;
 }
 .chatview:hover{
-  background-color: var(--bg-secondary-light);
+  background-color: #f3f3f4;
 }
 .chatview[data-selected="true"]{
-  background-color: #36ddff;//#1dfcc6;
+  background-color: #389ce8;
 }
 .chatview[data-selected="true"]:hover{
-  background-color: #36e8ff;
+  background-color: #4bb1ff;
 }
 
 
@@ -25,10 +26,14 @@
   width: 3em;
   height: 3em;
   border-radius: 10em;
-  border: 1px solid #383838;
+  border: 0.2em solid rgb(230 230 230);
 
   user-select: none;
 }
+.userImage[data-online="true"]{
+  border: 0.2em solid rgb(55 36 255);
+}
+
 
 .userInfo{
   margin-left: .5em;
@@ -39,9 +44,9 @@
   font-weight: 500;
   user-select: none;
 }
-.userName[data-online="true"]{
-  background-color: rgb(116, 255, 123);
-}
+// .userName[data-online="true"]{
+//   background-color: rgb(116, 255, 123);
+// }
 
 .lastMessage{
   user-select: none;
