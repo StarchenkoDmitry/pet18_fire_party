@@ -1,6 +1,7 @@
 import { useFriendsOnline } from "@/store/FriendsOnline";
 import styles from "./ChatHeader.module.scss";
 import { IMyChat } from "@/common/me.interface";
+import { GetImageUrl } from "@/utils/Image";
 
 
 export interface ChatHeaderProps{
@@ -12,8 +13,7 @@ export default function ChatHeader({info}:ChatHeaderProps) {
     
     if(info){
         const isOnline = onlines.includes(info.user.id)
-        const imageURL = !info.user.imageID ? "/img/user.png" :
-        `http://${window.location.hostname}:3000/api/image/buffer/${info.user.imageID}`
+        const imageURL = GetImageUrl(info.user.imageID)
 
         return(
             <div className={styles.header}>

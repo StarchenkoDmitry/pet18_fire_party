@@ -1,5 +1,6 @@
 import styles from "./ChatView.module.scss";
 
+import { GetImageUrl } from "@/utils/Image";
 import { IMyChat } from "@/common/me.interface";
 
 
@@ -15,10 +16,8 @@ export default function ChatView({ chat, selectChat, selected = false, online }:
         if(selectChat) selectChat(chat.id)
     }
 
-    const imageURL = !chat.user.imageID ? "/img/user.png" : 
-    `http://${window.location.hostname}:3000/api/image/buffer/${chat.user.imageID}`
-
-
+    const imageURL = GetImageUrl(chat.user.imageID)
+    
     return (
         <div data-selected={selected} className={styles.chatview} onClick={selectChatEvent}>
             <img

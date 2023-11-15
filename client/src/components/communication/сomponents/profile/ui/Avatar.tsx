@@ -1,5 +1,7 @@
 import styles from "./Avatar.module.scss";
 
+import { GetImageUrl } from "@/utils/Image";
+
 
 export interface AvatarProps{
     imageID:string | null;
@@ -7,10 +9,9 @@ export interface AvatarProps{
 }
 
 export default function Avatar({imageID,onClick}:AvatarProps) {
-    console.log("Rendering Avatar")
+    // console.log("Rendering Avatar")
 
-    const imageURL = imageID ? `http://127.0.0.1:3000/api/image/buffer/${imageID}` : 
-    "/img/user.png";
+    const imageURL = GetImageUrl(imageID)
 
     return (
         <img

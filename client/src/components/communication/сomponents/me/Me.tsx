@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import ProfileModal from "../profile/modals/ProfileModal";
 import { useMe } from "@/store/Me";
+import { GetImageUrl } from "@/utils/Image";
 
 
 export default function Me() {
@@ -15,8 +16,7 @@ export default function Me() {
     const openProfile = ()=>setShowProfile(true)
 
     if(me){
-        const imageURL = !me.imageID ? "/img/user.png" : 
-        `http://${window.location.hostname}:3000/api/image/buffer/${me.imageID}`
+        const imageURL = GetImageUrl(me.imageID)
         
         return (
             <div className={styles.me}>
