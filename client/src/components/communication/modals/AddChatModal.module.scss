@@ -5,11 +5,12 @@
   left: 0;
   right: 0;
   
-  background-color: rgba(0, 0, 0, 0.445);
-
   display: none;
   justify-content: center;
   align-items: center;
+
+  background-color: rgba(0, 0, 0, 0.445);
+
   z-index: 100;
 }
 
@@ -32,12 +33,16 @@
 }
 
 
+.blockSearch{
+  display: flex;
+}
 
-.input_lable{
+.label{
   padding: .4em;
 }
 
 .input{
+  flex: 1;
   padding: .2em;
   font-size: 1em;
   border-radius: .4em;

@@ -43,7 +43,7 @@ export class UserController {
   @UseGuards(AuthGuard)
   async findAllByName(@Param("text") text:string){
     // console.log(`user/findAllByName/:text text: ${text}`);
-    return await this.userRepository.findAllByName(text);
+    return await this.userRepository.findManyByName(text);
   }
   
   @Post('img')

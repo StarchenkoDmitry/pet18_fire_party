@@ -10,7 +10,7 @@ import {
 import { Server } from "socket.io";
 
 import { UserSocket } from "./gateway.interface";
-import { IUser, IUserForMe } from "src/common/user.interface";
+import { IUser, IUserForMe, IUserForSearch } from "src/common/user.interface";
 import { IMyChat } from "src/common/me.interface";
 
 import { UserRepository } from "src/user/user.repository";
@@ -112,5 +112,18 @@ export class Gateway implements OnGatewayConnection, OnGatewayDisconnect{
       payload:surname
     })
     return !!res
+  }
+
+  @SubscribeMessage("searchUsers")
+  async searchUser(client: UserSocket, name:string):Promise<IUserForSearch[]>{
+    console.log("searchUsers data:",name)
+    const users = await this.userRepository.findManyByName(name);
+    if(!users) return
+    return users.map(u=>({
+      id:u.id,
+      name:u.name,
+      surname:u.surname,
+      imageID:u.imageID,
+    }))
   }
 }

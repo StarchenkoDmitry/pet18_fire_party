@@ -14,3 +14,5 @@ export interface IUser {
 }
 
 export type IUserForMe = Omit<IUser, "passwordHash" | "session">
+
+export type IUserForSearch = Pick<IUser, "name" | "surname" | "id" | "imageID">

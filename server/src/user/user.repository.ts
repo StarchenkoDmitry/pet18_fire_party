@@ -49,37 +49,43 @@ export class UserRepository {
   async changeImage(userID:string,imageID:string):Promise<boolean>{    
     try {
       const res = await this.prisma.user.update({
-        data:{ imageID:imageID },
-        where:{ id:userID }
+        data:{ 
+          imageID: imageID
+        },
+        where:{ 
+          id: userID
+        }
       });
       // console.log("changeImg res: ",res);
-      return true;  
+      return true
     } catch (error) {
       console.log("UserService changeImg error: ",error);
-      return false;      
+      return false
     }
   }
 
-  async findAllByName(text:string,lemit:number = 10):Promise<User[]>{
-    const userss = await this.prisma.user.findMany({
-      where:{
-        login:{
-          contains:text
+  async findManyByName(name:string,limit:number = 16):Promise<User[]>{
+    try {
+      const users = await this.prisma.user.findMany({
+        take:limit,
+        where:{
+          name:{
+            contains:name
+          }
         }
-      }
-    });
-
-    return userss.map(u=>{
-      return u;
-    })
+      })
+      return users
+    } catch (error) {
+      console.error("findManyByName error:",error)
+    }
   }
 
   async findOne(login: string):Promise<User>{
-    return this.prisma.user.findFirst({where:{login:login}})
+    return await this.prisma.user.findFirst({where:{login:login}})
   }
 
   async findOneBySession(session: string):Promise<User>{
-    return this.prisma.user.findFirst({where:{session:session}})
+    return await this.prisma.user.findFirst({where:{session:session}})
   }
 
   async getMyChats(userId: string):Promise<IMyChat[]>{
