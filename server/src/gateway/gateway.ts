@@ -117,7 +117,7 @@ export class Gateway implements OnGatewayConnection, OnGatewayDisconnect{
   @SubscribeMessage("searchUsers")
   async searchUser(client: UserSocket, name:string):Promise<IUserForSearch[]>{
     console.log("searchUsers data:",name)
-    const users = await this.userRepository.findManyByName(name);
+    const users = await this.userRepository.findManyByNameWhoNoFriend(client.userId,name)
     if(!users) return
     return users.map(u=>({
       id:u.id,
