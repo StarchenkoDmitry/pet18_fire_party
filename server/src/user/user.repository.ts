@@ -80,6 +80,36 @@ export class UserRepository {
     }
   }
 
+  async findManyByNameWhoNoFriend(userId:string,name:string,limit:number = 16):Promise<User[]>{
+    try {
+      const users = await this.prisma.user.findMany({
+        take:limit,
+        where:{
+          name:{
+            contains:name
+          },
+          id:{
+            not:userId
+          },
+          NOT:{
+            chats:{
+              some:{
+                users:{
+                  some:{
+                    id:userId
+                  }
+                }
+              }
+            }
+          }          
+        },
+      })
+      return users
+    } catch (error) {
+      console.error("findManyByName error:",error)
+    }
+  }
+
   async findOne(login: string):Promise<User>{
     return await this.prisma.user.findFirst({where:{login:login}})
   }
