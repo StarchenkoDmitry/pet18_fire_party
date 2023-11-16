@@ -51,6 +51,45 @@ export class ChatRepository {
     return newChat
   }
 
+  async remove(userId:string,chatId:string) {
+    console.log(`ChatRepository-remove`,userId,chatId)
+    const chat = await this.prisma.chat.findFirst({
+      where:{
+        id:chatId,
+        users:{
+          some:{
+            id:userId
+          }
+        }
+      }
+    })
+
+    if(!chat){
+      console.log(`ChatRepository-remove error: chat is exist.`,chat)
+      return false
+    }
+
+    const resDeleteMessage = await this.prisma.message.deleteMany({
+      where:{
+        chatId:chatId
+      },
+    })
+    console.log(`ChatRepository-remove resDeleteMessage:`,resDeleteMessage)
+    if(!resDeleteMessage){
+      return false
+    }
+
+    const resDelete = await this.prisma.chat.delete({
+      where:{
+        id:chatId
+      },
+    })
+    console.log(`ChatRepository-remove resDelete:`,resDelete)
+    if(!resDelete) return false
+
+    return true
+  }
+
   async getIncludeUsers(chatId:string):Promise<IChatIncludeUsers>{
     return await this.prisma.chat.findFirst({
       where:{id:chatId},
@@ -62,7 +101,7 @@ export class ChatRepository {
   
   async getMy(chatId:string,userId:string):Promise<IMyChat>{
     // console.log("getMy chatId, userId:",chatId,userId)
-    const data = await this.prisma.chat.findFirst({
+    const resData = await this.prisma.chat.findFirst({
       where:{id:chatId},
       include:{
         users:{
@@ -79,9 +118,18 @@ export class ChatRepository {
         },
       }
     })
-    const {users, ...othData } = data
-    if(users.length !== 1) throw ""
-    return {...othData, user: users[0]}
+    // console.log(`ChatRepository-getMy resData:`,resData)
+    if(!resData) return
+
+    const {users, id, lastMessageID } = resData
+    if(users.length !== 1){
+      throw new Error("users length !== 1")
+    }
+    return {
+      id,
+      lastMessageID,
+      user: users[0]
+    }
   }
 
   async createMessage(chatId:string, userId:string, text:string):Promise<Message> {

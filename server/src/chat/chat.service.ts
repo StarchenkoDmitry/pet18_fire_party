@@ -22,6 +22,7 @@ export class ChatService {
   private mutexChats = new MutexKeys()
   private mutexMessagesChats = new MutexKeys()
   private mutexCreate = new Mutex()
+  private mutexRemove = new Mutex()
 
   async create(userId:string,friendId:string):Promise<Chat>{
     await this.mutexCreate.lock()
@@ -31,10 +32,14 @@ export class ChatService {
     this.mutexCreate.unlock()
     return res
   }
+  async remove(userId:string,chatId:string) {
+    this.mutexRemove.lock()
 
-  // async remove(chatId:string){
-  //   throw "func не доделано"
-  // }
+    const resDelete = await this.chatRepo.remove(userId,chatId)
+
+    this.mutexRemove.unlock()
+    return resDelete
+  }
 
   async getAll() {
     return await this.chatRepo.getAll()

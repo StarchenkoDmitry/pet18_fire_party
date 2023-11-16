@@ -19,6 +19,7 @@ import { ChatService } from "src/chat/chat.service";
 import { UsersOnlineService } from "./services/usersOnline.service";
 import { UserService } from "src/user/user.service";
 import { verifyName, verifySurname } from "src/utils/validations";
+import { ChatRepository } from "src/chat/chat.repository";
 
 @WebSocketGateway(3020, {
   cors:{ origin:true, credentials: true, },
@@ -125,5 +126,12 @@ export class Gateway implements OnGatewayConnection, OnGatewayDisconnect{
       surname:u.surname,
       imageID:u.imageID,
     }))
+  }
+
+  @SubscribeMessage("deleteChat")
+  async deleteChat(client: UserSocket, chatId:string):Promise<boolean>{
+    console.log("deleteChat data:",chatId)
+    const resDelete = await this.chatService.remove(client.userId,chatId)
+    return resDelete
   }
 }

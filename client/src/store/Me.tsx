@@ -12,8 +12,9 @@ export interface IMeStore extends IUseConnect{
     me?:IUserForMe
     chats?:IMyChat[]
 
-    changeName:(name:String)=>void
-    changeSurname:(surname:String)=>void
+    changeName:(name:string)=>void
+    changeSurname:(surname:string)=>void
+    deleteChat:(chatId:string)=>void
 }
 
 export const useMe = create<IMeStore>((set, get) =>({
@@ -64,4 +65,8 @@ export const useMe = create<IMeStore>((set, get) =>({
         const { _socket } = get()
         _socket?.emit("changeSurname",surname)
     },
+    deleteChat(chatId){
+        const { _socket } = get()
+        _socket?.emit('deleteChat',chatId)
+    }
 }))
