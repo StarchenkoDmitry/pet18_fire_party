@@ -14,7 +14,7 @@ import { IUser, IUserForMe, IUserForSearch } from "src/common/user.interface";
 import { IMyChat } from "src/common/me.interface";
 
 import { UserRepository } from "src/user/user.repository";
-import { ISubOnChat, IResSubOnChat } from "src/common/gateway.interfaces";
+import { ISubOnChat, IResSubOnChat, IResSubOnMe, ME_EVENT_CHANGE_NAME, ME_EVENT_CHANGE_SURNAME, MeEvent } from "src/common/gateway.interfaces";
 import { ChatService } from "src/chat/chat.service";
 import { UsersOnlineService } from "./services/usersOnline.service";
 import { UserService } from "src/user/user.service";
@@ -50,6 +50,7 @@ export class Gateway implements OnGatewayConnection, OnGatewayDisconnect{
     this.onlines.unsubOnOnline(user)
   }
 
+
   @SubscribeMessage("getMe")
   async getMe(client: UserSocket, data: any):Promise<IUserForMe> {
     // console.log("gateway/getMe",data,client.userSession)
@@ -64,6 +65,24 @@ export class Gateway implements OnGatewayConnection, OnGatewayDisconnect{
     // console.log("getMyChats data, session: ",data,client.userSession)
     return await this.userRepository.getMyChats(client.userId)
   }
+
+  @SubscribeMessage("subOnMe")
+  async subOnMe(client: UserSocket, data: any):Promise<IResSubOnMe> {
+    console.log("subOnMe")
+
+    const userData: IUser = await this.userRepository.get(client.userId)
+    if(!userData) return
+
+    const myChatData =  await this.userRepository.getMyChats(client.userId)
+
+    const { id, name, surname, imageID, login, email } = userData    
+
+    return {
+      me:{ id, name, surname, imageID, login, email },
+      chats:myChatData
+    }
+  }
+
 
   @SubscribeMessage("createMessage")
   async createMessage(client: UserSocket, data: any){
@@ -92,26 +111,28 @@ export class Gateway implements OnGatewayConnection, OnGatewayDisconnect{
   }
 
   @SubscribeMessage("changeName")
-  async changeName(client: UserSocket, name:string){
+  async changeName(client: UserSocket, name:string):Promise<boolean>{
     console.log("changeName data:",name)
     if(!verifyName(name)) return false
     const res = await this.userService.setName(client.userId,name)
-    client.emit("changeMe",{
-      type:"setName",
-      payload:name
-    })
+    const event: MeEvent = {
+      type:ME_EVENT_CHANGE_NAME,
+      data:{name}
+    }
+    client.emit("eventOnMe",event)
     return !!res
   }
 
   @SubscribeMessage("changeSurname")
-  async changeSurname(client: UserSocket, surname:string){
+  async changeSurname(client: UserSocket, surname:string):Promise<boolean>{
     console.log("changeSurname data:",surname)
     if(!verifySurname(surname)) return false
-    const res = await this.userService.setSurname(client.userId,surname)
-    client.emit("changeMe",{
-      type:"setSurname",
-      payload:surname
-    })
+    const res = await this.userService.setSurname(client.userId,surname)    
+    const event: MeEvent = {
+      type:ME_EVENT_CHANGE_SURNAME,
+      data:{surname}
+    }
+    client.emit("eventOnMe",event)
     return !!res
   }
 
@@ -120,11 +141,8 @@ export class Gateway implements OnGatewayConnection, OnGatewayDisconnect{
     console.log("searchUsers data:",name)
     const users = await this.userRepository.findManyByNameWhoNoFriend(client.userId,name)
     if(!users) return
-    return users.map(u=>({
-      id:u.id,
-      name:u.name,
-      surname:u.surname,
-      imageID:u.imageID,
+    return users.map(({id, name, surname, imageID})=>({
+      id, name, surname, imageID
     }))
   }
 

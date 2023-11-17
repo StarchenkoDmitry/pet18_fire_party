@@ -14,9 +14,9 @@ export class UserRepository {
     console.log("constructor UserRepository")
   }
 
-  async get(id:string){
+  async get(userId:string){
     return await this.prisma.user.findFirst({
-      where:{id:id}
+      where:{id:userId}
     });
   }
   

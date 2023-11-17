@@ -6,7 +6,7 @@ import { IMessage } from 'src/common/chat.interface';
 import { IChatIncludeUsers, OnChangeChat } from './chat.interface';
 import { Chat, Message } from '@prisma/client';
 import { CustomEmiter } from 'src/utils/CustomEmiter';
-import { CHAT_EVENT_ADDMESSAGE, CHAT_EVENT_REMOVEMESSAGE, IResSubOnChat } from 'src/common/gateway.interfaces';
+import { CHAT_EVENT_ADDMESSAGE, CHAT_EVENT_DELETE_CHAT, CHAT_EVENT_REMOVEMESSAGE, IResSubOnChat } from 'src/common/gateway.interfaces';
 import { UserSocket } from 'src/gateway/gateway.interface';
 
 
@@ -38,6 +38,10 @@ export class ChatService {
     const resDelete = await this.chatRepo.remove(userId,chatId)
 
     this.mutexRemove.unlock()
+    this.eventChats.emit(chatId,{
+      type:CHAT_EVENT_DELETE_CHAT,
+      data:{chatId}
+    })
     return resDelete
   }
 

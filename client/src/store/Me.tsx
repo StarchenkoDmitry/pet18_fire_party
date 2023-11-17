@@ -4,40 +4,49 @@ import { Socket } from "socket.io-client";
 import { IUserForMe } from "@/common/user.interface";
 import { IMyChat } from "@/common/me.interface";
 import { IUseConnect } from "./Connent";
+import { IResSubOnMe, ME_EVENT_CHANGE_NAME, ME_EVENT_CHANGE_SURNAME, MeEvent } from "@/common/gateway.interfaces";
 
 
 export interface IMeStore extends IUseConnect{
-    _socket:Socket | null
+    _socket: Socket | null
 
-    me?:IUserForMe
-    chats?:IMyChat[]
+    me?: IUserForMe
+    chats?: IMyChat[]
 
-    changeName:(name:string)=>void
-    changeSurname:(surname:string)=>void
-    deleteChat:(chatId:string)=>void
+    changeName: (name:string)=>void
+    changeSurname: (surname:string)=>void
+    deleteChat: (chatId:string)=>void
 }
 
 export const useMe = create<IMeStore>((set, get) =>({
     _socket: null,
   
     onConnect(newSocket) {
-        newSocket.timeout(5000).emit('getMe',(error:any,data?:IUserForMe) => {
-            // console.log('getMe: ',data)
-            set({me:data})
+        set({_socket:newSocket})
+
+        newSocket.timeout(5000).emit('subOnMe',(error:any,data?:IResSubOnMe) => {
+            console.log('subOnMe:', data)
+            if(!data) return
+
+            set({
+                me:data.me,
+                chats:data.chats
+            })
             
-            newSocket.on("changeMe",({type, payload}:{type:string,payload:any})=>{
-                console.log('changeMe data:', {type, payload})
+            newSocket.on("eventOnMe",({type, data}:MeEvent)=>{
+                console.log('eventOnMe data:', {type, data})
+                
                 switch(type){
-                    case "setName":{
+                    case ME_EVENT_CHANGE_NAME:{
                         const me = get().me
                         if(!me)return
-                        set({me:{...me, name:payload}})
+                        set({me:{...me, name:data.name}})
                         break
                     }
-                    case "setSurname":{
+                    case ME_EVENT_CHANGE_SURNAME:{
                         const me = get().me
                         if(!me)return
-                        set({me:{...me, surname:payload}})
+                        set({me:{...me, surname:data.surname}})
                         break
                     }
                     default:{
@@ -46,17 +55,11 @@ export const useMe = create<IMeStore>((set, get) =>({
                 }
             })
         })
-
-        newSocket.timeout(5000).emit('getMyChats',(error:any,data?:IMyChat[]) => {
-            // console.log('getMyChats: ',data)
-            set({chats:data})
-        })
-
-        set({_socket:newSocket})
     },
     onDisconnect() {
         set({_socket:null})
     },
+
     changeName(name) {
         const { _socket } = get()
         _socket?.emit("changeName",name)
