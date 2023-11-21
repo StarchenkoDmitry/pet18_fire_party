@@ -9,7 +9,7 @@ import {
     CHAT_EVENT_ADDMESSAGE,
     CHAT_EVENT_REMOVEMESSAGE,
     ChatEvent, IResSubOnChat
-} from "@/common/gateway.interfaces";
+} from "@/common/chat.interface";
 
 
 export interface IChatStore extends IUseConnect{
@@ -36,7 +36,7 @@ export interface IChatStore extends IUseConnect{
 }
 
 type IChatGET = () => IChatStore
-type IChatSET =  (partial: IChatStore | Partial<IChatStore> | ((state: IChatStore) => IChatStore | Partial<IChatStore>), replace?: boolean | undefined) => void
+type IChatSET = (partial: IChatStore | Partial<IChatStore> | ((state: IChatStore) => IChatStore | Partial<IChatStore>), replace?: boolean | undefined) => void
 
 function loadStore(id:string, set:IChatSET){
     if(!id) return

@@ -5,18 +5,24 @@ import { ChatModule } from './chat/chat.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ImageModule } from './image/image.module';
 import { GatewayModule } from './gateway/gateway.module';
+import { LockerModule } from './locker/locker.module';
+import { EventsModule } from './events/events.module';
 
 @Module({
   imports: [
     PrismaModule,
+    LockerModule,
+    EventsModule,
+    
     UserModule,
     ChatModule,
     ImageModule,
+
     AuthModule,
     GatewayModule
   ],
   controllers: [],
-  providers: [],  
+  providers: [],
   exports:[]
 })
 export class AppModule {} 

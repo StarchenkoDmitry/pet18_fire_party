@@ -10,16 +10,17 @@ import {
 import { Server } from "socket.io";
 
 import { UserSocket } from "./gateway.interface";
-import { IUser, IUserForMe, IUserForSearch } from "src/common/user.interface";
-import { IMyChat } from "src/common/me.interface";
+import { IUserForSearch } from "src/common/user.interface";
+import { TypeEventMe, EventMe, ME_EVENT_CHAT_INIT } from "src/common/me.interface";
 
 import { UserRepository } from "src/user/user.repository";
-import { ISubOnChat, IResSubOnChat, IResSubOnMe, ME_EVENT_CHANGE_NAME, ME_EVENT_CHANGE_SURNAME, MeEvent } from "src/common/gateway.interfaces";
 import { ChatService } from "src/chat/chat.service";
 import { UsersOnlineService } from "./services/usersOnline.service";
 import { UserService } from "src/user/user.service";
 import { verifyName, verifySurname } from "src/utils/validations";
-import { ChatRepository } from "src/chat/chat.repository";
+import { MeService } from "./services/me.service";
+import { IResSubOnChat, ISubOnChat } from "src/common/chat.interface";
+
 
 @WebSocketGateway(3020, {
   cors:{ origin:true, credentials: true, },
@@ -31,11 +32,14 @@ export class Gateway implements OnGatewayConnection, OnGatewayDisconnect{
     private readonly userRepository: UserRepository,
     private readonly userService: UserService,
     private readonly chatService: ChatService,
-    private readonly onlines: UsersOnlineService
-    ) {}
+    private readonly onlines: UsersOnlineService,
+    private readonly meService: MeService,
+  ) { }
 
   private readonly logger = new Logger(Gateway.name)
+
   @WebSocketServer() server: Server
+
 
   handleConnection(user: UserSocket, ...args: any[]) {
     this.logger.log(`Connected id:${user.id}`)
@@ -46,41 +50,28 @@ export class Gateway implements OnGatewayConnection, OnGatewayDisconnect{
     this.logger.log(`Disconnected id:${user.id}`)
 
     this.onlines.setUserOffline(user)
-    if(user.subChat) user.subChat()
+    if(user.cancelSubOnChat) user.cancelSubOnChat()
     this.onlines.unsubOnOnline(user)
   }
 
 
-  @SubscribeMessage("getMe")
-  async getMe(client: UserSocket, data: any):Promise<IUserForMe> {
-    // console.log("gateway/getMe",data,client.userSession)
-    const user: IUser = await this.userRepository.findOneBySession(client.userSession)
-    if(!user) return
-    const {passwordHash,session, ...me} = user
-    return me
+  @SubscribeMessage(TypeEventMe.subscribeOnMe)
+  async subOnMe(client: UserSocket, data: any){
+    console.log(TypeEventMe.subscribeOnMe)
+    await this.meService.subscribe(client)
   }
 
-  @SubscribeMessage("getMyChats")
-  async getMeChats(client: UserSocket, data: any):Promise<IMyChat[]> {
-    // console.log("getMyChats data, session: ",data,client.userSession)
-    return await this.userRepository.getMyChats(client.userId)
-  }
+  @SubscribeMessage(TypeEventMe.subscribeOnChats)
+  async subOnMeChats(client: UserSocket, data: any){
+    console.log(TypeEventMe.subscribeOnMe)
+    await this.meService.subscribe(client)
 
-  @SubscribeMessage("subOnMe")
-  async subOnMe(client: UserSocket, data: any):Promise<IResSubOnMe> {
-    console.log("subOnMe")
-
-    const userData: IUser = await this.userRepository.get(client.userId)
-    if(!userData) return
-
-    const myChatData =  await this.userRepository.getMyChats(client.userId)
-
-    const { id, name, surname, imageID, login, email } = userData    
-
-    return {
-      me:{ id, name, surname, imageID, login, email },
-      chats:myChatData
+    const chats = await this.userRepository.getMyChats(client.userId)
+    const event : EventMe = {
+      type: ME_EVENT_CHAT_INIT,
+      data:{ chats }
     }
+    client.emit(TypeEventMe.eventsOnChats,event)
   }
 
 
@@ -96,6 +87,7 @@ export class Gateway implements OnGatewayConnection, OnGatewayDisconnect{
     return await this.chatService.removeMessage(chatId,messageId,client.userId)
   }
 
+
   @SubscribeMessage("subOnChat")
   async subscribeOnChat(client: UserSocket, {chatId}: ISubOnChat):Promise<IResSubOnChat>{
     console.log("subOnChat data:",{chatId})
@@ -110,16 +102,12 @@ export class Gateway implements OnGatewayConnection, OnGatewayDisconnect{
     return myFriendsOnline
   }
 
+
   @SubscribeMessage("changeName")
   async changeName(client: UserSocket, name:string):Promise<boolean>{
     console.log("changeName data:",name)
     if(!verifyName(name)) return false
     const res = await this.userService.setName(client.userId,name)
-    const event: MeEvent = {
-      type:ME_EVENT_CHANGE_NAME,
-      data:{name}
-    }
-    client.emit("eventOnMe",event)
     return !!res
   }
 
@@ -127,15 +115,11 @@ export class Gateway implements OnGatewayConnection, OnGatewayDisconnect{
   async changeSurname(client: UserSocket, surname:string):Promise<boolean>{
     console.log("changeSurname data:",surname)
     if(!verifySurname(surname)) return false
-    const res = await this.userService.setSurname(client.userId,surname)    
-    const event: MeEvent = {
-      type:ME_EVENT_CHANGE_SURNAME,
-      data:{surname}
-    }
-    client.emit("eventOnMe",event)
+    const res = await this.userService.setSurname(client.userId,surname)
     return !!res
   }
 
+  
   @SubscribeMessage("searchUsers")
   async searchUser(client: UserSocket, name:string):Promise<IUserForSearch[]>{
     console.log("searchUsers data:",name)

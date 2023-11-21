@@ -14,10 +14,15 @@ export class UserRepository {
     console.log("constructor UserRepository")
   }
 
-  async get(userId:string){
-    return await this.prisma.user.findFirst({
-      where:{id:userId}
-    });
+  async get(userId:string):Promise<User>{
+    try {
+      return await this.prisma.user.findFirst({
+        where:{id:userId}
+      })
+    } catch (error) {
+      console.error(error)
+      return
+    }
   }
   
   async create(createUserDto: CreateUserDto):Promise<Boolean> {    

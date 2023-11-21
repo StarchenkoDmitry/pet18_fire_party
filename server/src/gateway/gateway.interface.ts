@@ -8,5 +8,7 @@ export interface UserSocket extends Socket {
   userId?: string
 
   currentChatId?:string
-  subChat?:()=>void
+  cancelSubOnChat?:()=>void
+
+  cancelSubOnMe?:()=>void
 }

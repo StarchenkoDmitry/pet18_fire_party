@@ -1,10 +1,8 @@
 import { create } from "zustand";
 import { Socket } from "socket.io-client";
-
 import { IUserForMe } from "@/common/user.interface";
-import { IMyChat } from "@/common/me.interface";
+import { EventMe, IMyChat, ME_EVENT_CHANGE_NAME, ME_EVENT_CHANGE_SURNAME, ME_EVENT_CHAT_INIT, ME_EVENT_INIT, TypeEventMe } from "@/common/me.interface";
 import { IUseConnect } from "./Connent";
-import { IResSubOnMe, ME_EVENT_CHANGE_NAME, ME_EVENT_CHANGE_SURNAME, MeEvent } from "@/common/gateway.interfaces";
 
 
 export interface IMeStore extends IUseConnect{
@@ -24,37 +22,51 @@ export const useMe = create<IMeStore>((set, get) =>({
     onConnect(newSocket) {
         set({_socket:newSocket})
 
-        newSocket.timeout(5000).emit('subOnMe',(error:any,data?:IResSubOnMe) => {
-            console.log('subOnMe:', data)
-            if(!data) return
-
-            set({
-                me:data.me,
-                chats:data.chats
-            })
+        newSocket.on(TypeEventMe.eventsOnMe,({type, data}:EventMe)=>{
+            console.log(`${TypeEventMe.eventsOnMe} data:`, {type, data})
             
-            newSocket.on("eventOnMe",({type, data}:MeEvent)=>{
-                console.log('eventOnMe data:', {type, data})
-                
-                switch(type){
-                    case ME_EVENT_CHANGE_NAME:{
-                        const me = get().me
-                        if(!me)return
-                        set({me:{...me, name:data.name}})
-                        break
-                    }
-                    case ME_EVENT_CHANGE_SURNAME:{
-                        const me = get().me
-                        if(!me)return
-                        set({me:{...me, surname:data.surname}})
-                        break
-                    }
-                    default:{
-                        break
-                    }
+            switch(type){
+                case ME_EVENT_INIT:{
+                    set({
+                        me:data.me
+                    })
+                    break
                 }
-            })
+                case ME_EVENT_CHANGE_NAME:{
+                    const me = get().me
+                    if(!me)return
+                    set({me:{...me, name:data.name}})
+                    break
+                }
+                case ME_EVENT_CHANGE_SURNAME:{
+                    const me = get().me
+                    if(!me)return
+                    set({me:{...me, surname:data.surname}})
+                    break
+                }
+                default:{
+                    break
+                }
+            }
         })
+        newSocket.emit(TypeEventMe.subscribeOnMe)
+
+
+        newSocket.on(TypeEventMe.eventsOnChats,({type, data}:EventMe)=>{
+            console.log(`${TypeEventMe.eventsOnMe} data:`, {type, data})
+            
+            switch(type){
+                case ME_EVENT_CHAT_INIT:{
+                    set({ chats:data.chats })
+                    break
+                }
+                default:{
+                    break
+                }
+            }
+        })
+        newSocket.emit(TypeEventMe.subscribeOnChats)
+
     },
     onDisconnect() {
         set({_socket:null})

@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Param, Delete, ValidationPipe, UsePipes, UseGuards, BadRequestException } from '@nestjs/common';
-import { CreateChatDto, CreateMessageDto } from './chat.dto';
+import { CreateChatDto, CreateMessageDto } from './dto/chat.dto';
 
 import { AuthGuard } from 'src/auth/auth.guard';
 import { UserRepository } from 'src/user/user.repository';
