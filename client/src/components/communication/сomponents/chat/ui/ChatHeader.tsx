@@ -1,4 +1,4 @@
-import { useFriendsOnline } from "@/store/FriendsOnline";
+import { useOnlineFriends } from "@/store/OnlineFriends";
 import styles from "./ChatHeader.module.scss";
 import { IMyChat } from "@/common/me.interface";
 import { GetImageUrl } from "@/utils/Image";
@@ -9,7 +9,7 @@ export interface ChatHeaderProps{
 }
 
 export default function ChatHeader({info}:ChatHeaderProps) {
-    const onlines = useFriendsOnline(state=>state.onlines)
+    const onlines = useOnlineFriends(state=>state.onlines)
     
     if(info){
         const isOnline = onlines.includes(info.user.id)

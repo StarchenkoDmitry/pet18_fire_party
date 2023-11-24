@@ -2,15 +2,16 @@ import { create } from "zustand";
 import { Socket } from "socket.io-client";
 
 import { IUseConnect } from "./Connent";
-import { ClientNameEvents, EventFriendOnline, ServerNameEvents } from "@/common/gateway.interfaces";
+import { ClientNameEvents, ServerNameEvents } from "@/common/gateway.interfaces";
+import { EventFriendOnline } from "@/common/onlineUsers.interface";
 
 
-export interface IFriendsOnlineStore extends IUseConnect{
+export interface IOnlineFriendsStore extends IUseConnect{
     _socket:Socket | null
     onlines:string[]
 }
 
-export const useFriendsOnline = create<IFriendsOnlineStore>((set, get) =>({
+export const useOnlineFriends = create<IOnlineFriendsStore>((set, get) =>({
     _socket: null,
     onlines:[],
 

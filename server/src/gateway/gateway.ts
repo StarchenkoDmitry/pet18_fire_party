@@ -17,7 +17,7 @@ import { ChatService } from "src/chat/chat.service";
 import { UserService } from "src/user/user.service";
 
 import { MeService } from "./services/me.service";
-import { UsersOnlineService } from "./services/usersOnline.service";
+import { OnlineUsersService } from "./services/onlineUsers.service";
 import { MyChatsService } from "./services/myChats.service";
 
 import { IUserForSearch } from "src/common/user.interface";
@@ -39,7 +39,7 @@ export class Gateway implements OnGatewayConnection, OnGatewayDisconnect{
     private readonly userService: UserService,
     private readonly chatService: ChatService,
 
-    private readonly onlines: UsersOnlineService,
+    private readonly onlineUsers: OnlineUsersService,
     private readonly meService: MeService,
     private readonly myChatsService :MyChatsService,
   ) { }
@@ -52,13 +52,13 @@ export class Gateway implements OnGatewayConnection, OnGatewayDisconnect{
   handleConnection(client: UserSocket, ...args: any[]) {
     this.logger.log(`Connected id:${client.id}`)
 
-    this.onlines.setUserOnline(client)
+    this.onlineUsers.setUserOnline(client)
   }
   handleDisconnect(client: UserSocket) {
     this.logger.log(`Disconnected id:${client.id}`)
 
-    this.onlines.setUserOffline(client)
-    this.onlines.unsubOnOnline(client)
+    this.onlineUsers.setUserOffline(client)
+    this.onlineUsers.unsubOnOnline(client)
 
     if(client.cancelSubOnChat) client.cancelSubOnChat()
 
@@ -106,7 +106,7 @@ export class Gateway implements OnGatewayConnection, OnGatewayDisconnect{
   @SubscribeMessage(ServerNameEvents.subOnChangeOnline)
   async subscribeOnChangeOnline(client: UserSocket, data:any){
     const myFriends = await this.userRepository.getMyFriends(client.userId)
-    const myFriendsOnline = this.onlines.subscribeOnOnline(client,myFriends)
+    const myFriendsOnline = this.onlineUsers.subscribeOnOnline(client,myFriends)
     return myFriendsOnline
   }
 

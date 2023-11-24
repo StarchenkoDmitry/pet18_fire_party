@@ -9,14 +9,14 @@ import ChatView from "../ui/ChatView";
 
 import { useMe } from "@/store/Me";
 import { useChat } from "@/store/Chat";
-import { useFriendsOnline } from "@/store/FriendsOnline";
+import { useOnlineFriends } from "@/store/OnlineFriends";
 
 export default function CommunicationPanel() {
     // console.log("Render CommunicationsPanel")
     
     const navigate = useNavigate()
     
-    const online = useFriendsOnline(state=>state.onlines)
+    const online = useOnlineFriends(state=>state.onlines)
     const chats = useMe((state)=>state.chats)
     const selectedChatId = useChat((state)=>state.id)
 

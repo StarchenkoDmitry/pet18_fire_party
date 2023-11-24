@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { Socket } from "socket.io-client";
 
 import { IUseConnect } from "./Connent";
-import { EventFriendOnline, ServerNameEvents } from "@/common/gateway.interfaces";
+import { ServerNameEvents } from "@/common/gateway.interfaces";
 import { IUserForSearch } from "@/common/user.interface";
 
 

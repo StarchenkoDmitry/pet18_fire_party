@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { UserSocket } from "../gateway.interface";
-import { ClientNameEvents, EventFriendOnline } from "src/common/gateway.interfaces";
+import { ClientNameEvents } from "src/common/gateway.interfaces";
+import { EventFriendOnline } from "src/common/onlineUsers.interface";
 
 
 interface IOnliner{
@@ -10,9 +11,9 @@ interface IOnliner{
 }
 
 @Injectable()
-export class UsersOnlineService {
+export class OnlineUsersService {
   constructor() {
-    console.log("constructor UsersOnlineService")
+    console.log("constructor OnlineUsersService")
     // setInterval(()=>{
     //   console.log("================")
     //   this.usersOnline.forEach((userData,key)=>{

@@ -92,7 +92,7 @@ export const useChat = create<IChatStore>((set, get) =>({
         })
     },
     async _reqChatSocket(){
-        // console.log("IChatStore reqChatSocket")
+        console.log("IChatStore reqChatSocket")
         const { newId, id, loadingData, isLoaded, socket } = get()
 
         if(loadingData || isLoaded) return;
@@ -121,8 +121,9 @@ export const useChat = create<IChatStore>((set, get) =>({
         
         this._unsubSocket()
 
-        const resChat : IResSubOnChat = await socket?.emitWithAck('subOnChat',{chatId:newId})
-        // console.log("IChatStore resChat: ",resChat)
+        console.log("IChatStore chatId: ",newId)
+        const resChat : IResSubOnChat = await socket?.emitWithAck(ServerNameEvents.subOnChat,{chatId:newId})
+        console.log("IChatStore resChat: ",resChat)
         if(resChat){
             set({
                 info: resChat.info,
@@ -159,7 +160,6 @@ export const useChat = create<IChatStore>((set, get) =>({
                     break;
                 }
                 case CHAT_EVENT_REMOVEMESSAGE:{
-                    // console.log("IChatStore CHAT_EVENT_REMOVEMESSAGE")
                     const { id, messages } = get();
                     if(id === data.chatId && messages){
                         set({

@@ -8,7 +8,7 @@ import CommunicationPanel from "@/components/communication/panels/CommunicationP
 import { useMe } from "@/store/Me";
 import { useConnect } from "@/store/Connent";
 import { useChat } from "@/store/Chat";
-import { useFriendsOnline } from "@/store/FriendsOnline";
+import { useOnlineFriends } from "@/store/OnlineFriends";
 
 
 export default function CommunicationScreen() {
@@ -16,7 +16,7 @@ export default function CommunicationScreen() {
 
     const me = useMe.getState()
     const chat = useChat.getState()
-    const friendsOnline = useFriendsOnline.getState()
+    const friendsOnline = useOnlineFriends.getState()
 
     const { connect, disconnect, subConnect } = useConnect.getState()
 
