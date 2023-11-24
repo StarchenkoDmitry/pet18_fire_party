@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { Socket } from "socket.io-client";
 
 import { IUseConnect } from "./Connent";
-import { EventFriendOnline } from "@/common/gateway.interfaces";
+import { ClientNameEvents, EventFriendOnline, ServerNameEvents } from "@/common/gateway.interfaces";
 
 
 export interface IFriendsOnlineStore extends IUseConnect{
@@ -17,11 +17,11 @@ export const useFriendsOnline = create<IFriendsOnlineStore>((set, get) =>({
     onConnect(newSocket) {
         set({_socket:newSocket})
 
-        newSocket.timeout(5000).emit('subOnChangeOnline',(error:any,data:string[]) => {
+        newSocket.timeout(5000).emit(ServerNameEvents.subOnChangeOnline,(error:any,data:string[]) => {
             set({onlines:[...data]})
         })
 
-        newSocket.on("changeOnline",(data:EventFriendOnline)=>{
+        newSocket.on(ClientNameEvents.changeOnline,(data:EventFriendOnline)=>{
             // console.log(`changeOnline data:`, data)
             const { onlines } = get()
             if(data.isOnline){

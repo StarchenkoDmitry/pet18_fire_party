@@ -3,9 +3,10 @@ import { UserSocket } from "../gateway.interface";
 import { LockerService } from "src/locker/locker.service";
 import { UserRepository } from "src/user/user.repository";
 import { User } from "@prisma/client";
-import { TypeEventMe, EventMe, ME_EVENT_ERROR_INIT, ME_EVENT_INIT, ME_EVENT_CHANGE_NAME, ME_EVENT_CHANGE_SURNAME } from "src/common/me.interface";
+import { EventMe, ME_EVENT_ERROR_INIT, ME_EVENT_INIT, ME_EVENT_CHANGE_NAME, ME_EVENT_CHANGE_SURNAME } from "src/common/me.interface";
 import { EventsService } from "src/events/events.service";
 import { USER_EVENT_CHANGE_NAME, USER_EVENT_CHANGE_SURNAME } from "src/common/user.interface";
+import { ClientNameEvents } from "src/common/gateway.interfaces";
 
 
 @Injectable()
@@ -32,7 +33,7 @@ export class MeService {
             type: ME_EVENT_ERROR_INIT,
             data:undefined
         } 
-        client.emit(TypeEventMe.eventsOnMe,event)
+        client.emit(ClientNameEvents.eventsOnMe,event)
         return
     }
 
@@ -44,19 +45,19 @@ export class MeService {
             me:{id, name, surname, imageID, login, email}
         }
     }
-    client.emit(TypeEventMe.eventsOnMe,event)
+    client.emit(ClientNameEvents.eventsOnMe,event)
 
     const subCancel = this.events.eventUsers.sub(client.userId,(event)=>{
         switch(event.type){
             case USER_EVENT_CHANGE_NAME:{
-                client.emit(TypeEventMe.eventsOnMe,{
+                client.emit(ClientNameEvents.eventsOnMe,{
                     type: ME_EVENT_CHANGE_NAME,
                     data:event.data,
                 })
                 break
             }
             case USER_EVENT_CHANGE_SURNAME:{
-                client.emit(TypeEventMe.eventsOnMe,{
+                client.emit(ClientNameEvents.eventsOnMe,{
                     type: ME_EVENT_CHANGE_SURNAME,
                     data:event.data,
                 })
@@ -65,6 +66,7 @@ export class MeService {
         }
     })
     client.cancelSubOnMe = subCancel
+    
     this.locker.mutexUsers.unlock(client.userId)
   }
 }

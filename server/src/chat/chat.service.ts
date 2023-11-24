@@ -9,6 +9,7 @@ import { CustomEmiter } from 'src/utils/CustomEmiter';
 import { UserSocket } from 'src/gateway/gateway.interface';
 import { LockerService } from 'src/locker/locker.service';
 import { EventsService } from 'src/events/events.service';
+import { ClientNameEvents } from 'src/common/gateway.interfaces';
 
 
 @Injectable()
@@ -122,7 +123,7 @@ export class ChatService {
     
     client.cancelSubOnChat = this.events.eventChats.sub(chatId, (event)=>{
       // console.log("onChatEvent event:", event)
-      client.emit("onChatEvent", event)
+      client.emit(ClientNameEvents.onChatEvent, event)
     })
     
     return {

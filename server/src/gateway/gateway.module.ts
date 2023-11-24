@@ -7,6 +7,7 @@ import { UsersOnlineService } from './services/usersOnline.service';
 import { MeService } from './services/me.service';
 import { LockerModule } from 'src/locker/locker.module';
 import { EventsModule } from 'src/events/events.module';
+import { MyChatsService } from './services/myChats.service';
 
 @Module({
   imports: [
@@ -18,12 +19,14 @@ import { EventsModule } from 'src/events/events.module';
   providers: [
     Gateway,
     MeService,
-    UsersOnlineService
+    UsersOnlineService,
+    MyChatsService,
   ],
   exports: [
     Gateway,
     MeService,
-    UsersOnlineService
+    UsersOnlineService,
+    MyChatsService
   ],
 })
 export class GatewayModule {}

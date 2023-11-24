@@ -10,16 +10,21 @@ import {
 import { Server } from "socket.io";
 
 import { UserSocket } from "./gateway.interface";
-import { IUserForSearch } from "src/common/user.interface";
-import { TypeEventMe, EventMe, ME_EVENT_CHAT_INIT } from "src/common/me.interface";
 
 import { UserRepository } from "src/user/user.repository";
+
 import { ChatService } from "src/chat/chat.service";
-import { UsersOnlineService } from "./services/usersOnline.service";
 import { UserService } from "src/user/user.service";
-import { verifyName, verifySurname } from "src/utils/validations";
+
 import { MeService } from "./services/me.service";
+import { UsersOnlineService } from "./services/usersOnline.service";
+import { MyChatsService } from "./services/myChats.service";
+
+import { IUserForSearch } from "src/common/user.interface";
 import { IResSubOnChat, ISubOnChat } from "src/common/chat.interface";
+
+import { verifyName, verifySurname } from "src/utils/validations";
+import { ServerNameEvents } from "src/common/gateway.interfaces";
 
 
 @WebSocketGateway(3020, {
@@ -30,10 +35,13 @@ import { IResSubOnChat, ISubOnChat } from "src/common/chat.interface";
 export class Gateway implements OnGatewayConnection, OnGatewayDisconnect{
   constructor(
     private readonly userRepository: UserRepository,
+
     private readonly userService: UserService,
     private readonly chatService: ChatService,
+
     private readonly onlines: UsersOnlineService,
     private readonly meService: MeService,
+    private readonly myChatsService :MyChatsService,
   ) { }
 
   private readonly logger = new Logger(Gateway.name)
@@ -41,61 +49,61 @@ export class Gateway implements OnGatewayConnection, OnGatewayDisconnect{
   @WebSocketServer() server: Server
 
 
-  handleConnection(user: UserSocket, ...args: any[]) {
-    this.logger.log(`Connected id:${user.id}`)
+  handleConnection(client: UserSocket, ...args: any[]) {
+    this.logger.log(`Connected id:${client.id}`)
 
-    this.onlines.setUserOnline(user)
+    this.onlines.setUserOnline(client)
   }
-  handleDisconnect(user: UserSocket) {
-    this.logger.log(`Disconnected id:${user.id}`)
+  handleDisconnect(client: UserSocket) {
+    this.logger.log(`Disconnected id:${client.id}`)
 
-    this.onlines.setUserOffline(user)
-    if(user.cancelSubOnChat) user.cancelSubOnChat()
-    this.onlines.unsubOnOnline(user)
-  }
+    this.onlines.setUserOffline(client)
+    this.onlines.unsubOnOnline(client)
 
+    if(client.cancelSubOnChat) client.cancelSubOnChat()
 
-  @SubscribeMessage(TypeEventMe.subscribeOnMe)
-  async subOnMe(client: UserSocket, data: any){
-    console.log(TypeEventMe.subscribeOnMe)
-    await this.meService.subscribe(client)
-  }
-
-  @SubscribeMessage(TypeEventMe.subscribeOnChats)
-  async subOnMeChats(client: UserSocket, data: any){
-    console.log(TypeEventMe.subscribeOnMe)
-    await this.meService.subscribe(client)
-
-    const chats = await this.userRepository.getMyChats(client.userId)
-    const event : EventMe = {
-      type: ME_EVENT_CHAT_INIT,
-      data:{ chats }
+    if(client.subscribesOnUsersFromChat){
+      client.subscribesOnUsersFromChat.forEach(unsub=>unsub())
+      client.subscribesOnUsersFromChat = undefined
     }
-    client.emit(TypeEventMe.eventsOnChats,event)
   }
 
 
-  @SubscribeMessage("createMessage")
+  @SubscribeMessage(ServerNameEvents.subscribeOnMe)
+  async subOnMe(client: UserSocket, data: any){
+    console.log(ServerNameEvents.subscribeOnMe)
+    await this.meService.subscribe(client)
+  }
+
+
+  @SubscribeMessage(ServerNameEvents.subscribeOnChats)
+  async subOnMeChats(client: UserSocket, data: any){
+    console.log(ServerNameEvents.subscribeOnMe)
+    await this.myChatsService.subscribe(client)
+  }
+
+
+  @SubscribeMessage(ServerNameEvents.createMessage)
   async createMessage(client: UserSocket, data: any){
     console.log("addMessage data:", data)
     return await this.chatService.createMessage(data.chatId,client.userId,data.text)
   }
 
-  @SubscribeMessage("removeMessage")
+  @SubscribeMessage(ServerNameEvents.removeMessage)
   async removeMessage(client: UserSocket, { chatId, messageId }: any){
     console.log("removeMessage:", { chatId, messageId })
     return await this.chatService.removeMessage(chatId,messageId,client.userId)
   }
 
 
-  @SubscribeMessage("subOnChat")
+  @SubscribeMessage(ServerNameEvents.subOnChat)
   async subscribeOnChat(client: UserSocket, {chatId}: ISubOnChat):Promise<IResSubOnChat>{
     console.log("subOnChat data:",{chatId})
     const chatData = await this.chatService.subscribeOnChat(chatId, client.userId, client)
     return chatData
   }
   
-  @SubscribeMessage("subOnChangeOnline")
+  @SubscribeMessage(ServerNameEvents.subOnChangeOnline)
   async subscribeOnChangeOnline(client: UserSocket, data:any){
     const myFriends = await this.userRepository.getMyFriends(client.userId)
     const myFriendsOnline = this.onlines.subscribeOnOnline(client,myFriends)
@@ -103,7 +111,7 @@ export class Gateway implements OnGatewayConnection, OnGatewayDisconnect{
   }
 
 
-  @SubscribeMessage("changeName")
+  @SubscribeMessage(ServerNameEvents.changeName)
   async changeName(client: UserSocket, name:string):Promise<boolean>{
     console.log("changeName data:",name)
     if(!verifyName(name)) return false
@@ -111,7 +119,7 @@ export class Gateway implements OnGatewayConnection, OnGatewayDisconnect{
     return !!res
   }
 
-  @SubscribeMessage("changeSurname")
+  @SubscribeMessage(ServerNameEvents.changeSurname)
   async changeSurname(client: UserSocket, surname:string):Promise<boolean>{
     console.log("changeSurname data:",surname)
     if(!verifySurname(surname)) return false
@@ -119,8 +127,8 @@ export class Gateway implements OnGatewayConnection, OnGatewayDisconnect{
     return !!res
   }
 
-  
-  @SubscribeMessage("searchUsers")
+
+  @SubscribeMessage(ServerNameEvents.searchUsers)
   async searchUser(client: UserSocket, name:string):Promise<IUserForSearch[]>{
     console.log("searchUsers data:",name)
     const users = await this.userRepository.findManyByNameWhoNoFriend(client.userId,name)
@@ -130,7 +138,7 @@ export class Gateway implements OnGatewayConnection, OnGatewayDisconnect{
     }))
   }
 
-  @SubscribeMessage("deleteChat")
+  @SubscribeMessage(ServerNameEvents.deleteChat)
   async deleteChat(client: UserSocket, chatId:string):Promise<boolean>{
     console.log("deleteChat data:",chatId)
     const resDelete = await this.chatService.remove(client.userId,chatId)

@@ -10,6 +10,7 @@ import {
     CHAT_EVENT_REMOVEMESSAGE,
     ChatEvent, IResSubOnChat
 } from "@/common/chat.interface";
+import { ClientNameEvents, ServerNameEvents } from "@/common/gateway.interfaces";
 
 
 export interface IChatStore extends IUseConnect{
@@ -139,14 +140,14 @@ export const useChat = create<IChatStore>((set, get) =>({
     },
     _unsubSocket(){
         const { socket } = get()
-        socket?.off("onChatEvent")
+        socket?.off(ClientNameEvents.onChatEvent)
     },
     _subSocket(){
         const { socket } = get()
         if(!socket) return
 
-        socket.on("onChatEvent", ({type, data}:ChatEvent)=>{
-            // console.log("onChatEvent data:", {type, data})
+        socket.on(ClientNameEvents.onChatEvent, ({type, data}:ChatEvent)=>{
+            // console.log("ClientNameEvents.onChatEvent data:", {type, data})
             switch(type){
                 case CHAT_EVENT_ADDMESSAGE:{
                     const { id, messages } = get();
@@ -174,11 +175,11 @@ export const useChat = create<IChatStore>((set, get) =>({
         })
     },
     addMessage:(text)=>{
-        get().socket?.emit("createMessage", { chatId:get().id, text: text })
+        get().socket?.emit(ServerNameEvents.createMessage, { chatId:get().id, text: text })
     },
     removeMessage:(messageId)=>{
         // console.log("IChatStore removeMessage")
-        get().socket?.emit("removeMessage", { chatId:get().id, messageId:messageId })
+        get().socket?.emit(ServerNameEvents.removeMessage, { chatId:get().id, messageId:messageId })
     },
 
     onConnect(newSocket) {

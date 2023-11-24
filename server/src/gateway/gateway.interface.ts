@@ -11,4 +11,6 @@ export interface UserSocket extends Socket {
   cancelSubOnChat?:()=>void
 
   cancelSubOnMe?:()=>void
+
+  subscribesOnUsersFromChat?: (()=>void)[]
 }
