@@ -65,7 +65,7 @@ export class ChatService {
   }
 
   async createMessage(chatId:string, userId:string, text:string){
-    await this.locker.mutexMessagesChats.lock(chatId)
+    await this.locker.mutexChats.lock(chatId)
 
     const newMessage = await this.chatRepo.createMessage(chatId,userId,text)
 
@@ -76,13 +76,13 @@ export class ChatService {
       })
     }
 
-    this.locker.mutexMessagesChats.unlock(chatId)
+    this.locker.mutexChats.unlock(chatId)
     return newMessage
   }
 
   async removeMessage(chatId:string, messageId:string,userId:string):Promise<Message>{
     // if(!chatId || !messageId || !userId) throw new Error("params is not corect")
-    await this.locker.mutexMessagesChats.lock(chatId)
+    await this.locker.mutexChats.lock(chatId)
 
     const removedMessage = await this.chatRepo.removeMessage(chatId,messageId,userId)
 
@@ -93,16 +93,16 @@ export class ChatService {
       })
     }
 
-    this.locker.mutexMessagesChats.unlock(chatId)
+    this.locker.mutexChats.unlock(chatId)
     return removedMessage
   }
 
   async getAllMessages(chatId:string, userId:string):Promise<IMessage[]>{
-    await this.locker.mutexMessagesChats.lock(chatId)
+    await this.locker.mutexChats.lock(chatId)
 
     const messages = await this.chatRepo.getAllMessages(chatId,userId)
 
-    this.locker.mutexMessagesChats.unlock(chatId)
+    this.locker.mutexChats.unlock(chatId)
     return messages
   }
 
@@ -116,7 +116,8 @@ export class ChatService {
     await this.locker.mutexChats.lock(chatId)
 
     const resMyChat = await this.chatRepo.getMy(chatId,userId)
-    const messages = await this.getAllMessages(chatId,userId)
+    // const messages = await this.getAllMessages(chatId,userId)
+    const messages = await this.chatRepo.getAllMessages(chatId,userId)
 
 
     if(resMyChat){

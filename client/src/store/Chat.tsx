@@ -1,16 +1,17 @@
 import { Socket } from "socket.io-client";
 import { create } from "zustand";
-
-import { CHAT_EVENT_ERROR_INIT, CHAT_EVENT_INIT, IMessage } from "@/common/chat.interface";
 import { IMyChat } from "@/common/me.interface";
 import { IUseConnect } from "./Connent";
-
-import {
+import { ClientNameEvents, ServerNameEvents } from "@/common/gateway.interfaces";
+import { 
+    CHAT_EVENT_ERROR_INIT,
+    CHAT_EVENT_INIT,
     CHAT_EVENT_ADDMESSAGE,
     CHAT_EVENT_REMOVEMESSAGE,
-    ChatEvent, IResSubOnChat
+    
+    ChatEvent,
+    IMessage 
 } from "@/common/chat.interface";
-import { ClientNameEvents, ServerNameEvents } from "@/common/gateway.interfaces";
 
 
 export interface IChatStore extends IUseConnect{

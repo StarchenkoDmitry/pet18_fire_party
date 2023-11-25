@@ -9,7 +9,7 @@ export class LockerService {
   }
 
   public readonly mutexChats = new MutexKeys()
-  public readonly mutexMessagesChats = new MutexKeys()
+  // public readonly mutexMessagesChats = new MutexKeys()
   public readonly mutexCreateChat = new Mutex()
   public readonly mutexRemoveChat = new Mutex()
 
