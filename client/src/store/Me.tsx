@@ -32,7 +32,7 @@ export const useMe = create<IMeStore>((set, get) =>({
         set({_socket:newSocket})
 
         newSocket.on(ClientNameEvents.eventsOnMe,({type, data}:EventMe)=>{
-            console.log(`${ClientNameEvents.eventsOnMe} data:`, {type, data})
+            // console.log(`${ClientNameEvents.eventsOnMe} data:`, {type, data})
             
             switch(type){
                 case ME_EVENT_INIT:{
@@ -62,7 +62,7 @@ export const useMe = create<IMeStore>((set, get) =>({
 
 
         newSocket.on(ClientNameEvents.eventsOnChats,({type, data}:EventMeChats)=>{
-            console.log(`${ClientNameEvents.eventsOnChats} data:`, {type, data})
+            // console.log(`${ClientNameEvents.eventsOnChats} data:`, {type, data})
             
             switch(type){
                 case MECHATS_EVENT_INIT:{
@@ -76,14 +76,12 @@ export const useMe = create<IMeStore>((set, get) =>({
                     if(!chat)return
                     chat.user.name = data.name
                     set({chats:[...chats]})
-                }
-                default:{
                     break
                 }
+                default:{ break }
             }
         })
         newSocket.emit(ServerNameEvents.subscribeOnChats)
-
     },
     onDisconnect() {
         const { _socket } = get()

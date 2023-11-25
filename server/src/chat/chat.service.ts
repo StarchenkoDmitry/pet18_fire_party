@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Mutex, MutexKeys } from 'src/utils/Mutex';
 import { ChatRepository } from './chat.repository';
 import { IMyChat } from 'src/common/me.interface';
-import { CHAT_EVENT_ADDMESSAGE, CHAT_EVENT_DELETE_CHAT, CHAT_EVENT_REMOVEMESSAGE, IMessage, IResSubOnChat } from 'src/common/chat.interface';
+import { CHAT_EVENT_ADDMESSAGE, CHAT_EVENT_DELETE_CHAT, CHAT_EVENT_ERROR_INIT, CHAT_EVENT_INIT, CHAT_EVENT_REMOVEMESSAGE, ChatEvent, IMessage, IResSubOnChat } from 'src/common/chat.interface';
 import { IChatIncludeUsers } from './chat.interface';
 import { Chat, Message } from '@prisma/client';
 import { CustomEmiter } from 'src/utils/CustomEmiter';
@@ -106,7 +106,8 @@ export class ChatService {
     return messages
   }
 
-  async subscribeOnChat(chatId:string, userId:string, client:UserSocket):Promise<IResSubOnChat>{    
+  async subscribeOnChat(chatId:string, userId:string, client:UserSocket){   
+
     if(client.cancelSubOnChat){
       client.cancelSubOnChat()
       client.cancelSubOnChat = undefined
@@ -117,18 +118,31 @@ export class ChatService {
     const resMyChat = await this.chatRepo.getMy(chatId,userId)
     const messages = await this.getAllMessages(chatId,userId)
 
-    this.locker.mutexChats.unlock(chatId)
-    
-    if(!resMyChat) return
-    
-    client.cancelSubOnChat = this.events.eventChats.sub(chatId, (event)=>{
-      // console.log("onChatEvent event:", event)
-      client.emit(ClientNameEvents.onChatEvent, event)
-    })
-    
-    return {
-        info: resMyChat,
-        messages:messages
+
+    if(resMyChat){
+      client.cancelSubOnChat = this.events.eventChats.sub(chatId, (event)=>{
+        // console.log("onChatEvent event:", event)
+        client.emit(ClientNameEvents.onChatEvent, event)
+      })
+
+      const event: ChatEvent = {
+        type:CHAT_EVENT_INIT,
+        data:{
+          info: resMyChat,
+          messages:messages
+        }
+      }
+
+      client.emit(ClientNameEvents.onChatEvent,event)
     }
+    else{
+      const event: ChatEvent = {
+        type:CHAT_EVENT_ERROR_INIT,
+        data:{ chatId }
+      }
+      client.emit(ClientNameEvents.onChatEvent,event)
+    }
+
+    this.locker.mutexChats.unlock(chatId)
   }
 }

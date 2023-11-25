@@ -78,7 +78,7 @@ export class Gateway implements OnGatewayConnection, OnGatewayDisconnect{
 
   @SubscribeMessage(ServerNameEvents.subscribeOnChats)
   async subOnMeChats(client: UserSocket, data: any){
-    console.log(ServerNameEvents.subscribeOnMe)
+    console.log(ServerNameEvents.subscribeOnChats)
     await this.myChatsService.subscribe(client)
   }
 
@@ -97,10 +97,9 @@ export class Gateway implements OnGatewayConnection, OnGatewayDisconnect{
 
 
   @SubscribeMessage(ServerNameEvents.subOnChat)
-  async subscribeOnChat(client: UserSocket, {chatId}: ISubOnChat):Promise<IResSubOnChat>{
+  async subscribeOnChat(client: UserSocket, {chatId}: ISubOnChat){
     console.log("subOnChat data:",{chatId})
-    const chatData = await this.chatService.subscribeOnChat(chatId, client.userId, client)
-    return chatData
+    await this.chatService.subscribeOnChat(chatId, client.userId, client)
   }
   
   @SubscribeMessage(ServerNameEvents.subOnChangeOnline)

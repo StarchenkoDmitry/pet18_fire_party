@@ -1,7 +1,7 @@
 import { Socket } from "socket.io-client";
 import { create } from "zustand";
 
-import { IMessage } from "@/common/chat.interface";
+import { CHAT_EVENT_ERROR_INIT, CHAT_EVENT_INIT, IMessage } from "@/common/chat.interface";
 import { IMyChat } from "@/common/me.interface";
 import { IUseConnect } from "./Connent";
 
@@ -18,7 +18,7 @@ export interface IChatStore extends IUseConnect{
     newId:string
 
     isLoaded: boolean
-    loadingData: boolean
+    isLoading: boolean
 
     info?:IMyChat
     messages?:IMessage[]
@@ -64,80 +64,63 @@ export const useChat = create<IChatStore>((set, get) =>({
     id:"",
     newId:"",
     isLoaded:false,
-    loadingData: false,
+    isLoading: false,
     socket: null,
-    
 
     open(id:string){
-        // console.log(`ChatStore open(${id})`);
-        set({
-            newId:id,
-            isLoaded:false        
-        })
-        this._reqChatSocket()
+        console.log(`ChatStore open(${id})`);
+
+        set({ newId:id })//, isLoaded:false
+        const { isLoading } = get()
+        if(!isLoading){
+            this._reqChatSocket()
+        }
     },
     close(){
         // console.log("IChatStore clear")
-        this._unsubSocket()
+        // this._unsubSocket()
         saveStore(get)
 
         set({
             id:"",
             newId:"",
-            // loadingData:false,
-            isLoaded:true,
+            isLoaded:false,
+            isLoading:false,
 
             info: undefined,
             messages: undefined,
         })
     },
     async _reqChatSocket(){
-        console.log("IChatStore reqChatSocket")
-        const { newId, id, loadingData, isLoaded, socket } = get()
+        // console.log("IChatStore reqChatSocket")
+        const { newId, id, isLoading, isLoaded, socket } = get()
 
-        if(loadingData || isLoaded) return;
-        set({
-            // isLoaded:false,
-            loadingData:true
-        })
+        if(isLoading || !socket) return
+        if(newId === id)return
 
         if(!newId){
             //очистка чата
-            this._unsubSocket()
             set({
+                id:newId,
+                newId:newId,
+                isLoading:false,
+                isLoaded:false,
                 info:undefined,
                 messages:undefined,
-                id:newId,
-                loadingData:false,
-                isLoaded:true,
             })
             return;
         }
 
-        if(newId !== id){
-            //подгрузить кешированые данные чата
-            loadStore(newId,set)
-        }
-        
-        this._unsubSocket()
-
-        console.log("IChatStore chatId: ",newId)
-        const resChat : IResSubOnChat = await socket?.emitWithAck(ServerNameEvents.subOnChat,{chatId:newId})
-        console.log("IChatStore resChat: ",resChat)
-        if(resChat){
-            set({
-                info: resChat.info,
-                messages:resChat.messages,
-            })
-            this._subSocket()
-        }        
-
         set({
-            id: newId,
-            loadingData:false,
-            isLoaded:true,
+            isLoaded:false,
+            isLoading:true
         })
-        this._reqChatSocket()
+
+        //подгрузить кешированые данные чата
+        // loadStore(newId,set)
+                
+        // console.log("IChatStore chatId: ",newId)
+        socket.emit(ServerNameEvents.subOnChat,{ chatId:newId })
     },
     _unsubSocket(){
         const { socket } = get()
@@ -148,8 +131,38 @@ export const useChat = create<IChatStore>((set, get) =>({
         if(!socket) return
 
         socket.on(ClientNameEvents.onChatEvent, ({type, data}:ChatEvent)=>{
-            // console.log("ClientNameEvents.onChatEvent data:", {type, data})
+            console.log("ClientNameEvents.onChatEvent data:", {type, data})
             switch(type){
+                case CHAT_EVENT_INIT:{
+                    set({
+                        isLoaded:true,
+                        isLoading:false,
+                        info:data.info,
+                        messages:data.messages,
+                        id: data.info.id
+                    })
+
+                    //if after load have newId begine load chat
+                    const { id, newId } = get()
+                    if(id !== newId){
+                        this._reqChatSocket()
+                    }
+                    break
+                }
+                case CHAT_EVENT_ERROR_INIT:{
+                    set({ 
+                        id: data.chatId,
+                        isLoaded:false,
+                        isLoading:false,
+                    })
+                    
+                    //if after load have newId begine load chat
+                    const { id, newId } = get()
+                    if(id !== newId){
+                        this._reqChatSocket()
+                    }
+                    break
+                }
                 case CHAT_EVENT_ADDMESSAGE:{
                     const { id, messages } = get();
                     if(id === data.chatId){
@@ -168,26 +181,31 @@ export const useChat = create<IChatStore>((set, get) =>({
                     }
                     break;
                 }
-                default:{                
-                    break;
-                }
+                default:{ break; }
             }
         })
     },
+
     addMessage:(text)=>{
         get().socket?.emit(ServerNameEvents.createMessage, { chatId:get().id, text: text })
     },
     removeMessage:(messageId)=>{
-        // console.log("IChatStore removeMessage")
         get().socket?.emit(ServerNameEvents.removeMessage, { chatId:get().id, messageId:messageId })
     },
 
     onConnect(newSocket) {
         // console.log("IChatStore onConnect")
-        set({
-            socket:newSocket,
-            isLoaded:false,
+
+        // set({
+        //     socket:newSocket,
+        //     isLoaded:false,
+        // })
+        // get()._reqChatSocket()
+
+        set({ 
+            socket:newSocket,            
         })
+        this._subSocket()
         get()._reqChatSocket()
     },
     onDisconnect() {
@@ -195,7 +213,8 @@ export const useChat = create<IChatStore>((set, get) =>({
         this._unsubSocket()
         set({
             socket:null,
-            isLoaded:false
+            isLoaded:false,
+            isLoading:false,
         })
     },
 }))

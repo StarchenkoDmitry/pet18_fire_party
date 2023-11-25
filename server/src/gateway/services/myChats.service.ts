@@ -12,6 +12,7 @@ import { EventsService } from "src/events/events.service";
 import { USER_EVENT_CHANGE_NAME, USER_EVENT_CHANGE_SURNAME } from "src/common/user.interface";
 import { ClientNameEvents } from "src/common/gateway.interfaces";
 
+
 @Injectable()
 export class MyChatsService {
   constructor(
