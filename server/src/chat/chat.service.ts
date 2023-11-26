@@ -106,7 +106,7 @@ export class ChatService {
     return messages
   }
 
-  async subscribeOnChat(chatId:string, userId:string, client:UserSocket){   
+  async subscribeOnChat(chatId:string, userId:string, client:UserSocket){
 
     if(client.cancelSubOnChat){
       client.cancelSubOnChat()

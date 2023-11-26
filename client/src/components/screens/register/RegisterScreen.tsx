@@ -2,7 +2,7 @@ import { FormEvent, useState } from "react";
 import styles from "./RegisterScreen.module.scss";
 import { RandomEmail, RandomLogin, RandomName, RandomPassword } from "@/utils/Randomer";
 import { useNavigate } from "react-router-dom";
-import { Register } from "@/actions/Auth.actions";
+import { signup } from "@/actions/Auth.actions";
 
 
 export default function RegisterScreen() {
@@ -20,7 +20,7 @@ export default function RegisterScreen() {
     const randomchik = ()=>{
         setEmail(RandomEmail());
     }
-       
+
     const onsubmit = async (event: FormEvent<HTMLFormElement>)=>{
         event.preventDefault();
 
@@ -46,7 +46,7 @@ export default function RegisterScreen() {
             surname};
         console.log('data: ',data);
 
-        const registered = await Register(data);
+        const registered = await signup(data);
         console.log("registered: ",registered);
 
         
@@ -76,7 +76,7 @@ export default function RegisterScreen() {
                     <input onChange={(e)=>setPassword(e.target.value)}
                     name="password" type="password" value={password}></input>
 
-                    
+
                     <label htmlFor="name">Name</label>
                     <input onChange={(e)=>setName(e.target.value)}
                     name="name" value={name}></input>
@@ -86,10 +86,10 @@ export default function RegisterScreen() {
                     name="surname" value={surname}></input>
 
                     <button className={styles.btn_submit} type="submit"
-                    disabled={registering}>Register</button>                    
+                    disabled={registering}>Register</button>
                 </form>
                 {/* <button onClick={randomchik}>Random</button> */}
             </div>
-        </div>       
+        </div>
     )
 }

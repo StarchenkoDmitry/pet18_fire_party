@@ -3,7 +3,7 @@ import '@/styles/global.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 import NoPage from './pages/NoPage'
-import Register from './pages/Register'
+import SignUp from './pages/SingUp'
 import ProfilePage from './pages/ProfilePage'
 
 import Admin from './pages/panel/Admin'
@@ -22,7 +22,7 @@ function App() {
         
             <Routes>
                 <Route path='/profile' element={<ProfilePage/>}/>
-                <Route path='/register' element={<Register />}/>
+                <Route path='/register' element={<SignUp />}/>
 
                 <Route path='/panel/admin' element={<Admin/>}/>
                 <Route path='/panel/adminimages' element={<AdminImages/>}/>

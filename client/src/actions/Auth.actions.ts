@@ -1,12 +1,15 @@
 import api from "@/api/api";
 
-export interface RegisterData{
-    login:string;
-    email:string;
-    password:string;
+
+export interface SignUpData{
+    name:string
+    surname:string
+    login:string
+    email:string
+    password:string
 }
 
-export async function Register(data:RegisterData):Promise<boolean>{
+export async function signup(data:SignUpData):Promise<boolean>{
     try {
         const res = await api.post("auth/register",data);
         console.log("/auth/register res: ",res.data)
