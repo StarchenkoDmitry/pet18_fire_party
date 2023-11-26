@@ -163,7 +163,7 @@ export default function SignUp() {
         </form>
 
         <div className={styles.venderDiv}>
-          <span className={styles.venderLabel}>Sign in from vender</span>
+          <span className={styles.venderLabel}>Sign in using other services</span>
         </div>
 
         <div className={styles.venderSignin}>
