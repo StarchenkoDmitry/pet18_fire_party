@@ -1,7 +1,7 @@
 import styles from "./SingUp.module.scss";
 
 import { useNavigate } from "react-router-dom";
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, useState } from "react";
 
 import {
   RandomEmail,
@@ -19,7 +19,6 @@ export default function SignUp() {
 
   const navigate = useNavigate();
   const [running,setRunning] = useState(false)
-  const refSubmit = useRef(null)
 
   const [name,setName] = useState('')
   const [surname,setSurname] = useState('')
@@ -108,7 +107,6 @@ export default function SignUp() {
         <form onSubmit={onSubmit} method="POST" action="/">
           <h1>Sign Up</h1>
 
-
           <label htmlFor="name">Name</label>
           <input
             name="name"
@@ -134,16 +132,17 @@ export default function SignUp() {
           <label htmlFor="email">Email address</label>
           <input
             name="email"
-            value={email}
             type="email"
+            value={email}
             onChange={changeEmail}
           />
 
           <label htmlFor="password">Password</label>
           <input
             name="password"
-            value={password}
             type="password"
+            autoComplete="off"
+            value={password}
             onChange={changePassword}
           />
           
@@ -155,9 +154,8 @@ export default function SignUp() {
           <button
             className={styles.btn_submit} 
             type="submit"
-            ref={refSubmit}
-            onClick={onSignUp}
             disabled={running}
+            onClick={onSignUp}
           >Sign up</button>
 
         </form>
