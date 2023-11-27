@@ -26,7 +26,7 @@ export default function Me() {
                     <span className={styles.name}>{me.surname}</span>
                 </div>
                 { showProfile && <ProfileModal doClose={closeProfile}/>}                
-                <img className={styles.setting} src="/img/gear96.png"/>
+                {/* <img className={styles.setting} src="/img/gear96.png"/> */}
             </div>
         )
     }else{
