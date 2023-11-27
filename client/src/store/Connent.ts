@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { io, Socket } from "socket.io-client";
+import { GetBaseIPSocket } from "@/api/api";
 
 
 export interface IUseConnect{
@@ -30,7 +31,7 @@ export const useConnect = create<IConnect>((set, get) =>({
         let { _socket }= get();
 
         if(!_socket){
-            _socket = io("http://127.0.0.1:3020",{
+            _socket = io(GetBaseIPSocket(),{
                 autoConnect:false,
                 withCredentials:true,
                 timeout:2000,
