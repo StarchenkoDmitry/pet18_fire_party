@@ -1,17 +1,18 @@
-import { useState } from "react";
 import styles from "./MessageBox.module.scss";
 
+import { useState } from "react";
+
 import { IMessage } from "@/common/chat.interface";
-import RemoveMessageModal from "@/components/communication/modals/RemoveMessageModal";
 import { convertToStringDate } from "@/utils/Date";
+
+import RemoveMessageModal from "@/components/communication/modals/RemoveMessageModal";
 
 
 const MOUSE_RIGHT = 2
 
-
 export interface MessageProps{
     message: IMessage;
-    toRemove?: ()=>void; 
+    toRemove?: ()=>void;
 }
 
 export default function MessageBox({message,toRemove}:MessageProps) {

@@ -22,6 +22,8 @@
 .message_text{
   position: relative;
   padding: 0.4em;
+  word-break: normal;
+  // white-space: pre-wrap;
 }
 
 .message_createAt1{
@@ -32,19 +34,16 @@
   line-height: 1;
   font-size: .75em;
   text-wrap: nowrap;
-
-  // color: #cc3014;
 }
 .message_createAt2{
   position: absolute;
   right: 4px;
   bottom: 4px;
 
+  color: #14cc23;
+
   line-height: 1;
   font-size: .75em;
   text-wrap: nowrap;
-
-  color: #14cc23;
-
   user-select: none;
 }

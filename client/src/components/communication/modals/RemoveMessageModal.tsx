@@ -17,11 +17,11 @@ export default function RemoveMessageModal({
     cords,
 }:RemoveMessageModalProps){
 
+    const timer = useRef<any>(null)
+
     const waitClose = ()=>{
         if(toClose)toClose()
     }
-
-    const timer = useRef<any>(null)
 
     useEffect(()=>{
         timer.current = setTimeout(waitClose, autoCloseTime)
