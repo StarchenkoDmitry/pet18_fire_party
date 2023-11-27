@@ -18,11 +18,12 @@ html{
   --text-light: #000;
 
   --bg-chat-light: rgb(69, 98, 255);
+  --bg-chat-message-light: #fff;
   --bg-chat-input-light: #3633e2;
-  --bg-chat-message-light: #ffffff;
   
   --primary-color: #3390ec;
   
+  --primary-color-bg: rgb(69, 98, 255);
   
   /* dark theme tokens */
   /* --bg-dark: 25, 48, 66;
@@ -31,7 +32,7 @@ html{
   
 
 
-  --surface-color: #212121;
+  /* --surface-color: #212121;
   
   --font-monospace: "Roboto Mono", monospace;
   --font-weight-bold: 500;
@@ -47,7 +48,7 @@ html{
   --font-size-15: 15px;
   --font-size-14: 14px;
   --font-size-12: 12px;
-  --font-size: var(--font-size-16);
+  --font-size: var(--font-size-16); */
 }
 
 
