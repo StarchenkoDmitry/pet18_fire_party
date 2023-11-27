@@ -6,8 +6,10 @@ html{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-size: inherit;
 }
 
+/* bg register page rgb(69, 98, 255) */
 
 :root {
   /* light theme tokens */
@@ -15,7 +17,7 @@ html{
   --bg-secondary-light: #f3f3f4;
   --text-light: #000;
 
-  --bg-chat-light: #389ce8;
+  --bg-chat-light: rgb(69, 98, 255);
   --bg-chat-input-light: #3633e2;
   --bg-chat-message-light: #ffffff;
   

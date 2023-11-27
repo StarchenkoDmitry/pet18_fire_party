@@ -1,6 +1,13 @@
+import { useState } from "react";
 import styles from "./MessageBox.module.scss";
 
 import { IMessage } from "@/common/chat.interface";
+import RemoveMessageModal from "@/components/communication/modals/RemoveMessageModal";
+import { convertToStringDate } from "@/utils/Date";
+
+
+const MOUSE_RIGHT = 2
+
 
 export interface MessageProps{
     message: IMessage;
@@ -8,25 +15,45 @@ export interface MessageProps{
 }
 
 export default function MessageBox({message,toRemove}:MessageProps) {
-    const createAt = convertCustomData(message.createAt)
+
+    const [showEditModal,setShowEditModal] = useState(false)
+    const [cordsModal,setCordsModal] = useState({x:0,y:0})
+
+    const createAt = convertToStringDate(message.createAt)
+
+    const eventClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>)=>{
+        if(event.button === MOUSE_RIGHT){
+            event.preventDefault()
+            setShowEditModal(true)
+            setCordsModal({
+                x:event.clientX,
+                y:event.clientY,
+            })
+        }
+    }
+
+    const closeModal = ()=>{
+        setShowEditModal(false)
+    }
+
     return (
-        <div className={styles.message}>
-            <div className={styles.message_head}>
+        <div className={styles.message} onContextMenu={eventClick}>
+            {/* <div className={styles.message_head}>
                 <button onClick={toRemove}>Delete</button>
-            </div>            
+            </div> */}
             <p className={styles.message_text}>
                 {message.text}
                 <span className={styles.message_createAt1}>{createAt}</span>
                 <span className={styles.message_createAt2}>{createAt}</span>
             </p>
+            {
+                showEditModal && 
+                <RemoveMessageModal 
+                    toRemoveMessage={toRemove}
+                    toClose={closeModal}
+                    cords={cordsModal}
+                />
+            }
         </div>
     )
-}
-
-function convertCustomData(dataStr:string | Date):string{
-    const data = typeof dataStr === "string" ? new Date(dataStr) : dataStr
-    const createAt = [data.getHours(), data.getMinutes()].map((x)=>{
-        return x < 10 ? "0" + x : x
-    }).join(":")
-    return createAt
 }
