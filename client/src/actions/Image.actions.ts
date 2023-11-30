@@ -68,3 +68,15 @@ export async function SetMyAvatar(blob:Blob):Promise<boolean>{
         return false;
     }
 }
+
+export async function GetAllImageID() {
+    try {
+        const res = await api.get("image/allid");
+        console.log("res: ",res.data)
+        if(res.status === 200){
+            return res.data;
+        }else return [];
+    } catch (error) {
+        console.log("Error: ",error)
+    }
+}

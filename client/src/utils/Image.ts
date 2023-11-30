@@ -1,6 +1,8 @@
-export function GetImageUrl(imageId?:string | null){
+import { GetBaseIP } from "@/api/api"
+
+export function GetImageUrl(imageId?:string | null):string{
     const imageURL = imageId ? 
-    `http://${window.location.hostname}:3000/api/image/buffer/${imageId}` : 
+    `${GetBaseIP()}/image/buffer/${imageId}` : 
     "/img/user.png"
     return imageURL
 }

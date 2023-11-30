@@ -3,9 +3,18 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as cookieParser from 'cookie-parser';
 import { WebsocketAdapter } from './gateway/gateway.adapter';
+import { HttpsOptions } from '@nestjs/common/interfaces/external/https-options.interface';
+import * as fs from 'fs'
+
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+
+  const httpsOptions:HttpsOptions = {
+    key: fs.readFileSync('./ssl/privatekey.key'),
+    cert: fs.readFileSync('./ssl/certificate.crt'),
+  }
+  const app = await NestFactory.create(AppModule, { httpsOptions })
+  // const app = await NestFactory.create(AppModule);
 
 
   const adapter = new WebsocketAdapter(app);

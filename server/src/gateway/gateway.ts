@@ -27,10 +27,10 @@ import { verifyName, verifySurname } from "src/utils/validations";
 import { ServerNameEvents } from "src/common/gateway.interfaces";
 
 
-@WebSocketGateway(3020, {
+@WebSocketGateway({
   cors:{ origin:true, credentials: true, },
-  pingInterval: 1000,
-  pingTimeout: 1500,
+  pingInterval: 2000,
+  pingTimeout: 3000,
 })
 export class Gateway implements OnGatewayConnection, OnGatewayDisconnect{
   constructor(
