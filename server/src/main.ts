@@ -8,25 +8,33 @@ import * as fs from 'fs'
 import { Config } from './config';
 
 
-async function bootstrap() {
-  const httpsOptions:HttpsOptions = {
-    key: fs.readFileSync('./ssl/privatekey.key'),
-    cert: fs.readFileSync('./ssl/certificate.crt'),
+async function CreateApp(){
+  if(Config.SSL_SWITCH){
+    const httpsOptions:HttpsOptions = {
+      key: fs.readFileSync('./ssl/privatekey.key'),
+      cert: fs.readFileSync('./ssl/certificate.crt'),
+    }
+
+    const app = await NestFactory.create(AppModule, { httpsOptions })
+    return app
   }
-  const app = await NestFactory.create(AppModule, { httpsOptions })
-  // const app = await NestFactory.create(AppModule);
+  else{
+    const app = await NestFactory.create(AppModule);
+    return app
+  }
+}
 
+async function bootstrap() {
+  
+  const app = await CreateApp()
 
-  const adapter = new WebsocketAdapter(app);
-  app.useWebSocketAdapter(adapter);
-
+  app.useWebSocketAdapter(new WebsocketAdapter(app));
 
   app.enableShutdownHooks()
   
   app.use(cookieParser(Config.COOKIE_SECRET));
   app.setGlobalPrefix("api");
   app.enableCors({origin:true,credentials:true})
-
 
   // Create SWAGGER
   const config = new DocumentBuilder()
