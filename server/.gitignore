@@ -40,6 +40,8 @@ lerna-debug.log*
 
 # Environment files
 .env
+.env.*
+!.env.example
 
 # Secret files
 /ssl
