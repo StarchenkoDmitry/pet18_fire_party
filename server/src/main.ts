@@ -5,10 +5,10 @@ import * as cookieParser from 'cookie-parser';
 import { WebsocketAdapter } from './gateway/gateway.adapter';
 import { HttpsOptions } from '@nestjs/common/interfaces/external/https-options.interface';
 import * as fs from 'fs'
+import { Config } from './config';
 
 
 async function bootstrap() {
-
   const httpsOptions:HttpsOptions = {
     key: fs.readFileSync('./ssl/privatekey.key'),
     cert: fs.readFileSync('./ssl/certificate.crt'),
@@ -23,7 +23,7 @@ async function bootstrap() {
 
   app.enableShutdownHooks()
   
-  app.use(cookieParser("My_secret_1234"));
+  app.use(cookieParser(Config.COOKIE_SECRET));
   app.setGlobalPrefix("api");
   app.enableCors({origin:true,credentials:true})
 
@@ -40,8 +40,8 @@ async function bootstrap() {
   SwaggerModule.setup('swagger', app, document)
 
 
-  await app.listen(3000,()=>{
-    console.log("Server started.");
+  await app.listen(Config.PORT,()=>{
+    console.log(`Server started on PORT(${Config.PORT}), enviroment:${Config.EnvName}`)
   })
 }
 bootstrap()
