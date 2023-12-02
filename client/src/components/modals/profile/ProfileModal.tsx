@@ -1,6 +1,6 @@
 import styles from "./ProfileModal.module.scss";
 
-import Profile from "../Profile";
+import Profile from "../../ui/profile/Profile";
 
 
 export interface ProfileModalProps{

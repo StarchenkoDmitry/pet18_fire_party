@@ -2,8 +2,8 @@ import styles from "./Profile.module.scss";
 
 import { useEffect, useState } from "react";
 
-import Avatar from "./ui/Avatar";
-import AvatarEditorModal from "./avatarEditor/AvatarEditorModal";
+import Avatar from "./Avatar";
+import AvatarEditorModal from "../../modals/profile/AvatarEditorModal";
 
 import { ConvertBlobToStringBase64, ConvertDataURLToBlob } from "@/utils/Convert";
 import { GetMyAvatar, SetMyAvatar } from "@/actions/Image.actions";

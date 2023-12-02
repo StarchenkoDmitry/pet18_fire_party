@@ -3,9 +3,9 @@ import styles from "./CommunicationPanel.module.scss";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Me from "../сomponents/me/Me";
-import AddChatModal from "../modals/AddChatModal";
-import ChatView from "../ui/ChatView";
+import Me from "./me/Me";
+import AddChatModal from "../../modals/AddChatModal";
+import ChatView from "./ChatView";
 
 import { useMe } from "@/store/Me";
 import { useChat } from "@/store/Chat";

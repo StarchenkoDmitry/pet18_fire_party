@@ -3,7 +3,7 @@ import styles from "./CommunicationScreen.module.scss";
 import { Outlet } from "react-router-dom";
 import { useEffect } from "react";
 
-import CommunicationPanel from "@/components/communication/panels/CommunicationPanel";
+import CommunicationPanel from "@/components/ui/communication/CommunicationPanel";
 
 import { useMe } from "@/store/Me";
 import { useConnect } from "@/store/Connent";

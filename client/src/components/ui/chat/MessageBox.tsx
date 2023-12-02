@@ -5,7 +5,7 @@ import { useState } from "react";
 import { IMessage } from "@/common/chat.interface";
 import { convertToStringDate } from "@/utils/Date";
 
-import RemoveMessageModal from "@/components/communication/modals/RemoveMessageModal";
+import RemoveMessageModal from "@/components/modals/chat/RemoveMessageModal";
 
 
 const MOUSE_RIGHT = 2

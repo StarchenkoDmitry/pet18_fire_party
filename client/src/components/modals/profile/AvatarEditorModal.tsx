@@ -1,9 +1,9 @@
+import AvatarPreview from "@/components/ui/profile/AvatarPreview";
 import styles from "./AvatarEditorModal.module.scss";
 
 import { ConvertBlobToStringBase64, ConvertCanvasToDataURL } from "@/utils/Convert";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import AvatarEditor from "react-avatar-editor";
-import AvatarPreview from "./ui/AvatarPreview";
 
 
 const TIME_OF_UPDATE = 150;//ms

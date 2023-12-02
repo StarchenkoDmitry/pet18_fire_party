@@ -2,7 +2,7 @@ import styles from "./AddChatModal.module.scss";
 
 import { useEffect, useState } from "react";
 
-import { UserView } from "../ui/search/UserView";
+import { UserView } from "../ui/communication/search/UserView";
 
 import { CreateChat } from "@/actions/Chat.actions";
 

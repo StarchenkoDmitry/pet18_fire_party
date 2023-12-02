@@ -11,9 +11,8 @@ import AdminImages from './pages/panel/AdminImages'
 
 import CommunicationPage from './pages/CommunicationPage'
 
-import Chat from './components/communication/сomponents/chat/Chat'
-import SelectChat from './components/communication/ui/SelectChat'
-import ChatPanel from './components/communication/panels/ChatPanel'
+import ChatPanel from './components/ui/communication/ChatPanel'
+import SelectChat from './components/ui/communication/SelectChat'
 
 
 function App() {

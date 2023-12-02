@@ -2,9 +2,9 @@ import styles from "./Me.module.scss";
 
 import { useState } from "react";
 
-import ProfileModal from "../profile/modals/ProfileModal";
 import { useMe } from "@/store/Me";
 import { GetImageUrl } from "@/utils/Image";
+import ProfileModal from "../../../modals/profile/ProfileModal";
 
 
 export default function Me() {

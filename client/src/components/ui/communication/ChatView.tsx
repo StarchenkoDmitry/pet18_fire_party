@@ -5,7 +5,7 @@ import { useState } from "react";
 import { GetImageUrl } from "@/utils/Image";
 import { IMyChat } from "@/common/me.interface";
 
-import EditChatModal from "../modals/EditChatModal";
+import EditChatModal from "../../modals/EditChatModal";
 import { useMe } from "@/store/Me";
 
 
