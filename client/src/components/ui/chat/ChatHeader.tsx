@@ -1,11 +1,11 @@
 import { useOnlineFriends } from "@/store/OnlineFriends";
 import styles from "./ChatHeader.module.scss";
-import { IMyChat } from "@/common/me.interface";
+import { IChatWithUser } from "@/common/me.interface";
 import { GetImageUrl } from "@/utils/Image";
 
 
 export interface ChatHeaderProps{
-    info?:IMyChat;
+    info?:IChatWithUser;
 }
 
 export default function ChatHeader({info}:ChatHeaderProps) {

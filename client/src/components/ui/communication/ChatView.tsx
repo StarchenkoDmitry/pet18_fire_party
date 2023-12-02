@@ -3,7 +3,7 @@ import styles from "./ChatView.module.scss";
 import { useState } from "react";
 
 import { GetImageUrl } from "@/utils/Image";
-import { IMyChat } from "@/common/me.interface";
+import { IChatWithUser } from "@/common/me.interface";
 
 import EditChatModal from "../../modals/EditChatModal";
 import { useMe } from "@/store/Me";
@@ -13,7 +13,7 @@ const MOUSE_RIGHT = 2
 
 export interface ChatViewProps{
     selected?: boolean
-    chat: IMyChat
+    chat: IChatWithUser
     selectChat?: (chatId:string)=>void
     online?: boolean
 }

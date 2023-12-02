@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Mutex, MutexKeys } from 'src/utils/Mutex';
 import { ChatRepository } from './chat.repository';
-import { IMyChat } from 'src/common/me.interface';
+import { IChatWithUser } from 'src/common/me.interface';
 import { CHAT_EVENT_ADDMESSAGE, CHAT_EVENT_DELETE_CHAT, CHAT_EVENT_ERROR_INIT, CHAT_EVENT_INIT, CHAT_EVENT_REMOVEMESSAGE, ChatEvent, IMessage, IResSubOnChat } from 'src/common/chat.interface';
 import { IChatIncludeUsers } from './chat.interface';
 import { Chat, Message } from '@prisma/client';
@@ -55,7 +55,7 @@ export class ChatService {
     return res
   }
 
-  async getMy(chatId:string,userId:string):Promise<IMyChat>{
+  async getMy(chatId:string,userId:string):Promise<IChatWithUser>{
     await this.locker.mutexChats.lock(chatId)
 
     const res = await this.chatRepo.getMy(chatId,userId)

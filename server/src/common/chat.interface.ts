@@ -1,4 +1,4 @@
-import { IMyChat } from "./me.interface"
+import { IChatWithUser } from "./me.interface"
 
 export interface IChat{
     id: string
@@ -22,7 +22,7 @@ export interface ISubOnChat{
 }
 
 export interface IResSubOnChat{
-    info:IMyChat
+    info:IChatWithUser
     messages:IMessage[]
 }
 

@@ -1,7 +1,5 @@
-export function Wait():Promise<void>{
+export function Wait(timeWait = 2000):Promise<void>{
     return new Promise<void>((res,rej)=>{
-        setTimeout(()=>{
-            res();
-        },2000);
-    });
+        setTimeout(()=>{ res() }, timeWait)
+    })
 }

@@ -1,8 +1,7 @@
+import { IChat } from "./chat.interface";
 import { IUser, IUserForMe } from "./user.interface";
 
-export interface IMyChat{
-    id:string
-    lastMessageID:string | null
+export interface IChatWithUser extends IChat{
     user:Pick<IUser, "id" | "name" | "imageID">
 }
 
@@ -32,7 +31,7 @@ export type EventMe =
 
 
 export const MECHATS_EVENT_INIT = "MECHATS_EVENT_INIT"
-export type TYPE_MECHATS_EVENT_INIT = { chats:IMyChat[] }
+export type TYPE_MECHATS_EVENT_INIT = { chats:IChatWithUser[] }
 
 export const MECHATS_EVENT_ERROR_INIT = "MECHATS_EVENT_ERROR_INIT"
 export type TYPE_MECHATS_EVENT_ERROR_INIT = undefined

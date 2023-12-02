@@ -1,6 +1,6 @@
 import { Socket } from "socket.io-client";
 import { create } from "zustand";
-import { IMyChat } from "@/common/me.interface";
+import { IChatWithUser } from "@/common/me.interface";
 import { IUseConnect } from "./Connent";
 import { ClientNameEvents, ServerNameEvents } from "@/common/gateway.interfaces";
 import { 
@@ -21,7 +21,7 @@ export interface IChatStore extends IUseConnect{
     isLoaded: boolean
     isLoading: boolean
 
-    info?:IMyChat
+    info?:IChatWithUser
     messages?:IMessage[]
 
     socket:Socket | null

@@ -3,7 +3,7 @@ import { Socket } from "socket.io-client";
 import { IUserForMe } from "@/common/user.interface";
 import { EventMe, 
     EventMeChats, 
-    IMyChat, 
+    IChatWithUser, 
     MECHATS_EVENT_CHANGE_NAME, 
     MECHATS_EVENT_INIT, 
     ME_EVENT_CHANGE_NAME, 
@@ -18,7 +18,7 @@ export interface IMeStore extends IUseConnect{
     _socket: Socket | null
 
     me?: IUserForMe
-    chats?: IMyChat[]
+    chats?: IChatWithUser[]
 
     changeName: (name:string)=>void
     changeSurname: (surname:string)=>void

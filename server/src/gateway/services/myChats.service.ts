@@ -3,7 +3,7 @@ import { UserSocket } from "../gateway.interface";
 import { LockerService } from "src/locker/locker.service";
 import { UserRepository } from "src/user/user.repository";
 import { 
-  IMyChat, 
+  IChatWithUser, 
   EventMeChats, 
   MECHATS_EVENT_INIT, 
   MECHATS_EVENT_CHANGE_NAME, 
@@ -32,7 +32,7 @@ export class MyChatsService {
     await this.locker.mutexCreateChat.lock()
     await this.locker.mutexRemoveChat.lock()
 
-    const chats1: IMyChat[] = await this.userRepository.getMyChats(client.userId)
+    const chats1: IChatWithUser[] = await this.userRepository.getMyChats(client.userId)
 
     if(!chats1){
       await this.locker.mutexCreateChat.unlock()
@@ -44,7 +44,7 @@ export class MyChatsService {
       await this.locker.mutexChats.lock(chats1[p].id)
     }
     
-    const chats2: IMyChat[] = await this.userRepository.getMyChats(client.userId)
+    const chats2: IChatWithUser[] = await this.userRepository.getMyChats(client.userId)
 
     if(chats2){
       const event: EventMeChats = {

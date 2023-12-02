@@ -6,7 +6,7 @@ import { LoginResult, LoginStatus } from './user.interface';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { User } from '@prisma/client';
 import { GenerateSession } from 'src/auth/utils/Session';
-import { IMyChat } from 'src/common/me.interface';
+import { IChatWithUser } from 'src/common/me.interface';
 
 @Injectable()
 export class UserRepository {
@@ -123,7 +123,7 @@ export class UserRepository {
     return await this.prisma.user.findFirst({where:{session:session}})
   }
 
-  async getMyChats(userId: string):Promise<IMyChat[]>{
+  async getMyChats(userId: string):Promise<IChatWithUser[]>{
     const chats = await this.prisma.user.findFirst({
       where:{id:userId},
       select:{
@@ -148,7 +148,7 @@ export class UserRepository {
 
     if(!chats)return;
 
-    const meChats: IMyChat[] = chats.chats.map(chat=>{
+    const meChats: IChatWithUser[] = chats.chats.map(chat=>{
       if(chat.users.length !== 1) 
         throw Error("[UserService.getMyChats] lenght of users is not one (1).");
       return {

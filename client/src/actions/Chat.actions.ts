@@ -1,6 +1,6 @@
 import api from "@/api/api";
 import { IMessage } from "@/common/chat.interface";
-import { IMyChat } from "@/common/me.interface";
+import { IChatWithUser } from "@/common/me.interface";
 
 export async function CreateChat(friend_id:string):Promise<boolean>{
     try {
@@ -60,7 +60,7 @@ export async function GetAllMessage(chatid:string,stoper?:AbortController):Promi
     }
 }
 
-export async function GetChatInfo(chatid:string,stoper?:AbortController):Promise<IMyChat | undefined>{
+export async function GetChatInfo(chatid:string,stoper?:AbortController):Promise<IChatWithUser | undefined>{
     try {
         const res = await api.get(`chat/my/${chatid}`,{
             signal: stoper? stoper.signal : undefined

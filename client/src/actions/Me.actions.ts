@@ -1,5 +1,5 @@
 import api from "@/api/api";
-import { IMyChat } from "@/common/me.interface";
+import { IChatWithUser } from "@/common/me.interface";
 import { IUserForMe } from "@/common/user.interface";
 
 export async function GetMe():Promise<IUserForMe|undefined> {
@@ -13,7 +13,7 @@ export async function GetMe():Promise<IUserForMe|undefined> {
     }
 }
 
-export async function GetMyChats():Promise<IMyChat[] | undefined>{
+export async function GetMyChats():Promise<IChatWithUser[] | undefined>{
     try {
         const res = await api.get('chat/my');
         // console.log("chat/me res: ", res.data);

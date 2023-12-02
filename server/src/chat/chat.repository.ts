@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { IMessage } from 'src/common/chat.interface';
-import { IMyChat } from 'src/common/me.interface';
+import { IChatWithUser } from 'src/common/me.interface';
 import { Chat, Message } from '@prisma/client';
 import { constants } from 'buffer';
 import { IChatIncludeUsers } from './chat.interface';
@@ -99,7 +99,7 @@ export class ChatRepository {
     })
   }
   
-  async getMy(chatId:string,userId:string):Promise<IMyChat>{
+  async getMy(chatId:string,userId:string):Promise<IChatWithUser>{
     // console.log("getMy chatId, userId:",chatId,userId)
     const resData = await this.prisma.chat.findFirst({
       where:{id:chatId},
