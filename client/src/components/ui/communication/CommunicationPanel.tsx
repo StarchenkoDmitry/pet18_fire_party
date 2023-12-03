@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import Me from "./me/Me";
 import AddChatModal from "../../modals/AddChatModal";
-import ChatView from "./ChatView";
+import ChatCard from "./ChatCard";
 
 import { useMe } from "@/store/Me";
 import { useChat } from "@/store/Chat";
@@ -31,7 +31,7 @@ export default function CommunicationPanel() {
 
     const rend_chats = chats?.map(e=>{
         const isOnline = online.includes(e.user.id)
-        return (<ChatView 
+        return (<ChatCard 
             key={e.id}
             chat={e}
             selectChat={navigateChat}

@@ -1,4 +1,4 @@
-import styles from "./ChatView.module.scss";
+import styles from "./ChatCard.module.scss";
 
 import { useState } from "react";
 
@@ -11,19 +11,19 @@ import { useMe } from "@/store/Me";
 
 const MOUSE_RIGHT = 2
 
-export interface ChatViewProps{
+export interface ChatCardProps{
     selected?: boolean
     chat: IChatWithUser
     selectChat?: (chatId:string)=>void
     online?: boolean
 }
 
-export default function ChatView({
+export default function ChatCard({
     chat,
     selectChat,
     selected = false,
     online,
-}:ChatViewProps) {
+}:ChatCardProps) {
 
     const [showEditModal,setShowEditModal] = useState(false)
     const [cordsModal,setCordsModal] = useState({x:0,y:0})
