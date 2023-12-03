@@ -12,7 +12,7 @@ import AdminImages from './pages/panel/AdminImages'
 import CommunicationPage from './pages/CommunicationPage'
 
 import ChatPanel from './components/ui/communication/ChatPanel'
-import SelectChat from './components/ui/communication/SelectChat'
+import SelectChat from './components/ui/communication/skeleton/SelectChat'
 
 
 function App() {
