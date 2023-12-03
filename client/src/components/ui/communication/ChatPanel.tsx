@@ -11,16 +11,14 @@ import { useEffect } from "react";
 export default function ChatPanel() {
     // console.log(`Render ChatPanel(${id}) `)
 
-    const { id } = useParams();
-    const chatStore = useChat()
+    const { id } = useParams()
+
+    const { open, close, info, messages, addMessage, removeMessage } = useChat()
 
     useEffect(()=>{
-        chatStore.open(id || "")
-        return ()=>{chatStore.close()}
+        open(id || "")
+        return ()=>{close()}
     },[id])
-    
-
-    const { info, messages, addMessage, removeMessage } = useChat()
 
     return (
         <div className={styles.chat}>
