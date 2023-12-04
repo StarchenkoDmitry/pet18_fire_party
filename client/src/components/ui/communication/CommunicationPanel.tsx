@@ -46,7 +46,9 @@ export default function CommunicationPanel() {
             <div className={styles.list_chats + " scrollbar1"}>
                 { rend_chats }
             </div>
-            <div className={styles.btn_add_chat} onClick={openModal}>❤</div>
+            <button className={styles.btn_add_chat} onClick={openModal}>
+                <span className={styles.btn_add_chat__inner}>❤</span>
+            </button>
             { isActiveModal && <AddChatModal doClose={closeModal}/> }
         </div>
     )
