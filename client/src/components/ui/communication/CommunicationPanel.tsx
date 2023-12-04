@@ -1,7 +1,6 @@
 import styles from "./CommunicationPanel.module.scss";
 
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 import Me from "./me/Me";
 import AddChatModal from "../../modals/AddChatModal";

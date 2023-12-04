@@ -13,7 +13,6 @@ export default function ChatPanel() {
 
     const { id } = useParams()
     
-    //TODO
     const { open, close } = useChat()
 
     useEffect(()=>{

@@ -6,8 +6,6 @@
   flex-direction: column;
 
   width: 15em;
-  // height: 100%;
-  //TODO: Доделать grid и flex
 }
 
 .input{
@@ -19,7 +17,7 @@
 .list_chats{
   flex: 1;
   padding-left: .3125em;
-  padding-bottom: 4em;//пустое пространство внизу
+  padding-bottom: 4em;//Пустое пространство внизу для нормального отображение кнопки AddChat(AddChatModal)
   background-color: var(--bg-light);
   
   overflow-y: scroll;
@@ -34,13 +32,11 @@
 
   margin: .5em;
   
-  //TODO:(наверно это ненужно) сделать ширину и высоту в 3.375em(ах)
   width: 3em;
   height: 3em;
 
   color: aliceblue;
   text-align: center;
-  // font-size: 1.5em;
 
   border: 0px;
   border-radius: 1000em;
