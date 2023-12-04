@@ -20,9 +20,10 @@ html{
   /* --bg-chat-light: rgb(69, 98, 255); */
   --bg-chat-light: rgb(202 202 221);
   --bg-chat-message-light: #fff;
-  --bg-chat-message_me-light: #ecfff0;
+  --bg-chat-message-me-light: #ecfff0;
   --bg-chat-input-light: #3633e2;
-  --chat-size: 200px;
+  --chat-messages-max-width: 40em;
+  --chat-input-max-width: 40em;
   
   --primary-color: #3390ec;
   

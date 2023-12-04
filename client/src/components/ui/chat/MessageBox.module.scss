@@ -1,14 +1,21 @@
+.messageContainer{
+  display: flex;
+}
+.messageContainer[data-my-message="true"]{
+  justify-content: end;
+}
+
+
 .message{
   display: block;
   position: relative;
 
-  // margin: 1em;
   margin-bottom: .5em;
   padding: .2em;
 
-  max-width: 500px;
+  max-width: calc(100% - 2em);
 
-  border-radius: .5em;
+  border-radius: 1em;
   background-color: var(--bg-chat-message-light);
 
   // word-wrap: normal;
@@ -16,7 +23,7 @@
   overflow-wrap: anywhere;
 }
 .message[data-my-message="true"]{
-  background-color: var(--bg-chat-message_me-light);
+  background-color: var(--bg-chat-message-me-light);
 }
 
 .message_head{

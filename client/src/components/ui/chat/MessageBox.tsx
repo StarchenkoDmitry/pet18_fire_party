@@ -43,23 +43,28 @@ export default function MessageBox({message,toRemove}:MessageProps) {
 
     return (
         <div 
-            className={styles.message}
+            className={styles.messageContainer}
             data-my-message={isMyMessage}
-            onContextMenu={eventClick}
         >
-            <p className={styles.message_text}>
-                {message.text}
-                <span className={styles.message_createAt1}>{createAt}</span>
-                <span className={styles.message_createAt2}>{createAt}</span>
-            </p>
-            {
-                showEditModal && 
-                <RemoveMessageModal 
-                    toRemoveMessage={toRemove}
-                    toClose={closeModal}
-                    cords={cordsModal}
-                />
-            }
+            <div 
+                className={styles.message}
+                data-my-message={isMyMessage}
+                onContextMenu={eventClick}
+            >
+                <p className={styles.message_text}>
+                    {message.text}
+                    <span className={styles.message_createAt1}>{createAt}</span>
+                    <span className={styles.message_createAt2}>{createAt}</span>
+                </p>
+                {
+                    showEditModal && 
+                    <RemoveMessageModal 
+                        toRemoveMessage={toRemove}
+                        toClose={closeModal}
+                        cords={cordsModal}
+                    />
+                }
+            </div>
         </div>
     )
 }

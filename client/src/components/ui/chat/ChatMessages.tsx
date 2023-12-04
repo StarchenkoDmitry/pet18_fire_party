@@ -10,23 +10,27 @@ export default function ChatMessages() {
     
     if(messages){
         return(
-            <div className={styles.messages + " scrollbar1"}>
-            {
-                messages.map((e,i)=>{
-                    const deleteMessage = ()=>{
-                        removeMessage(e.id)
+            <div className={styles.messagesContainer + " scrollbar1"}>
+                <div className={styles.messages}>
+                    {
+                        messages.map((e,i)=>{
+                            const deleteMessage = ()=>{
+                                removeMessage(e.id)
+                            }
+                            return(<MessageBox key={i} message={e} toRemove={deleteMessage}/>)
+                        })
                     }
-                    return(<MessageBox key={i} message={e} toRemove={deleteMessage}/>)
-                })
-            }
+                </div>
             </div>
         )
     }else{
         return(
-            <div className={styles.messages}>
-                {/* <div className={styles.loadingMessages}>
+            <div className={styles.messagesContainer + " scrollbar1"}>
+                {
+                /* <div className={styles.loadingMessages}>
                     <span className={styles.loadingText}>loading</span>
-                </div> */}
+                </div> */
+                }
             </div>
         )
     }
