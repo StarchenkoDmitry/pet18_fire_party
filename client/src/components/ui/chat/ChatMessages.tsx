@@ -1,21 +1,20 @@
 import styles from "./ChatMessages.module.scss";
 
-import { IMessage } from "@/common/chat.interface";
 import MessageBox from "./MessageBox";
+import { useChat } from "@/store/Chat";
 
-export interface ChatMessagesProps{
-    messages?: IMessage[]
-    remove?: (messageId:string)=>void
-}
 
-export default function ChatMessages({messages,remove}:ChatMessagesProps) {
+export default function ChatMessages() {
+    const messages = useChat(state=>state.messages)
+    const removeMessage = useChat(state=>state.removeMessage)
+    
     if(messages){
         return(
             <div className={styles.messages + " scrollbar1"}>
             {
                 messages.map((e,i)=>{
                     const deleteMessage = ()=>{
-                        if(remove) remove(e.id)
+                        removeMessage(e.id)
                     }
                     return(<MessageBox key={i} message={e} toRemove={deleteMessage}/>)
                 })
@@ -25,7 +24,9 @@ export default function ChatMessages({messages,remove}:ChatMessagesProps) {
     }else{
         return(
             <div className={styles.messages}>
-                <span>LOADING</span>
+                {/* <div className={styles.loadingMessages}>
+                    <span className={styles.loadingText}>loading</span>
+                </div> */}
             </div>
         )
     }

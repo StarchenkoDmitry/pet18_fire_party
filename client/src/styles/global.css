@@ -17,9 +17,12 @@ html{
   --bg-secondary-light: #f3f3f4;
   --text-light: #000;
 
-  --bg-chat-light: rgb(69, 98, 255);
+  /* --bg-chat-light: rgb(69, 98, 255); */
+  --bg-chat-light: rgb(202 202 221);
   --bg-chat-message-light: #fff;
+  --bg-chat-message_me-light: #ecfff0;
   --bg-chat-input-light: #3633e2;
+  --chat-size: 200px;
   
   --primary-color: #3390ec;
   
@@ -28,6 +31,7 @@ html{
   /* dark theme tokens */
   /* --bg-dark: 25, 48, 66;
   --accent-dark: 90, 182, 204; */
+
 
   
 

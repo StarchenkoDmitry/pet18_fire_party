@@ -29,10 +29,22 @@
 
   white-space: nowrap;
   text-overflow: ellipsis;
-
-  user-select: none;
 }
 
 .statusOnline{
   font-size: .75em;
+  user-select: none;
+}
+
+
+.userAvatar[data-loading="true"]{
+  filter: blur(2px);
+}
+.name[data-loading="true"]{
+  user-select: none;
+  color: silver;
+  font-weight: 400;
+}
+.statusOnline[data-loading="true"]{
+  color: silver;
 }

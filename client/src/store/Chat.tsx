@@ -72,9 +72,9 @@ export const useChat = create<IChatStore>((set, get) =>({
         console.log(`ChatStore open(${id})`);
 
         set({ newId:id })//, isLoaded:false
-        const { isLoading } = get()
+        const { isLoading, _reqChatSocket } = get()
         if(!isLoading){
-            this._reqChatSocket()
+            _reqChatSocket()
         }
     },
     close(){
@@ -144,9 +144,9 @@ export const useChat = create<IChatStore>((set, get) =>({
                     })
 
                     //if after load have newId begine load chat
-                    const { id, newId } = get()
+                    const { id, newId, _reqChatSocket } = get()
                     if(id !== newId){
-                        this._reqChatSocket()
+                        _reqChatSocket()
                     }
                     break
                 }
@@ -158,9 +158,9 @@ export const useChat = create<IChatStore>((set, get) =>({
                     })
                     
                     //if after load have newId begine load chat
-                    const { id, newId } = get()
+                    const { id, newId, _reqChatSocket } = get()
                     if(id !== newId){
-                        this._reqChatSocket()
+                        _reqChatSocket()
                     }
                     break
                 }
@@ -196,22 +196,13 @@ export const useChat = create<IChatStore>((set, get) =>({
 
     onConnect(newSocket) {
         // console.log("IChatStore onConnect")
-
-        // set({
-        //     socket:newSocket,
-        //     isLoaded:false,
-        // })
-        // get()._reqChatSocket()
-
-        set({ 
-            socket:newSocket,            
-        })
-        this._subSocket()
+        set({ socket:newSocket })
+        get()._subSocket()
         get()._reqChatSocket()
     },
     onDisconnect() {
         // console.log("IChatStore onDisconnect")
-        this._unsubSocket()
+        get()._unsubSocket()
         set({
             socket:null,
             isLoaded:false,

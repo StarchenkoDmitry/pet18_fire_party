@@ -1,5 +1,35 @@
 .messages{
   flex: 1;
+  // display: flex;
+  // flex-direction: column;
+
+  padding: 1em;
+  padding-bottom: 0;
+
   // overflow: scroll;
   overflow-y: auto;
 }
+
+
+
+// .loadingMessages{
+//   flex: 1;
+
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: center;
+
+//   margin: 1em;
+//   padding: 1em;
+  
+//   border: .125em dashed #fff;
+//   border-radius: 1em;
+// }
+
+// .loadingText{
+//   display: block;
+
+//   color: #fff;
+//   font-size: calc(6vi);
+// }

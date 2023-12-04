@@ -6,6 +6,7 @@ import { IMessage } from "@/common/chat.interface";
 import { convertToStringDate } from "@/utils/Date";
 
 import RemoveMessageModal from "@/components/modals/chat/RemoveMessageModal";
+import { useMe } from "@/store/Me";
 
 
 const MOUSE_RIGHT = 2
@@ -16,6 +17,9 @@ export interface MessageProps{
 }
 
 export default function MessageBox({message,toRemove}:MessageProps) {
+
+    const myId = useMe(state=>state.me?.id)
+    const isMyMessage = message.userID === myId
 
     const [showEditModal,setShowEditModal] = useState(false)
     const [cordsModal,setCordsModal] = useState({x:0,y:0})
@@ -38,10 +42,11 @@ export default function MessageBox({message,toRemove}:MessageProps) {
     }
 
     return (
-        <div className={styles.message} onContextMenu={eventClick}>
-            {/* <div className={styles.message_head}>
-                <button onClick={toRemove}>Delete</button>
-            </div> */}
+        <div 
+            className={styles.message}
+            data-my-message={isMyMessage}
+            onContextMenu={eventClick}
+        >
             <p className={styles.message_text}>
                 {message.text}
                 <span className={styles.message_createAt1}>{createAt}</span>

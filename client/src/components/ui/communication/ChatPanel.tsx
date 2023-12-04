@@ -12,8 +12,9 @@ export default function ChatPanel() {
     // console.log(`Render ChatPanel(${id}) `)
 
     const { id } = useParams()
-
-    const { open, close, info, messages, addMessage, removeMessage } = useChat()
+    
+    //TODO
+    const { open, close } = useChat()
 
     useEffect(()=>{
         open(id || "")
@@ -22,9 +23,9 @@ export default function ChatPanel() {
 
     return (
         <div className={styles.chat}>
-            <ChatHeader info={info}/>
-            <ChatMessages messages={messages} remove={removeMessage} />
-            <ChatInput sendMessage={addMessage}/>
+            <ChatHeader/>
+            <ChatMessages/>
+            <ChatInput/>
         </div>
     )
 }

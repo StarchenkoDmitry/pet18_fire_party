@@ -2,19 +2,20 @@ import styles from "./ChatInput.module.scss";
 
 import { useRef, useState } from "react";
 
+import { useChat } from "@/store/Chat";
 
-export interface ChatInputProps{
-    sendMessage?: (text:string)=>void
-}
 
-export default function ChatInput({sendMessage}:ChatInputProps) {
+export default function ChatInput() {
+
+    const addMessage = useChat(state=>state.addMessage)
+
     const refka = useRef<HTMLInputElement>(null)
     const [text,setText] = useState('')
 
     const buttonSend = ()=>{
         const message = refka.current?.value || ''
         setText('')
-        if(sendMessage) sendMessage(message)
+        addMessage(message)
     }
 
     const changeText = (event: React.ChangeEvent<HTMLInputElement>)=>{
@@ -30,14 +31,15 @@ export default function ChatInput({sendMessage}:ChatInputProps) {
                     className={styles.input}
                     type="text"
                     value={text}
-                    placeholder="Message..."
+                    placeholder="message"
                     onChange={changeText}
                 />
             </div>
+            {/* TODO: поместить img в button */}
             <img
                 className={styles.send}
                 src="/img/send.png"
-                alt=""
+                alt="send"
                 onClick={buttonSend}
             />
         </div>
