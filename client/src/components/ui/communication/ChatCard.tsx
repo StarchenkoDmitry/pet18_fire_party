@@ -7,6 +7,7 @@ import { IChatWithUser } from "@/common/me.interface";
 
 import EditChatModal from "../../modals/EditChatModal";
 import { useMe } from "@/store/Me";
+import { useNavigate } from "react-router-dom";
 
 
 const MOUSE_RIGHT = 2
@@ -14,16 +15,16 @@ const MOUSE_RIGHT = 2
 export interface ChatCardProps{
     selected?: boolean
     chat: IChatWithUser
-    selectChat?: (chatId:string)=>void
     online?: boolean
 }
 
 export default function ChatCard({
     chat,
-    selectChat,
     selected = false,
     online,
 }:ChatCardProps) {
+    
+    const navigate = useNavigate()
 
     const [showEditModal,setShowEditModal] = useState(false)
     const [cordsModal,setCordsModal] = useState({x:0,y:0})
@@ -42,7 +43,7 @@ export default function ChatCard({
             })
         }else if(event.button === 0){
             setShowEditModal(false)
-            if(selectChat) selectChat(chat.id)
+            navigate(`/chat/${chat.id}`)
         }
     }
 
@@ -53,7 +54,7 @@ export default function ChatCard({
     const eventDeleteChat = ()=>{
         deleteChat(chat.id)
     }
-    
+
     return (
         <div 
             data-selected={selected}

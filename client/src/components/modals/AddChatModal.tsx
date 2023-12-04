@@ -11,10 +11,10 @@ import { useConnect } from "@/store/Connent";
 
 
 export interface AddChatModalProps{
-    doClose?:()=>void
+    close?:()=>void
 }
 
-export default function AddChatModal({doClose}:AddChatModalProps) {
+export default function AddChatModal({close: doClose}:AddChatModalProps) {
     const { subConnect, unsubConnect} = useConnect.getState()
 
     const [text,setText] = useState("")

@@ -12,19 +12,13 @@ import { useChat } from "@/store/Chat";
 import { useOnlineFriends } from "@/store/OnlineFriends";
 
 export default function CommunicationPanel() {
-    // console.log("Render CommunicationsPanel")
-    
-    const navigate = useNavigate()
-    
+    // console.log("Render CommunicationPanel")
+
     const online = useOnlineFriends(state=>state.onlines)
     const chats = useMe((state)=>state.chats)
     const selectedChatId = useChat((state)=>state.id)
 
     const [isActiveModal,setActiveModal] = useState(false)
-    
-    const navigateChat = (chatId:string)=>{
-        navigate(`/chat/${chatId}`)
-    }
 
     const closeModal = ()=>{ setActiveModal(false) }
     const openModal = ()=>{ setActiveModal(true) }
@@ -34,7 +28,6 @@ export default function CommunicationPanel() {
         return (<ChatCard 
             key={e.id}
             chat={e}
-            selectChat={navigateChat}
             online={isOnline}
             selected={e.id === selectedChatId}
         />)
@@ -49,7 +42,7 @@ export default function CommunicationPanel() {
             <button className={styles.btn_add_chat} onClick={openModal}>
                 <span className={styles.btn_add_chat__inner}>❤</span>
             </button>
-            { isActiveModal && <AddChatModal doClose={closeModal}/> }
+            { isActiveModal && <AddChatModal close={closeModal}/> }
         </div>
     )
 }
