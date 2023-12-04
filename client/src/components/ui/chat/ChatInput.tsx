@@ -1,6 +1,6 @@
 import styles from "./ChatInput.module.scss";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 import { useChat } from "@/store/Chat";
 
@@ -9,11 +9,10 @@ export default function ChatInput() {
 
     const addMessage = useChat(state=>state.addMessage)
 
-    const refka = useRef<HTMLInputElement>(null)
     const [text,setText] = useState('')
 
-    const buttonSend = ()=>{
-        const message = refka.current?.value || ''
+    const sendMessage = ()=>{
+        const message = text || ''
         setText('')
         addMessage(message)
     }
@@ -26,23 +25,21 @@ export default function ChatInput() {
         <div className={styles.chatInputContainer}>
             <div className={styles.chatInput}>
                 <div className={styles.cloudInput}>
-                    <button className={styles.selectSmile}>smile</button>
-                    <input 
-                        ref={refka}
+                    <input
                         className={styles.input}
                         type="text"
-                        value={text}
                         placeholder="message"
+                        value={text}
                         onChange={changeText}
                     />
                 </div>
-                {/* TODO: поместить img в button */}
-                <img
-                    className={styles.send}
-                    src="/img/send.png"
-                    alt="send"
-                    onClick={buttonSend}
-                />
+                <button className={styles.btn_send} onClick={sendMessage}>
+                    <img
+                        className={styles.send}
+                        src="/img/send.png"
+                        alt="send"
+                    />
+                </button>
             </div>
         </div>
     )
