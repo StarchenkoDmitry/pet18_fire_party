@@ -6,7 +6,8 @@ import { LoginResult, LoginStatus } from './user.interface';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { User } from '@prisma/client';
 import { GenerateSession } from 'src/auth/utils/Session';
-import { IChatWithUser } from 'src/common/me.interface';
+import { IChatWithUser } from 'src/common/chat.interface';
+
 
 @Injectable()
 export class UserRepository {

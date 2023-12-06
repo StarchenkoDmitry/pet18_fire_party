@@ -5,8 +5,8 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { UserRepository } from 'src/user/user.repository';
 import { UserDec } from 'src/auth/auth.decorator';
 import { User } from '@prisma/client';
-import { IChatWithUser } from 'src/common/me.interface';
 import { ChatService } from './chat.service';
+import { IChatWithUser } from 'src/common/chat.interface';
 
 @Controller('chat')
 @UsePipes(new ValidationPipe({whitelist: true}))

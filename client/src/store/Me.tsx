@@ -3,7 +3,6 @@ import { Socket } from "socket.io-client";
 import { IUserForMe } from "@/common/user.interface";
 import { EventMe, 
     EventMeChats, 
-    IChatWithUser, 
     MECHATS_EVENT_CHANGE_NAME, 
     MECHATS_EVENT_INIT, 
     ME_EVENT_CHANGE_NAME, 
@@ -11,7 +10,8 @@ import { EventMe,
     ME_EVENT_INIT 
 } from "@/common/me.interface";
 import { IUseConnect } from "./Connent";
-import { ClientNameEvents, ServerNameEvents } from "@/common/gateway.interfaces";
+import { ClientNameActions, ServerNameActions } from "@/common/gateway.interfaces";
+import { IChatWithUser } from "@/common/chat.interface";
 
 
 export interface IMeStore extends IUseConnect{
@@ -31,7 +31,7 @@ export const useMe = create<IMeStore>((set, get) =>({
     onConnect(newSocket) {
         set({_socket:newSocket})
 
-        newSocket.on(ClientNameEvents.eventsOnMe,({type, data}:EventMe)=>{
+        newSocket.on(ClientNameActions.onMeEvent,({type, data}:EventMe)=>{
             // console.log(`${ClientNameEvents.eventsOnMe} data:`, {type, data})
             
             switch(type){
@@ -58,10 +58,10 @@ export const useMe = create<IMeStore>((set, get) =>({
                 }
             }
         })
-        newSocket.emit(ServerNameEvents.subscribeOnMe)
+        newSocket.emit(ServerNameActions.subscribeOnMe)
 
 
-        newSocket.on(ClientNameEvents.eventsOnChats,({type, data}:EventMeChats)=>{
+        newSocket.on(ClientNameActions.onChatsEvent,({type, data}:EventMeChats)=>{
             // console.log(`${ClientNameEvents.eventsOnChats} data:`, {type, data})
             
             switch(type){
@@ -81,26 +81,26 @@ export const useMe = create<IMeStore>((set, get) =>({
                 default:{ break }
             }
         })
-        newSocket.emit(ServerNameEvents.subscribeOnChats)
+        newSocket.emit(ServerNameActions.subscribeOnChats)
     },
     onDisconnect() {
         const { _socket } = get()
         set({_socket:null})
         
-        _socket?.off(ClientNameEvents.eventsOnMe)
-        _socket?.off(ClientNameEvents.eventsOnChats)
+        _socket?.off(ClientNameActions.onMeEvent)
+        _socket?.off(ClientNameActions.onChatsEvent)
     },
 
     changeName(name) {
         const { _socket } = get()
-        _socket?.emit(ServerNameEvents.changeName,name)
+        _socket?.emit(ServerNameActions.setName,{ name })
     },
     changeSurname(surname) {
         const { _socket } = get()
-        _socket?.emit(ServerNameEvents.changeSurname,surname)
+        _socket?.emit(ServerNameActions.setSurname,{ surname })
     },
     deleteChat(chatId){
         const { _socket } = get()
-        _socket?.emit(ServerNameEvents.deleteChat,chatId)
+        _socket?.emit(ServerNameActions.deleteChat,{ chatId })
     }
 }))

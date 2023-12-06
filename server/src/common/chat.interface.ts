@@ -1,36 +1,19 @@
-import { IChatWithUser } from "./me.interface"
+import { IMessage } from "./message.interface"
+import { IUser } from "./user.interface"
+
 
 export interface IChat{
     id: string
     lastMessageID: string | null
 }
 
-export interface IMessage{
-    id: string
-    createAt: Date
-    text: string
-
-    userID: string
-    chatId: string
-    prevMessageID: string | null
+export interface IChatWithUser extends IChat{
+    user:Pick<IUser, "id" | "name" | "imageID">
 }
 
-
-//Gateway
-export interface ISubOnChat{
-    chatId:string
-}
-
-export interface IResSubOnChat{
-    info:IChatWithUser
-    messages:IMessage[]
-}
-
-
-
-
+//WebSocket
 export const CHAT_EVENT_INIT = "CHAT_EVENT_INIT"
-export type TYPE_RES_CHAT_EVENT_INIT = IResSubOnChat
+export type TYPE_RES_CHAT_EVENT_INIT = { info:IChatWithUser, messages:IMessage[] }
 
 export const CHAT_EVENT_ERROR_INIT = "CHAT_EVENT_ERROR_INIT"
 export type TYPE_RES_CHAT_EVENT_ERROR_INIT = { chatId:string }

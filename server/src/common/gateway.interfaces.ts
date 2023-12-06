@@ -1,28 +1,59 @@
-export const ServerNameEvents = {
-    subscribeOnMe:"ServerNameEvents.subscribeOnMe",
-    subscribeOnChats:"ServerNameEvents.subscribeOnChats",
+export const ServerNameActions = {
+    subscribeOnMe:"ServerNameActions.subscribeOnMe",
+    subscribeOnChats:"ServerNameActions.subscribeOnChats",
 
-    createMessage:"ServerNameEvents.createMessage",
-    removeMessage:"ServerNameEvents.removeMessage",
-    
-    subOnChat:"ServerNameEvents.subOnChat",
-    subOnChangeOnline:"ServerNameEvents.subOnChangeOnline",
+    createMessage:"ServerNameActions.createMessage",
+    removeMessage:"ServerNameActions.removeMessage",
 
-    
-    changeName:"ServerNameEvents.changeName",
-    changeSurname:"ServerNameEvents.changeSurname",
+    subscribeOnChat:"ServerNameActions.subscribeOnChat",
+    subscribeOnChangeOnline:"ServerNameActions.subscribeOnChangeOnline",
 
-    searchUsers:"ServerNameEvents.searchUsers",
-    
-    deleteChat:"ServerNameEvents.deleteChat",
-    
+
+    setName:"ServerNameActions.setName",
+    setSurname:"ServerNameActions.setSurname",
+
+    searchForUsers:"ServerNameActions.searchForUsers",
+
+    deleteChat:"ServerNameActions.deleteChat",
+
 } as const
-export type TypeServerNameEvents = typeof ServerNameEvents[keyof typeof ServerNameEvents]
+export type TypeServerNameActions = typeof ServerNameActions[keyof typeof ServerNameActions]
 
-export const ClientNameEvents = {
-    eventsOnMe:"ClientNameEvents.eventsOnMe",
-    eventsOnChats:"ClientNameEvents.eventsOnChats",
-    changeOnline:"ClientNameEvents.changeOnline",
-    onChatEvent:"ClientNameEvents.onChatEvent",
+export const ClientNameActions = {
+    onMeEvent:"ClientNameActions.onMeEvent",
+    onChatsEvent:"ClientNameActions.onChatsEvent",
+    onChangeOnlineEvent:"ClientNameActions.onChangeOnlineEvent",
+    onChatEvent:"ClientNameActions.onChatEvent",
 } as const
-export type TypeClientNameEvents = typeof ClientNameEvents[keyof typeof ClientNameEvents]
+export type TypeClientNameActions = typeof ClientNameActions[keyof typeof ClientNameActions]
+
+
+export interface ISubscribeOnChat{
+    chatId:string
+}
+
+export interface ICreateMessage{
+    chatId:string
+    text:string
+}
+
+export interface IRemoveMessage{
+    chatId:string
+    messageId:string
+}
+
+export interface IDeleteChat{
+    chatId:string
+}
+
+export interface ISetName{
+    name:string
+}
+
+export interface ISetSurname{
+    surname:string
+}
+
+export interface ISearchForUsers{
+    name:string
+}

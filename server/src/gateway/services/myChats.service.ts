@@ -3,14 +3,14 @@ import { UserSocket } from "../gateway.interface";
 import { LockerService } from "src/locker/locker.service";
 import { UserRepository } from "src/user/user.repository";
 import { 
-  IChatWithUser, 
   EventMeChats, 
   MECHATS_EVENT_INIT, 
   MECHATS_EVENT_CHANGE_NAME, 
   MECHATS_EVENT_CHANGE_SURNAME } from "src/common/me.interface";
 import { EventsService } from "src/events/events.service";
 import { USER_EVENT_CHANGE_NAME, USER_EVENT_CHANGE_SURNAME } from "src/common/user.interface";
-import { ClientNameEvents } from "src/common/gateway.interfaces";
+import { ClientNameActions } from "src/common/gateway.interfaces";
+import { IChatWithUser } from "src/common/chat.interface";
 
 
 @Injectable()
@@ -51,7 +51,7 @@ export class MyChatsService {
         type: MECHATS_EVENT_INIT,
         data:{ chats:chats2 }
       }
-      client.emit(ClientNameEvents.eventsOnChats,event)
+      client.emit(ClientNameActions.onChatsEvent,event)
 
       const subList: (()=>void)[] = []
       for(let p =0;p< chats2.length;p++){
@@ -66,7 +66,7 @@ export class MyChatsService {
                   name: event.data.name
                 }
               }
-              client.emit(ClientNameEvents.eventsOnChats,eventUser)
+              client.emit(ClientNameActions.onChatsEvent,eventUser)
               break
             }
             //Это event не нужен(пока что)

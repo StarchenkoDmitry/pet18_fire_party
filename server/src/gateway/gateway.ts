@@ -21,10 +21,19 @@ import { OnlineUsersService } from "./services/onlineUsers.service";
 import { MyChatsService } from "./services/myChats.service";
 
 import { IUserForSearch } from "src/common/user.interface";
-import { IResSubOnChat, ISubOnChat } from "src/common/chat.interface";
 
 import { verifyName, verifySurname } from "src/utils/validations";
-import { ServerNameEvents } from "src/common/gateway.interfaces";
+
+import { 
+  ICreateMessage, 
+  IDeleteChat, 
+  IRemoveMessage, 
+  ISearchForUsers, 
+  ISetName, 
+  ISetSurname, 
+  ISubscribeOnChat, 
+  ServerNameActions 
+} from "src/common/gateway.interfaces";
 
 
 @WebSocketGateway({
@@ -69,40 +78,40 @@ export class Gateway implements OnGatewayConnection, OnGatewayDisconnect{
   }
 
 
-  @SubscribeMessage(ServerNameEvents.subscribeOnMe)
+  @SubscribeMessage(ServerNameActions.subscribeOnMe)
   async subOnMe(client: UserSocket, data: any){
-    console.log(ServerNameEvents.subscribeOnMe)
+    console.log(ServerNameActions.subscribeOnMe)
     await this.meService.subscribe(client)
   }
 
 
-  @SubscribeMessage(ServerNameEvents.subscribeOnChats)
+  @SubscribeMessage(ServerNameActions.subscribeOnChats)
   async subOnMeChats(client: UserSocket, data: any){
-    console.log(ServerNameEvents.subscribeOnChats)
+    console.log(ServerNameActions.subscribeOnChats)
     await this.myChatsService.subscribe(client)
   }
 
 
-  @SubscribeMessage(ServerNameEvents.createMessage)
-  async createMessage(client: UserSocket, data: any){
-    console.log("addMessage data:", data)
-    return await this.chatService.createMessage(data.chatId,client.userId,data.text)
+  @SubscribeMessage(ServerNameActions.createMessage)
+  async createMessage(client: UserSocket, { chatId, text }: ICreateMessage){
+    console.log("addMessage data:", {chatId, text })
+    return await this.chatService.createMessage(chatId,client.userId,text)
   }
 
-  @SubscribeMessage(ServerNameEvents.removeMessage)
-  async removeMessage(client: UserSocket, { chatId, messageId }: any){
+  @SubscribeMessage(ServerNameActions.removeMessage)
+  async removeMessage(client: UserSocket, { chatId, messageId }: IRemoveMessage){
     console.log("removeMessage:", { chatId, messageId })
     return await this.chatService.removeMessage(chatId,messageId,client.userId)
   }
 
 
-  @SubscribeMessage(ServerNameEvents.subOnChat)
-  async subscribeOnChat(client: UserSocket, {chatId}: ISubOnChat){
+  @SubscribeMessage(ServerNameActions.subscribeOnChat)
+  async subscribeOnChat(client: UserSocket, { chatId }: ISubscribeOnChat){
     console.log("subOnChat data:",{chatId})
     await this.chatService.subscribeOnChat(chatId, client.userId, client)
   }
   
-  @SubscribeMessage(ServerNameEvents.subOnChangeOnline)
+  @SubscribeMessage(ServerNameActions.subscribeOnChangeOnline)
   async subscribeOnChangeOnline(client: UserSocket, data:any){
     const myFriends = await this.userRepository.getMyFriends(client.userId)
     const myFriendsOnline = this.onlineUsers.subscribeOnOnline(client,myFriends)
@@ -110,16 +119,16 @@ export class Gateway implements OnGatewayConnection, OnGatewayDisconnect{
   }
 
 
-  @SubscribeMessage(ServerNameEvents.changeName)
-  async changeName(client: UserSocket, name:string):Promise<boolean>{
+  @SubscribeMessage(ServerNameActions.setName)
+  async changeName(client: UserSocket, { name }:ISetName):Promise<boolean>{
     console.log("changeName data:",name)
     if(!verifyName(name)) return false
     const res = await this.userService.setName(client.userId,name)
     return !!res
   }
 
-  @SubscribeMessage(ServerNameEvents.changeSurname)
-  async changeSurname(client: UserSocket, surname:string):Promise<boolean>{
+  @SubscribeMessage(ServerNameActions.setSurname)
+  async changeSurname(client: UserSocket, { surname }:ISetSurname):Promise<boolean>{
     console.log("changeSurname data:",surname)
     if(!verifySurname(surname)) return false
     const res = await this.userService.setSurname(client.userId,surname)
@@ -127,8 +136,8 @@ export class Gateway implements OnGatewayConnection, OnGatewayDisconnect{
   }
 
 
-  @SubscribeMessage(ServerNameEvents.searchUsers)
-  async searchUser(client: UserSocket, name:string):Promise<IUserForSearch[]>{
+  @SubscribeMessage(ServerNameActions.searchForUsers)
+  async searchUser(client: UserSocket, { name }:ISearchForUsers):Promise<IUserForSearch[]>{
     console.log("searchUsers data:",name)
     const users = await this.userRepository.findManyByNameWhoNoFriend(client.userId,name)
     if(!users) return
@@ -137,8 +146,8 @@ export class Gateway implements OnGatewayConnection, OnGatewayDisconnect{
     }))
   }
 
-  @SubscribeMessage(ServerNameEvents.deleteChat)
-  async deleteChat(client: UserSocket, chatId:string):Promise<boolean>{
+  @SubscribeMessage(ServerNameActions.deleteChat)
+  async deleteChat(client: UserSocket, { chatId }:IDeleteChat):Promise<boolean>{
     console.log("deleteChat data:",chatId)
     const resDelete = await this.chatService.remove(client.userId,chatId)
     return resDelete

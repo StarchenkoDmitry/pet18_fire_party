@@ -17,8 +17,7 @@ export type IUserForMe = Omit<IUser, "passwordHash" | "session">
 export type IUserForSearch = Pick<IUser, "name" | "surname" | "id" | "imageID">
 
 
-
-
+//WebSocket
 export const USER_EVENT_CHANGE_NAME = "USER_EVENT_CHANGE_NAME"
 export type TYPE_USER_EVENT_CHANGE_NAME = { name: string }
 

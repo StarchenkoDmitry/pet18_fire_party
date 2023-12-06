@@ -1,25 +1,19 @@
-import { IChat } from "./chat.interface";
-import { IUser, IUserForMe } from "./user.interface";
-
-export interface IChatWithUser extends IChat{
-    user:Pick<IUser, "id" | "name" | "imageID">
-}
+import { IChatWithUser } from "./chat.interface";
+import { IUserForMe } from "./user.interface";
 
 
-
-
+//WebSocket
 export const ME_EVENT_INIT = "ME_EVENT_INIT"
 export type TYPE_ME_EVENT_INIT = { me:IUserForMe }
 
 export const ME_EVENT_ERROR_INIT = "ME_EVENT_ERROR_INIT"
-export type TYPE_ME_EVENT_ERROR_INIT = undefined
+export type TYPE_ME_EVENT_ERROR_INIT = unknown
 
 export const ME_EVENT_CHANGE_NAME = "ME_EVENT_CHANGE_NAME"
 export type TYPE_ME_EVENT_CHANGE_NAME = { name:string }
 
 export const ME_EVENT_CHANGE_SURNAME = "ME_EVENT_CHANGE_SURNAME"
 export type TYPE_ME_EVENT_CHANGE_SURNAME = { surname:string }
-
 
 export type EventMe =
 | { type:typeof ME_EVENT_INIT, data: TYPE_ME_EVENT_INIT }
@@ -28,13 +22,11 @@ export type EventMe =
 | { type:typeof ME_EVENT_CHANGE_SURNAME, data: TYPE_ME_EVENT_CHANGE_SURNAME }
 
 
-
-
 export const MECHATS_EVENT_INIT = "MECHATS_EVENT_INIT"
 export type TYPE_MECHATS_EVENT_INIT = { chats:IChatWithUser[] }
 
 export const MECHATS_EVENT_ERROR_INIT = "MECHATS_EVENT_ERROR_INIT"
-export type TYPE_MECHATS_EVENT_ERROR_INIT = undefined
+export type TYPE_MECHATS_EVENT_ERROR_INIT = unknown
 
 export const MECHATS_EVENT_CHANGE_NAME = "MECHATS_EVENT_CHANGE_NAME"
 export type TYPE_MECHATS_EVENT_CHANGE_NAME = { userId:string, name:string }

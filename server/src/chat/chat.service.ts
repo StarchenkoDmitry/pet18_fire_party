@@ -1,15 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { Mutex, MutexKeys } from 'src/utils/Mutex';
 import { ChatRepository } from './chat.repository';
-import { IChatWithUser } from 'src/common/me.interface';
-import { CHAT_EVENT_ADDMESSAGE, CHAT_EVENT_DELETE_CHAT, CHAT_EVENT_ERROR_INIT, CHAT_EVENT_INIT, CHAT_EVENT_REMOVEMESSAGE, ChatEvent, IMessage, IResSubOnChat } from 'src/common/chat.interface';
+import { CHAT_EVENT_ADDMESSAGE, CHAT_EVENT_DELETE_CHAT, CHAT_EVENT_ERROR_INIT, CHAT_EVENT_INIT, CHAT_EVENT_REMOVEMESSAGE, ChatEvent, IChatWithUser } from 'src/common/chat.interface';
 import { IChatIncludeUsers } from './chat.interface';
 import { Chat, Message } from '@prisma/client';
-import { CustomEmiter } from 'src/utils/CustomEmiter';
 import { UserSocket } from 'src/gateway/gateway.interface';
 import { LockerService } from 'src/locker/locker.service';
 import { EventsService } from 'src/events/events.service';
-import { ClientNameEvents } from 'src/common/gateway.interfaces';
+import { ClientNameActions } from 'src/common/gateway.interfaces';
+import { IMessage } from 'src/common/message.interface';
 
 
 @Injectable()
@@ -123,7 +121,7 @@ export class ChatService {
     if(resMyChat){
       client.cancelSubOnChat = this.events.eventChats.sub(chatId, (event)=>{
         // console.log("onChatEvent event:", event)
-        client.emit(ClientNameEvents.onChatEvent, event)
+        client.emit(ClientNameActions.onChatEvent, event)
       })
 
       const event: ChatEvent = {
@@ -134,14 +132,14 @@ export class ChatService {
         }
       }
 
-      client.emit(ClientNameEvents.onChatEvent,event)
+      client.emit(ClientNameActions.onChatEvent,event)
     }
     else{
       const event: ChatEvent = {
         type:CHAT_EVENT_ERROR_INIT,
         data:{ chatId }
       }
-      client.emit(ClientNameEvents.onChatEvent,event)
+      client.emit(ClientNameActions.onChatEvent,event)
     }
 
     this.locker.mutexChats.unlock(chatId)

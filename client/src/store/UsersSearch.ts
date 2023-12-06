@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { Socket } from "socket.io-client";
 
 import { IUseConnect } from "./Connent";
-import { ServerNameEvents } from "@/common/gateway.interfaces";
+import { ServerNameActions } from "@/common/gateway.interfaces";
 import { IUserForSearch } from "@/common/user.interface";
 
 
@@ -52,7 +52,7 @@ export const useUsersSearch = create<IUsersSearchStore>((set, get) =>({
 
         set({ _runningReq: true })
 
-        _socket.timeout(5000).emit(ServerNameEvents.searchUsers,_nextName,(error:any,data:IUserForSearch[]) => {
+        _socket.timeout(5000).emit(ServerNameActions.searchForUsers,{ name:_nextName },(error:any,data:IUserForSearch[]) => {
             
             set({
                 _runningReq:false,

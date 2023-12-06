@@ -1,8 +1,7 @@
 import { Socket } from "socket.io-client";
 import { create } from "zustand";
-import { IChatWithUser } from "@/common/me.interface";
 import { IUseConnect } from "./Connent";
-import { ClientNameEvents, ServerNameEvents } from "@/common/gateway.interfaces";
+import { ClientNameActions, ServerNameActions } from "@/common/gateway.interfaces";
 import { 
     CHAT_EVENT_ERROR_INIT,
     CHAT_EVENT_INIT,
@@ -10,8 +9,9 @@ import {
     CHAT_EVENT_REMOVEMESSAGE,
     
     ChatEvent,
-    IMessage 
+    IChatWithUser,
 } from "@/common/chat.interface";
+import { IMessage } from "@/common/message.interface";
 
 
 export interface IChatStore extends IUseConnect{
@@ -80,7 +80,7 @@ export const useChat = create<IChatStore>((set, get) =>({
     close(){
         // console.log("IChatStore clear")
         // this._unsubSocket()
-        saveStore(get)
+        // saveStore(get)
 
         set({
             id:"",
@@ -121,17 +121,17 @@ export const useChat = create<IChatStore>((set, get) =>({
         // loadStore(newId,set)
                 
         // console.log("IChatStore chatId: ",newId)
-        socket.emit(ServerNameEvents.subOnChat,{ chatId:newId })
+        socket.emit(ServerNameActions.subscribeOnChat,{ chatId:newId })
     },
     _unsubSocket(){
         const { socket } = get()
-        socket?.off(ClientNameEvents.onChatEvent)
+        socket?.off(ClientNameActions.onChatEvent)
     },
     _subSocket(){
         const { socket } = get()
         if(!socket) return
 
-        socket.on(ClientNameEvents.onChatEvent, ({type, data}:ChatEvent)=>{
+        socket.on(ClientNameActions.onChatEvent, ({type, data}:ChatEvent)=>{
             console.log("ClientNameEvents.onChatEvent data:", {type, data})
             switch(type){
                 case CHAT_EVENT_INIT:{
@@ -188,10 +188,10 @@ export const useChat = create<IChatStore>((set, get) =>({
     },
 
     addMessage:(text)=>{
-        get().socket?.emit(ServerNameEvents.createMessage, { chatId:get().id, text: text })
+        get().socket?.emit(ServerNameActions.createMessage, { chatId:get().id, text: text })
     },
     removeMessage:(messageId)=>{
-        get().socket?.emit(ServerNameEvents.removeMessage, { chatId:get().id, messageId:messageId })
+        get().socket?.emit(ServerNameActions.removeMessage, { chatId:get().id, messageId:messageId })
     },
 
     onConnect(newSocket) {

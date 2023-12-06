@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { UserSocket } from "../gateway.interface";
-import { ClientNameEvents } from "src/common/gateway.interfaces";
+import { ClientNameActions } from "src/common/gateway.interfaces";
 import { EventFriendOnline } from "src/common/onlineUsers.interface";
 
 
@@ -44,7 +44,7 @@ export class OnlineUsersService {
     onlic.countOnline++    
     const event: EventFriendOnline = { isOnline:true,userId:user.userId }
     onlic.subs.forEach(sock=>{
-        sock.emit(ClientNameEvents.changeOnline, event)
+        sock.emit(ClientNameActions.onChangeOnlineEvent, event)
     })
   }
   
@@ -61,7 +61,7 @@ export class OnlineUsersService {
           isOnline: currentOnline,
           userId: user.userId 
         }
-        sock.emit(ClientNameEvents.changeOnline, event)
+        sock.emit(ClientNameActions.onChangeOnlineEvent, event)
       })
     }
     

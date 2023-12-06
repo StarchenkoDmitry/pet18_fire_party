@@ -6,7 +6,7 @@ import { User } from "@prisma/client";
 import { EventMe, ME_EVENT_ERROR_INIT, ME_EVENT_INIT, ME_EVENT_CHANGE_NAME, ME_EVENT_CHANGE_SURNAME } from "src/common/me.interface";
 import { EventsService } from "src/events/events.service";
 import { USER_EVENT_CHANGE_NAME, USER_EVENT_CHANGE_SURNAME } from "src/common/user.interface";
-import { ClientNameEvents } from "src/common/gateway.interfaces";
+import { ClientNameActions } from "src/common/gateway.interfaces";
 
 
 @Injectable()
@@ -33,7 +33,7 @@ export class MeService {
             type: ME_EVENT_ERROR_INIT,
             data:undefined
         } 
-        client.emit(ClientNameEvents.eventsOnMe,event)
+        client.emit(ClientNameActions.onMeEvent,event)
         return
     }
 
@@ -45,19 +45,19 @@ export class MeService {
             me:{id, name, surname, imageID, login, email}
         }
     }
-    client.emit(ClientNameEvents.eventsOnMe,event)
+    client.emit(ClientNameActions.onMeEvent,event)
 
     const subCancel = this.events.eventUsers.sub(client.userId,(event)=>{
         switch(event.type){
             case USER_EVENT_CHANGE_NAME:{
-                client.emit(ClientNameEvents.eventsOnMe,{
+                client.emit(ClientNameActions.onMeEvent,{
                     type: ME_EVENT_CHANGE_NAME,
                     data:event.data,
                 })
                 break
             }
             case USER_EVENT_CHANGE_SURNAME:{
-                client.emit(ClientNameEvents.eventsOnMe,{
+                client.emit(ClientNameActions.onMeEvent,{
                     type: ME_EVENT_CHANGE_SURNAME,
                     data:event.data,
                 })
