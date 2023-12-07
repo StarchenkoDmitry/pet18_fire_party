@@ -3,11 +3,11 @@ import styles from "./ChatCard.module.scss";
 import { useState } from "react";
 
 import { GetImageUrl } from "@/utils/Image";
-import { IChatWithUser } from "@/common/me.interface";
 
 import EditChatModal from "../../modals/EditChatModal";
 import { useMe } from "@/store/Me";
 import { useNavigate } from "react-router-dom";
+import { IChatWithUser } from "@/common/chat.interface";
 
 
 const MOUSE_RIGHT = 2

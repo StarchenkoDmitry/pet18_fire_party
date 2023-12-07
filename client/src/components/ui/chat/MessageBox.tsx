@@ -2,11 +2,11 @@ import styles from "./MessageBox.module.scss";
 
 import { useState } from "react";
 
-import { IMessage } from "@/common/chat.interface";
 import { convertToStringDate } from "@/utils/Date";
 
 import RemoveMessageModal from "@/components/modals/chat/RemoveMessageModal";
 import { useMe } from "@/store/Me";
+import { IMessage } from "@/common/message.interface";
 
 
 const MOUSE_RIGHT = 2

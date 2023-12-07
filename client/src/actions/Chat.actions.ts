@@ -1,6 +1,7 @@
 import api from "@/api/api";
-import { IMessage } from "@/common/chat.interface";
-import { IChatWithUser } from "@/common/me.interface";
+import { IChatWithUser } from "@/common/chat.interface";
+import { IMessage } from "@/common/message.interface";
+
 
 export async function CreateChat(friend_id:string):Promise<boolean>{
     try {
