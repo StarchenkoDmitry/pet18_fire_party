@@ -20,20 +20,27 @@ export default function Me() {
         
         return (
             <div className={styles.me}>
-                <img className={styles.meAvatar} src={imageURL} onClick={openProfile}/>
+                <img 
+                    className={styles.meAvatar} 
+                    src={imageURL} 
+                    onClick={openProfile}
+                />
                 <div className={styles.meInfo}>
                     <span className={styles.name}>{me.name}</span>
                     <span className={styles.name}>{me.surname}</span>
                 </div>
-                { showProfile && <ProfileModal doClose={closeProfile}/>}                
-                {/* <img className={styles.setting} src="/img/gear96.png"/> */}
+                { showProfile && <ProfileModal doClose={closeProfile}/>}
             </div>
         )
     }else{
         return(
             <div className={styles.me}>
-                <img className={styles.meAvatar} src={'/img/user.png'} onClick={openProfile}/>
+                <img 
+                    className={styles.meAvatar} 
+                    src={'/img/user.png'}
+                    data-loading="true"
+                />
             </div>
         )
-    }    
+    }
 }

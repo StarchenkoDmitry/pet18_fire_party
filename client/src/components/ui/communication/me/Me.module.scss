@@ -25,6 +25,9 @@
 .meAvatar:hover{
   box-shadow: 0px 0px .6em 0px #00000052;
 }
+.meAvatar[data-loading="true"]{
+  filter: blur(2px);
+}
 
 .meInfo{
   margin-left: .4em;
