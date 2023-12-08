@@ -131,40 +131,57 @@ export class ChatRepository {
     }
   }
 
-  async createMessage(chatId:string, userId:string, text:string):Promise<Message> {
-    const chat = await this.prisma.chat.findFirst({
-      where:{
-        id:chatId,
-        AND:{
-          users:{
-            some:{
-              id:userId
+  async createMessage(chatId:string, userId:string, text:string):Promise<Message|undefined> {
+    try {
+      // console.log("createMessage chatId:", chatId, "userId:",userId, "text:", text)
+      const mes: Message | undefined = await this.prisma.$transaction(async (tx):Promise<Message | undefined> => {
+        
+        const chat = await tx.chat.findFirst({
+          where:{
+            id: chatId,
+            AND:{
+              users:{
+                some:{
+                  id: userId
+                }
+              }
             }
           }
-        }
-      }
-    });    
-    if(chat){
-      //TODO: сделать транзакцию.
-      const newMessage = await this.prisma.message.create({
-        data:{
-          text:text,
-          chatId:chatId,
-          userID:userId,
-          prevMessageID:chat.lastMessageID,
-        }
-      });      
+        })
 
-      const lastMessageID = chat.lastMessageID;
-      await this.prisma.chat.update({
-        where:{id:chat.id},
-        data:{
-          lastMessageID: newMessage.id
-        }
-      });
-      return newMessage;
+        if(!chat) throw new Error(`chat(${chatId}) with user(${userId}) doesn't exist`)
+        // console.log("createMessage chat:",chat)
+  
+        const newMessage = await tx.message.create({
+          data:{
+            text:text,
+            chatId:chatId,
+            userID:userId,
+            prevMessageID:chat.lastMessageID,
+          }
+        })
+  
+        if(!newMessage) throw new Error("message not created")
+        // console.log("createMessage newMessage:",newMessage)
+  
+        // console.log("createMessage chat.update chat.id:",chat.id)
+        const resUpdate = await tx.chat.update({
+          where:{id:chat.id},
+          data:{
+            lastMessageID: newMessage.id
+          }
+        })
+
+        if(!resUpdate) throw new Error("failed to update lastMessageID field")
+        // console.log("createMessage resUpdate:",resUpdate)
+
+        // console.log("createMessage done:",newMessage)
+        return newMessage
+      })      
+      return mes
+    } catch (error) {
+      console.log("createMessage error:",error)
     }
-    return
   }
 
   async getAllMessages(chatid:string, userid:string):Promise<IMessage[]>{
