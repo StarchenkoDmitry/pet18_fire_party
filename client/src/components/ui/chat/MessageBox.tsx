@@ -1,22 +1,24 @@
 import styles from "./MessageBox.module.scss";
 
-import { useState } from "react";
+import { memo, useState } from "react";
 
 import { convertToStringDate } from "@/utils/Date";
 
 import RemoveMessageModal from "@/components/modals/chat/RemoveMessageModal";
 import { useMe } from "@/store/Me";
 import { IMessage } from "@/common/message.interface";
+import { useChat } from "@/store/Chat";
 
 
 const MOUSE_RIGHT = 2
 
 export interface MessageProps{
-    message: IMessage;
-    toRemove?: ()=>void;
+    message: IMessage
 }
 
-export default function MessageBox({message,toRemove}:MessageProps) {
+const MessageBox = memo(({message}:MessageProps)=>{
+
+    const removeMessage = useChat(state=>state.removeMessage)
 
     const myId = useMe(state=>state.me?.id)
     const isMyMessage = message.userID === myId
@@ -41,6 +43,10 @@ export default function MessageBox({message,toRemove}:MessageProps) {
         setShowEditModal(false)
     }
 
+    const deleteMessage = ()=>{
+        removeMessage(message.id)
+    }
+
     return (
         <div 
             className={styles.messageContainer}
@@ -59,7 +65,7 @@ export default function MessageBox({message,toRemove}:MessageProps) {
                 {
                     showEditModal && 
                     <RemoveMessageModal 
-                        toRemoveMessage={toRemove}
+                        toRemoveMessage={deleteMessage}
                         toClose={closeModal}
                         cords={cordsModal}
                     />
@@ -67,4 +73,6 @@ export default function MessageBox({message,toRemove}:MessageProps) {
             </div>
         </div>
     )
-}
+})
+
+export default MessageBox

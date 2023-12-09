@@ -13,8 +13,9 @@ export default function ChatPanel() {
 
     const { id } = useParams()
     
-    const { open, close } = useChat()
-
+    const open = useChat(stat=>stat.open)
+    const close = useChat(stat=>stat.close)
+    
     useEffect(()=>{
         open(id || "")
         return ()=>{close()}
