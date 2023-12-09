@@ -177,7 +177,7 @@ export class ChatRepository {
 
         // console.log("createMessage done:",newMessage)
         return newMessage
-      })      
+      },{isolationLevel:'Serializable'})
       return mes
     } catch (error) {
       console.log("createMessage error:",error)
