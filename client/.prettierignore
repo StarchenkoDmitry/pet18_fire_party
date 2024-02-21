@@ -34,6 +34,20 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# another files
+index.html
+
+# config files
+.eslintrc.cjs
+vite.config.ts
+tsconfig.json
+tsconfig.node.json
+package-lock.json
+package.json
+.prettierignore
+.prettierrc.json
+
+
 #my trash
 _trash
 
