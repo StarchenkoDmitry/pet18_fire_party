@@ -9,60 +9,53 @@ import { useMe } from "@/store/Me";
 import { useNavigate } from "react-router-dom";
 import { IChatWithUser } from "@/common/chat.interface";
 
+const MOUSE_RIGHT = 2;
 
-const MOUSE_RIGHT = 2
-
-export interface ChatCardProps{
-    selected?: boolean
-    chat: IChatWithUser
-    online?: boolean
+export interface ChatCardProps {
+    selected?: boolean;
+    chat: IChatWithUser;
+    online?: boolean;
 }
 
-export default function ChatCard({
-    chat,
-    selected = false,
-    online,
-}:ChatCardProps) {
-    
-    const navigate = useNavigate()
+export default function ChatCard({ chat, selected = false, online }: ChatCardProps) {
+    const navigate = useNavigate();
 
-    const [showEditModal,setShowEditModal] = useState(false)
-    const [cordsModal,setCordsModal] = useState({x:0,y:0})
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [cordsModal, setCordsModal] = useState({ x: 0, y: 0 });
 
-    const imageURL = GetImageUrl(chat.user.imageID)
+    const imageURL = GetImageUrl(chat.user.imageID);
 
-    const deleteChat = useMe(state=>state.deleteChat)
+    const deleteChat = useMe((state) => state.deleteChat);
 
-    const eventClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>)=>{
-        if(event.button === MOUSE_RIGHT){
-            event.preventDefault()
-            setShowEditModal(true)
+    const eventClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        if (event.button === MOUSE_RIGHT) {
+            event.preventDefault();
+            setShowEditModal(true);
             setCordsModal({
-                x:event.clientX,
-                y:event.clientY,
-            })
-        }else if(event.button === 0){
-            setShowEditModal(false)
-            navigate(`/chat/${chat.id}`)
+                x: event.clientX,
+                y: event.clientY,
+            });
+        } else if (event.button === 0) {
+            setShowEditModal(false);
+            navigate(`/chat/${chat.id}`);
         }
-    }
+    };
 
-    const closeModal = ()=>{
-        setShowEditModal(false)
-    }
+    const closeModal = () => {
+        setShowEditModal(false);
+    };
 
-    const eventDeleteChat = ()=>{
-        deleteChat(chat.id)
-    }
+    const eventDeleteChat = () => {
+        deleteChat(chat.id);
+    };
 
     return (
-        <div 
+        <div
             data-selected={selected}
             className={styles.chatview}
             onClick={eventClick}
             onContextMenu={eventClick}
-            >
-
+        >
             <img
                 data-online={online}
                 className={styles.userImage}
@@ -71,20 +64,18 @@ export default function ChatCard({
             />
 
             <div className={styles.userInfo}>
-                <span 
-                    data-online={online}
-                    className={styles.userName}
-                >{chat.user.name}</span>
+                <span data-online={online} className={styles.userName}>
+                    {chat.user.name}
+                </span>
                 <div className={styles.lastMessage}>this is a last message</div>
             </div>
-            {
-                showEditModal && 
-                <EditChatModal 
+            {showEditModal && (
+                <EditChatModal
                     toDeleteChat={eventDeleteChat}
                     toClose={closeModal}
                     cords={cordsModal}
                 />
-            }
+            )}
         </div>
-    )
+    );
 }

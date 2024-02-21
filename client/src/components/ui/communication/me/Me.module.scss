@@ -1,48 +1,48 @@
-.me{
-  display: flex;
-  align-items: center;
+.me {
+    display: flex;
+    align-items: center;
 
-  padding-left: .5em;
-  height: 3.5em;
+    padding-left: 0.5em;
+    height: 3.5em;
 
-  background-color: #f5f5f5;
+    background-color: #f5f5f5;
 }
 
-.meAvatar{
-  display: block;
-  
-  width: 3em;
-  height: 3em;
-  
-  border-radius: .8em;
-  background-color: #ededed;
-  
-  transition: all .2s;
+.meAvatar {
+    display: block;
 
-  user-select: none;
-  cursor: pointer;
-}
-.meAvatar:hover{
-  box-shadow: 0px 0px .6em 0px #00000052;
-}
-.meAvatar[data-loading="true"]{
-  filter: blur(2px);
-}
+    width: 3em;
+    height: 3em;
 
-.meInfo{
-  margin-left: .4em;
+    border-radius: 0.8em;
+    background-color: #ededed;
+
+    transition: all 0.2s;
+
+    user-select: none;
+    cursor: pointer;
+}
+.meAvatar:hover {
+    box-shadow: 0px 0px 0.6em 0px #00000052;
+}
+.meAvatar[data-loading="true"] {
+    filter: blur(2px);
 }
 
-.name{
-  display: block;
-  font-weight: 500;
-  user-select: none;
+.meInfo {
+    margin-left: 0.4em;
 }
 
-.setting{
-  margin-left: auto;
-  width: 3em;
-  height: 3em;  
-  user-select: none;
-  cursor: pointer;
+.name {
+    display: block;
+    font-weight: 500;
+    user-select: none;
+}
+
+.setting {
+    margin-left: auto;
+    width: 3em;
+    height: 3em;
+    user-select: none;
+    cursor: pointer;
 }

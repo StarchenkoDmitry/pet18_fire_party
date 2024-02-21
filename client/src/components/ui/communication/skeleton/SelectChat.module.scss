@@ -1,23 +1,23 @@
-.selectChat{
-  display: flex;
-  flex: 1;
-  
-  padding: .5em;
+.selectChat {
+    display: flex;
+    flex: 1;
 
-  background-color: var(--primary-color-bg);
+    padding: 0.5em;
+
+    background-color: var(--primary-color-bg);
 }
 
-.text{
-  flex:1;
-  display: block;
+.text {
+    flex: 1;
+    display: block;
 
-  padding: .5em;
+    padding: 0.5em;
 
-  color: #fff;
-  font-size: 1.25em;
-  text-align: center;
+    color: #fff;
+    font-size: 1.25em;
+    text-align: center;
 
-  border: .1em solid #fff;
-  border-radius: .5em;
-  border-style: dashed;
+    border: 0.1em solid #fff;
+    border-radius: 0.5em;
+    border-style: dashed;
 }

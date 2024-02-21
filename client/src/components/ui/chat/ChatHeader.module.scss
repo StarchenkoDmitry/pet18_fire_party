@@ -1,50 +1,49 @@
-.header{
-  display: flex;
-  align-items: center;
+.header {
+    display: flex;
+    align-items: center;
 
-  padding: 0 1em;  
-  height: 3.5em;
+    padding: 0 1em;
+    height: 3.5em;
 
-  background-color: #fff;
+    background-color: #fff;
 }
 
-.userAvatar{
-  display: block;
-  flex: none;
+.userAvatar {
+    display: block;
+    flex: none;
 
-  width: 3em;
-  height: 3em;
+    width: 3em;
+    height: 3em;
 
-  border-radius: .8em;
-  background-color: #ededed;
-  overflow: hidden;
+    border-radius: 0.8em;
+    background-color: #ededed;
+    overflow: hidden;
 }
 
-.userInfo{
-  margin-left: 1em;
+.userInfo {
+    margin-left: 1em;
 }
 
-.name{
-  font-weight: 500;
+.name {
+    font-weight: 500;
 
-  white-space: nowrap;
-  text-overflow: ellipsis;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
-.statusOnline{
-  font-size: .75em;
-  user-select: none;
+.statusOnline {
+    font-size: 0.75em;
+    user-select: none;
 }
 
-
-.userAvatar[data-loading="true"]{
-  filter: blur(2px);
+.userAvatar[data-loading="true"] {
+    filter: blur(2px);
 }
-.name[data-loading="true"]{
-  user-select: none;
-  color: silver;
-  font-weight: 400;
+.name[data-loading="true"] {
+    user-select: none;
+    color: silver;
+    font-weight: 400;
 }
-.statusOnline[data-loading="true"]{
-  color: silver;
+.statusOnline[data-loading="true"] {
+    color: silver;
 }

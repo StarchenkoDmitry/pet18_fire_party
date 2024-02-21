@@ -1,52 +1,52 @@
-.chatInputContainer{
-  margin: .5em;
+.chatInputContainer {
+    margin: 0.5em;
 }
-.chatInput{
-  display: flex;
-  max-width: var(--chat-input-max-width);
-  margin: auto;
-}
-
-.cloudInput{
-  display: flex;
-  flex: 1;
-  padding: .4em;
-  border-radius: 1em;
-  background-color: rgb(255, 255, 255);
+.chatInput {
+    display: flex;
+    max-width: var(--chat-input-max-width);
+    margin: auto;
 }
 
-.input{
-  flex: 1;
-  padding: .5em;
-  padding-left: .75em;
-  background-color: #ffffff00;
-  border: 0px;
-  font-size: 1em;
-  white-space: pre-wrap;
-}
-.input:focus{
-  outline: none;
+.cloudInput {
+    display: flex;
+    flex: 1;
+    padding: 0.4em;
+    border-radius: 1em;
+    background-color: rgb(255, 255, 255);
 }
 
-.btn_send{
-  margin-left: .5em;
-  border: 0px;
-  border-radius: 10em;
+.input {
+    flex: 1;
+    padding: 0.5em;
+    padding-left: 0.75em;
+    background-color: #ffffff00;
+    border: 0px;
+    font-size: 1em;
+    white-space: pre-wrap;
 }
-.send{
-  display: block;
-  padding: .4em;
-  width: 3em;
-  height: 3em;
+.input:focus {
+    outline: none;
+}
 
-  background-color: #fff;
-  border-radius: 10em;
-  transition: all .2s;
-  cursor: pointer;
+.btn_send {
+    margin-left: 0.5em;
+    border: 0px;
+    border-radius: 10em;
 }
-.send:hover{
-  transform: scale(1.15);
+.send {
+    display: block;
+    padding: 0.4em;
+    width: 3em;
+    height: 3em;
+
+    background-color: #fff;
+    border-radius: 10em;
+    transition: all 0.2s;
+    cursor: pointer;
 }
-.send:active{
-  transform: scale(.85);
+.send:hover {
+    transform: scale(1.15);
+}
+.send:active {
+    transform: scale(0.85);
 }

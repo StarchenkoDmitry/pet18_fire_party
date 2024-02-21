@@ -10,33 +10,32 @@ import { useConnect } from "@/store/Connent";
 import { useChat } from "@/store/Chat";
 import { useOnlineFriends } from "@/store/OnlineFriends";
 
-
 export default function CommunicationScreen() {
     // console.log("Render CommunicationScreen")
 
-    const me = useMe.getState()
-    const chat = useChat.getState()
-    const friendsOnline = useOnlineFriends.getState()
+    const me = useMe.getState();
+    const chat = useChat.getState();
+    const friendsOnline = useOnlineFriends.getState();
 
-    const { connect, disconnect, subConnect } = useConnect.getState()
+    const { connect, disconnect, subConnect } = useConnect.getState();
 
-    useEffect(()=>{
-        connect()
+    useEffect(() => {
+        connect();
 
-        subConnect(chat)
-        subConnect(me)
-        subConnect(friendsOnline)
+        subConnect(chat);
+        subConnect(me);
+        subConnect(friendsOnline);
 
-        return ()=>{
+        return () => {
             // console.log("Distroed CommunicationScreen")
-            disconnect()
-        }
-    },[]);
+            disconnect();
+        };
+    }, []);
 
-    return(
+    return (
         <div className={styles.page}>
-            <CommunicationPanel/>
-            <Outlet/>
+            <CommunicationPanel />
+            <Outlet />
         </div>
-    )
+    );
 }

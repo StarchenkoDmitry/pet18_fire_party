@@ -1,56 +1,54 @@
-.communication_panel{
-  flex: none;
-  position: relative;
+.communication_panel {
+    flex: none;
+    position: relative;
 
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 
-  width: 15em;
+    width: 15em;
 }
 
-.input{
-  flex:1;
-  margin: .4em;
+.input {
+    flex: 1;
+    margin: 0.4em;
 }
 
+.list_chats {
+    flex: 1;
+    padding-left: 0.3125em;
+    padding-bottom: 4em; //Пустое пространство внизу для нормального отображение кнопки AddChat(AddChatModal)
+    background-color: var(--bg-light);
 
-.list_chats{
-  flex: 1;
-  padding-left: .3125em;
-  padding-bottom: 4em;//Пустое пространство внизу для нормального отображение кнопки AddChat(AddChatModal)
-  background-color: var(--bg-light);
-  
-  overflow-y: scroll;
+    overflow-y: scroll;
 }
 
+.btn_add_chat {
+    position: absolute;
+    // left: 0;
+    right: 0;
+    bottom: 0;
 
-.btn_add_chat{
-  position: absolute;
-  // left: 0;
-  right: 0;
-  bottom: 0;
+    margin: 0.5em;
 
-  margin: .5em;
-  
-  width: 3em;
-  height: 3em;
+    width: 3em;
+    height: 3em;
 
-  color: aliceblue;
-  text-align: center;
+    color: aliceblue;
+    text-align: center;
 
-  border: 0px;
-  border-radius: 1000em;
-  background-color: var(--primary-color);
+    border: 0px;
+    border-radius: 1000em;
+    background-color: var(--primary-color);
 
-  transition: all .2s;
+    transition: all 0.2s;
 
-  user-select: none;
-  cursor: pointer;
+    user-select: none;
+    cursor: pointer;
 }
-.btn_add_chat:hover{
-  background-color: aqua;
+.btn_add_chat:hover {
+    background-color: aqua;
 }
 
-.btn_add_chat__inner{
-  font-size: 2em;
+.btn_add_chat__inner {
+    font-size: 2em;
 }

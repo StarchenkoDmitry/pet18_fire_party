@@ -9,50 +9,45 @@ import { useMe } from "@/store/Me";
 import { IMessage } from "@/common/message.interface";
 import { useChat } from "@/store/Chat";
 
+const MOUSE_RIGHT = 2;
 
-const MOUSE_RIGHT = 2
-
-export interface MessageProps{
-    message: IMessage
+export interface MessageProps {
+    message: IMessage;
 }
 
-const MessageBox = memo(({message}:MessageProps)=>{
+const MessageBox = memo(({ message }: MessageProps) => {
+    const removeMessage = useChat((state) => state.removeMessage);
 
-    const removeMessage = useChat(state=>state.removeMessage)
+    const myId = useMe((state) => state.me?.id);
+    const isMyMessage = message.userID === myId;
 
-    const myId = useMe(state=>state.me?.id)
-    const isMyMessage = message.userID === myId
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [cordsModal, setCordsModal] = useState({ x: 0, y: 0 });
 
-    const [showEditModal,setShowEditModal] = useState(false)
-    const [cordsModal,setCordsModal] = useState({x:0,y:0})
+    const createAt = convertToStringDate(message.createAt);
 
-    const createAt = convertToStringDate(message.createAt)
-
-    const eventClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>)=>{
-        if(event.button === MOUSE_RIGHT){
-            event.preventDefault()
-            setShowEditModal(true)
+    const eventClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        if (event.button === MOUSE_RIGHT) {
+            event.preventDefault();
+            setShowEditModal(true);
             setCordsModal({
-                x:event.clientX,
-                y:event.clientY,
-            })
+                x: event.clientX,
+                y: event.clientY,
+            });
         }
-    }
+    };
 
-    const closeModal = ()=>{
-        setShowEditModal(false)
-    }
+    const closeModal = () => {
+        setShowEditModal(false);
+    };
 
-    const deleteMessage = ()=>{
-        removeMessage(message.id)
-    }
+    const deleteMessage = () => {
+        removeMessage(message.id);
+    };
 
     return (
-        <div 
-            className={styles.messageContainer}
-            data-my-message={isMyMessage}
-        >
-            <div 
+        <div className={styles.messageContainer} data-my-message={isMyMessage}>
+            <div
                 className={styles.message}
                 data-my-message={isMyMessage}
                 onContextMenu={eventClick}
@@ -62,17 +57,16 @@ const MessageBox = memo(({message}:MessageProps)=>{
                     <span className={styles.message_createAt1}>{createAt}</span>
                     <span className={styles.message_createAt2}>{createAt}</span>
                 </p>
-                {
-                    showEditModal && 
-                    <RemoveMessageModal 
+                {showEditModal && (
+                    <RemoveMessageModal
                         toRemoveMessage={deleteMessage}
                         toClose={closeModal}
                         cords={cordsModal}
                     />
-                }
+                )}
             </div>
         </div>
-    )
-})
+    );
+});
 
-export default MessageBox
+export default MessageBox;

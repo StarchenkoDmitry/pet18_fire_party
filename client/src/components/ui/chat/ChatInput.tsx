@@ -4,24 +4,22 @@ import { useState } from "react";
 
 import { useChat } from "@/store/Chat";
 
-
 export default function ChatInput() {
+    const addMessage = useChat((state) => state.addMessage);
 
-    const addMessage = useChat(state=>state.addMessage)
+    const [text, setText] = useState("");
 
-    const [text,setText] = useState('')
+    const sendMessage = () => {
+        const message = text || "";
+        setText("");
+        addMessage(message);
+    };
 
-    const sendMessage = ()=>{
-        const message = text || ''
-        setText('')
-        addMessage(message)
-    }
+    const changeText = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setText(event.target.value);
+    };
 
-    const changeText = (event: React.ChangeEvent<HTMLInputElement>)=>{
-        setText(event.target.value)
-    }
-    
-    return(
+    return (
         <div className={styles.chatInputContainer}>
             <div className={styles.chatInput}>
                 <div className={styles.cloudInput}>
@@ -34,13 +32,9 @@ export default function ChatInput() {
                     />
                 </div>
                 <button className={styles.btn_send} onClick={sendMessage}>
-                    <img
-                        className={styles.send}
-                        src="/img/send.png"
-                        alt="send"
-                    />
+                    <img className={styles.send} src="/img/send.png" alt="send" />
                 </button>
             </div>
         </div>
-    )
+    );
 }

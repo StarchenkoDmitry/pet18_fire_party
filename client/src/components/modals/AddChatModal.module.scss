@@ -1,54 +1,52 @@
-.modal{
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  
-  display: flex;
-  flex-direction: column;
-  // justify-content: center;
-  align-items: center;
+.modal {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 
-  background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    // justify-content: center;
+    align-items: center;
 
-  z-index: 10;
+    background-color: rgba(0, 0, 0, 0.5);
+
+    z-index: 10;
 }
-.modal_content{
-  display: flex;
-  flex-direction: column;
+.modal_content {
+    display: flex;
+    flex-direction: column;
 
-  margin-top: 2em;
+    margin-top: 2em;
 
-  padding: .5em;
-  padding-top: .5em;
+    padding: 0.5em;
+    padding-top: 0.5em;
 
-  width: 24em;
-  min-height: 10em;
-  max-height: 18em;
+    width: 24em;
+    min-height: 10em;
+    max-height: 18em;
 
-  border-radius: 1em;
-  background-color: #fff;
-}
-
-
-.searchBlock{
-  display: flex;
-}
-.label{
-  padding: .4em;
-}
-.input{
-  flex: 1;
-  padding: .2em;
-
-  font-size: 1em;
-  border: 1px solid #000;
-  border-radius: .4em;  
-  outline: none;
+    border-radius: 1em;
+    background-color: #fff;
 }
 
+.searchBlock {
+    display: flex;
+}
+.label {
+    padding: 0.4em;
+}
+.input {
+    flex: 1;
+    padding: 0.2em;
 
-.usersList{
-  overflow-y: scroll;
+    font-size: 1em;
+    border: 1px solid #000;
+    border-radius: 0.4em;
+    outline: none;
+}
+
+.usersList {
+    overflow-y: scroll;
 }

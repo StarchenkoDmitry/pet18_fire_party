@@ -1,43 +1,50 @@
-html{
-  font-family: Roboto, -apple-system, "apple color emoji", BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+html {
+    font-family:
+        Roboto,
+        -apple-system,
+        "apple color emoji",
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Oxygen-Sans,
+        Ubuntu,
+        Cantarell,
+        "Helvetica Neue",
+        sans-serif;
 }
 
-*{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-size: inherit;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: inherit;
 }
 
 /* bg register page rgb(69, 98, 255) */
 
 :root {
-  /* light theme tokens */
-  --bg-light: #fff;
-  --bg-secondary-light: #f3f3f4;
-  --text-light: #000;
+    /* light theme tokens */
+    --bg-light: #fff;
+    --bg-secondary-light: #f3f3f4;
+    --text-light: #000;
 
-  /* --bg-chat-light: rgb(69, 98, 255); */
-  --bg-chat-light: rgb(202 202 221);
-  --bg-chat-message-light: #fff;
-  --bg-chat-message-me-light: #ecfff0;
-  --bg-chat-input-light: #3633e2;
-  --chat-messages-max-width: 40em;
-  --chat-input-max-width: 40em;
-  
-  --primary-color: #3390ec;
-  
-  --primary-color-bg: rgb(69, 98, 255);
-  
-  /* dark theme tokens */
-  /* --bg-dark: 25, 48, 66;
+    /* --bg-chat-light: rgb(69, 98, 255); */
+    --bg-chat-light: rgb(202 202 221);
+    --bg-chat-message-light: #fff;
+    --bg-chat-message-me-light: #ecfff0;
+    --bg-chat-input-light: #3633e2;
+    --chat-messages-max-width: 40em;
+    --chat-input-max-width: 40em;
+
+    --primary-color: #3390ec;
+
+    --primary-color-bg: rgb(69, 98, 255);
+
+    /* dark theme tokens */
+    /* --bg-dark: 25, 48, 66;
   --accent-dark: 90, 182, 204; */
 
-
-  
-
-
-  /* --surface-color: #212121;
+    /* --surface-color: #212121;
   
   --font-monospace: "Roboto Mono", monospace;
   --font-weight-bold: 500;
@@ -56,29 +63,26 @@ html{
   --font-size: var(--font-size-16); */
 }
 
-
-
-
 /*Custome a scrollbar*/
-.scrollbar1{
-  /* for firfox */
-  scrollbar-width: thin;
+.scrollbar1 {
+    /* for firfox */
+    scrollbar-width: thin;
 }
 
 .scrollbar1::-webkit-scrollbar {
-  width: 0.3125em;
+    width: 0.3125em;
 }
 
 .scrollbar1::-webkit-scrollbar-track {
-  background-color: #ffffff00;
-  border-radius: 0.3125em;
+    background-color: #ffffff00;
+    border-radius: 0.3125em;
 }
 
 .scrollbar1::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0);
-  border-radius: 0.3125em;
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 0.3125em;
 }
 
-.scrollbar1:hover::-webkit-scrollbar-thumb{
-  background-color: rgba(0, 0, 0, .2);
+.scrollbar1:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
 }

@@ -1,38 +1,32 @@
-.preview{
-  display: flex;
+.preview {
+    display: flex;
 
-  align-items: end;
+    align-items: end;
 }
 
+.preview > img {
+    border-radius: 1000em;
+    border: 0.125em solid rgb(134, 134, 134);
 
-
-.preview > img{
-  
-  border-radius: 1000em;
-  border: .125em solid rgb(134, 134, 134);
-
-  margin-right: 1em;
+    margin-right: 1em;
 }
 
-.imgpreview1{
-  width: 8em;
-  height: 8em;
+.imgpreview1 {
+    width: 8em;
+    height: 8em;
 }
 
-.imgpreview2{
-  width: 4em;
-  height: 4em;
+.imgpreview2 {
+    width: 4em;
+    height: 4em;
 }
 
-.imgpreview3{
-  width: 2.5em;
-  height: 2.5em;
+.imgpreview3 {
+    width: 2.5em;
+    height: 2.5em;
 }
 
-
-
-.imgpreview4{
-  width: 2em;
-  height: 2em;
+.imgpreview4 {
+    width: 2em;
+    height: 2em;
 }
-

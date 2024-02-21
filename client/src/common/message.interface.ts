@@ -1,9 +1,9 @@
-export interface IMessage{
-    id: string
-    createAt: Date
-    text: string
+export interface IMessage {
+    id: string;
+    createAt: Date;
+    text: string;
 
-    userID: string
-    chatId: string
-    prevMessageID: string | null
+    userID: string;
+    chatId: string;
+    prevMessageID: string | null;
 }

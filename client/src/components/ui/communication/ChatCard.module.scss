@@ -1,52 +1,50 @@
-.chatview{
-  display: flex;
+.chatview {
+    display: flex;
 
-  margin: .1em;
-  padding: .2em;
+    margin: 0.1em;
+    padding: 0.2em;
 
-  border-radius: .5em;
-  background-color: rgb(255, 255, 255);
-  
-  cursor: pointer;
-}
-.chatview:hover{
-  background-color: #f3f3f4;
-}
-.chatview[data-selected="true"]{
-  background-color: #389ce8;
-}
-.chatview[data-selected="true"]:hover{
-  background-color: #4bb1ff;
-}
+    border-radius: 0.5em;
+    background-color: rgb(255, 255, 255);
 
-
-.userImage{
-  display: block;
-  width: 3em;
-  height: 3em;
-  border-radius: 10em;
-  border: 0.2em solid rgb(230 230 230);
-
-  user-select: none;
+    cursor: pointer;
 }
-.userImage[data-online="true"]{
-  border: 0.2em solid rgb(55 36 255);
+.chatview:hover {
+    background-color: #f3f3f4;
+}
+.chatview[data-selected="true"] {
+    background-color: #389ce8;
+}
+.chatview[data-selected="true"]:hover {
+    background-color: #4bb1ff;
 }
 
+.userImage {
+    display: block;
+    width: 3em;
+    height: 3em;
+    border-radius: 10em;
+    border: 0.2em solid rgb(230 230 230);
 
-.userInfo{
-  margin-left: .5em;
+    user-select: none;
+}
+.userImage[data-online="true"] {
+    border: 0.2em solid rgb(55 36 255);
 }
 
-.userName{
-  border-radius: .2em;
-  font-weight: 500;
-  user-select: none;
+.userInfo {
+    margin-left: 0.5em;
+}
+
+.userName {
+    border-radius: 0.2em;
+    font-weight: 500;
+    user-select: none;
 }
 // .userName[data-online="true"]{
 //   background-color: rgb(116, 255, 123);
 // }
 
-.lastMessage{
-  user-select: none;
+.lastMessage {
+    user-select: none;
 }
