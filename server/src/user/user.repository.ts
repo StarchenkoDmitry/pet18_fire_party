@@ -214,15 +214,11 @@ export class UserRepository {
 
     async logout(session: string): Promise<boolean> {
         try {
-            //TODO: заменить UpdateMany на update когда я сделаю session Unique
-            const user = await this.prisma.user.updateMany({
-                data: {
-                    session: null,
-                },
-                where: {
-                    session: session,
-                },
+            const user = await this.prisma.user.update({
+                where: { session: session, },
+                data: { session: null, },
             });
+            return !!user;
         } catch (error) {
             return false;
         }
