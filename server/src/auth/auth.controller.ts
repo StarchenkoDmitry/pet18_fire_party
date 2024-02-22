@@ -18,7 +18,7 @@ export class AuthController {
 
     @Post('register')
     async register(@Body() dto:SignUpDto, @Res({ passthrough: true }) res:Response){
-        console.log("@register ", dto)
+        // console.log("@register ", dto)
         const {password, ...ob} = dto;
 
         const newSessionID = GenerateSession();
@@ -47,7 +47,7 @@ export class AuthController {
     @Get('logout')
     @UseGuards(AuthGuard)
     async logout(@Res({ passthrough: true }) res:Response,@UserDec() user:User){
-        console.log("@logout");
+        // console.log("@logout");
         //TODO: удалить session из базы данных User
         const isDone = await this.userService.logout(user.session);
         if(isDone) res.clearCookie(COOKIE_SESSION);
@@ -57,6 +57,6 @@ export class AuthController {
     @Get('logged')
     @UseGuards(AuthGuard)
     async Logged(@UserDec() user:User){
-        console.log("@Logged");
+        // console.log("@Logged");
     }
 }
