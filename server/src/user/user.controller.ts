@@ -29,14 +29,12 @@ export class UserController {
     @Get("all")
     @UseGuards(AuthGuard)
     getAll() {
-        // console.log("user/all");
         return this.userRepository.findAll();
     }
 
     @Get("me")
     @UseGuards(AuthGuard)
     getMe(@UserDec() user: User): IUserForMe {
-        // console.log("user/me");
         const me: IUserForMe = {
             id: user.id,
             name: user.name,
@@ -51,7 +49,6 @@ export class UserController {
     @Get(["findAllByName", "findAllByName/:text"])
     @UseGuards(AuthGuard)
     async findAllByName(@Param("text") text: string) {
-        // console.log(`user/findAllByName/:text text: ${text}`);
         return await this.userRepository.findManyByName(text);
     }
 
@@ -59,7 +56,6 @@ export class UserController {
     @UseGuards(AuthGuard)
     @UseInterceptors(FileInterceptor("file"))
     async uploadFile(@UploadedFile() file: Express.Multer.File, @UserDec() user: User) {
-        // console.log("user/img");
         const { originalname, mimetype, buffer, size } = file;
         const res_img = await this.imageRepository.create({ originalname, mimetype, buffer, size });
         if (res_img) {
@@ -70,7 +66,6 @@ export class UserController {
 
     @Get("buffer/:id")
     async test(@Param("id") id: string, @Res() res: Response) {
-        console.log("/image/buffer/:id ", id);
         const imgres = await this.imageRepository.get(id);
         if (!imgres) return;
         const buff = Buffer.from(imgres.buffer);
@@ -78,16 +73,15 @@ export class UserController {
     }
 
     @Get("avatarBlob")
-    @UseGuards(AuthGuard)
+    @UseGuards(AuthGuard) 
     async getMyAvatar(@UserDec() user: User, @Res() res: Response) {
-        // console.log("/user/avatarBlob");
         if (!user.imageID) {
-            res.status(204).send(undefined); //.json({error:"I have not a avatar"});
+            res.status(204).send();
             return;
         }
         const myImage = await this.imageRepository.get(user.imageID);
         if (!myImage) {
-            res.status(204).send(undefined);
+            res.status(204).send();
             return;
         }
         const imageBuffer = Buffer.from(myImage.buffer);
@@ -98,8 +92,6 @@ export class UserController {
     @UseGuards(AuthGuard)
     @UseInterceptors(FileInterceptor("file"))
     async setMyAvatar(@UploadedFile() file: Express.Multer.File, @UserDec() user: User) {
-        // console.log("[POST] user/avatarBlob file:",file);
-
         const newImage: ExpressFIle = {
             originalname: file.originalname,
             mimetype: file.mimetype,
@@ -109,7 +101,6 @@ export class UserController {
 
         if (user.imageID) {
             const resUpdate = await this.imageRepository.update(user.imageID, newImage);
-            console.log("[POST] user/avatarBlob resUpdate:", resUpdate);
             return user.imageID;
         } else {
             const resImage = await this.imageRepository.create(newImage);

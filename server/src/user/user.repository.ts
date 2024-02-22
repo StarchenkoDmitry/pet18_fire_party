@@ -228,7 +228,7 @@ export class UserRepository {
         }
     }
 
-    async setName(userId: string, name: string | null) {
+    async setName(userId: string, name: string | null): Promise<boolean> {
         try {
             const res = await this.prisma.user.update({
                 where: {
@@ -238,14 +238,14 @@ export class UserRepository {
                     name: name,
                 },
             });
-            return res;
+            return true;
         } catch (error) {
             console.error(error);
-            return;
+            return false;
         }
     }
 
-    async setSurname(userId: string, surname: string | null) {
+    async setSurname(userId: string, surname: string | null): Promise<boolean> {
         try {
             const res = await this.prisma.user.update({
                 where: {
@@ -255,10 +255,10 @@ export class UserRepository {
                     surname: surname,
                 },
             });
-            return res;
+            return true;
         } catch (error) {
             console.error(error);
-            return;
+            return false;
         }
     }
 }
