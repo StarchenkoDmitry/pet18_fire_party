@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginDto } from 'src/auth/dto/auth.dto';
-import { hasher } from 'src/auth/utils/Hasher';
+import { hasher } from 'src/utils/Hasher';
 import { LoginResult, LoginStatus } from './user.interface';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { User } from '@prisma/client';
-import { GenerateSession } from 'src/auth/utils/Session';
+import { GenerateSession } from 'src/utils/Session';
 import { IChatWithUser } from 'src/common/chat.interface';
 
 

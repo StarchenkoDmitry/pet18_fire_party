@@ -34,7 +34,7 @@ export const useConnect = create<IConnect>((set, get) => ({
 
             const isLogged = await Logged();
             if(!isLogged){
-                window.location.replace("register");
+                window.location.replace("/register");
                 return;
             }
 

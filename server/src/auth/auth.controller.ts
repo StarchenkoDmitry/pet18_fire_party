@@ -1,12 +1,12 @@
 import { Body, Controller, Get, HttpException, Post, Res, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { LoginDto, SignUpDto } from './dto/auth.dto';
 import { UserRepository } from 'src/user/user.repository';
-import { hasher } from './utils/Hasher';
+import { hasher } from '../utils/Hasher';
 import { Request, Response } from 'express';
 import { LoginStatus } from 'src/user/user.interface';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { AuthGuard, COOKIE_SESSION } from './auth.guard';
-import { GenerateSession } from './utils/Session';
+import { GenerateSession } from '../utils/Session';
 import { UserDec } from './auth.decorator';
 import { User } from '@prisma/client';
 
@@ -53,8 +53,9 @@ export class AuthController {
         if(isDone) res.clearCookie(COOKIE_SESSION);
         return true;
     }
-    
+
     @Get('logged')
+    @UseGuards(AuthGuard)
     async Logged(@UserDec() user:User){
         console.log("@Logged");
     }
