@@ -1,13 +1,13 @@
 import { IUser } from "src/common/user.interface";
 
-export enum LoginStatus{
+export enum LoginStatus {
     userNotFound,
     passwordWrong,
     ok,
 }
-export interface LoginResult{
-    status:LoginStatus;
-    session?:string;
+export interface LoginResult {
+    status: LoginStatus;
+    session?: string;
 }
 
 // export interface IMyChats{
@@ -15,4 +15,3 @@ export interface LoginResult{
 //     lastMessageID:string | null
 //     users:Pick<IUser, "id" | "name" | "imageID">[]
 // }
-

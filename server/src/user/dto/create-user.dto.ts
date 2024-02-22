@@ -1,10 +1,10 @@
-export class CreateUserDto{
-    login:string;
-    passwordHash:string;
-    email:string;
+export class CreateUserDto {
+    login: string;
+    passwordHash: string;
+    email: string;
 
-    session?:string;
+    session?: string;
 
-    name?:string;
-    surname?:string;
+    name?: string;
+    surname?: string;
 }

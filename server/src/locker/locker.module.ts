@@ -1,11 +1,10 @@
-import { Module } from '@nestjs/common';
-import { LockerService } from './locker.service';
-
+import { Module } from "@nestjs/common";
+import { LockerService } from "./locker.service";
 
 @Module({
-  imports:[],
-  controllers:[],
-  providers:[LockerService],
-  exports:[LockerService]
+    imports: [],
+    controllers: [],
+    providers: [LockerService],
+    exports: [LockerService],
 })
 export class LockerModule {}
