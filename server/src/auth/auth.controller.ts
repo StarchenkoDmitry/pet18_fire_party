@@ -11,7 +11,7 @@ import {
 } from "@nestjs/common";
 import { LoginDto, SignUpDto } from "./dto/auth.dto";
 import { UserRepository } from "src/user/user.repository";
-import { hasher } from "../utils/Hasher";
+import { hashPassword } from "../utils/Password";
 import { Request, Response } from "express";
 import { LoginStatus } from "src/user/user.interface";
 import { CreateUserDto } from "src/user/dto/create-user.dto";
@@ -27,13 +27,12 @@ export class AuthController {
 
     @Post("register")
     async register(@Body() dto: SignUpDto, @Res({ passthrough: true }) res: Response) {
-        // console.log("@register ", dto)
         const { password, ...ob } = dto;
 
         const newSessionID = GenerateSession();
         const createUserDto: CreateUserDto = {
             ...ob,
-            passwordHash: hasher(password),
+            passwordHash: await hashPassword(password),
             session: newSessionID,
         };
 

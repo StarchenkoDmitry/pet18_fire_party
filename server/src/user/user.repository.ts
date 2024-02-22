@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { LoginDto } from "src/auth/dto/auth.dto";
-import { hasher } from "src/utils/Hasher";
+import { comparePassword } from "src/utils/Password";
 import { LoginResult, LoginStatus } from "./user.interface";
 import { PrismaService } from "src/prisma/prisma.service";
 import { User } from "@prisma/client";
@@ -187,9 +187,7 @@ export class UserRepository {
             select: {
                 id: true,
             },
-        });
-        // console.log("UserRepository user: ",userId)
-        // console.log("UserRepository getMyFriends: ",friendsId)
+        });        
         return friendsId.map((f) => {
             return f.id;
         });
@@ -200,12 +198,12 @@ export class UserRepository {
 
         if (!user) return { status: LoginStatus.userNotFound };
 
-        const passwordHash = await hasher(dto.password);
-        if (user.passwordHash !== passwordHash) {
+        const compared = await comparePassword(dto.password,user.passwordHash);
+        if (!compared) {
             return { status: LoginStatus.passwordWrong };
         }
-        user.session = GenerateSession();
 
+        user.session = GenerateSession();
         await this.prisma.user.update({ where: { id: user.id }, data: { session: user.session } });
 
         return {
