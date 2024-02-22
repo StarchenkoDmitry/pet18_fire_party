@@ -5,7 +5,7 @@ import { comparePassword } from "src/utils/Password";
 import { LoginResult, LoginStatus } from "./user.interface";
 import { PrismaService } from "src/prisma/prisma.service";
 import { User } from "@prisma/client";
-import { GenerateSession } from "src/utils/Session";
+import { GenerateRandomSession } from "src/utils/Session";
 import { IChatWithUser } from "src/common/chat.interface";
 
 @Injectable()
@@ -203,7 +203,7 @@ export class UserRepository {
             return { status: LoginStatus.passwordWrong };
         }
 
-        user.session = GenerateSession();
+        user.session = GenerateRandomSession();
         await this.prisma.user.update({ where: { id: user.id }, data: { session: user.session } });
 
         return {

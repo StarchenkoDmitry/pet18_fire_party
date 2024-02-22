@@ -16,7 +16,7 @@ import { Request, Response } from "express";
 import { LoginStatus } from "src/user/user.interface";
 import { CreateUserDto } from "src/user/dto/create-user.dto";
 import { AuthGuard, COOKIE_SESSION } from "./auth.guard";
-import { GenerateSession } from "../utils/Session";
+import { GenerateRandomSession } from "../utils/Session";
 import { UserDec } from "./auth.decorator";
 import { User } from "@prisma/client";
 
@@ -29,7 +29,7 @@ export class AuthController {
     async register(@Body() dto: SignUpDto, @Res({ passthrough: true }) res: Response) {
         const { password, ...ob } = dto;
 
-        const newSessionID = GenerateSession();
+        const newSessionID = GenerateRandomSession();
         const createUserDto: CreateUserDto = {
             ...ob,
             passwordHash: await hashPassword(password),

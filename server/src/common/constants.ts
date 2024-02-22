@@ -13,3 +13,6 @@ export const MAX_LOGIN_LENGTH = 16;
 export const MIN_LOGIN_LENGTH = 4;
 export const MAX_PASSWORD_LENGTH = 16;
 export const MIN_PASSWORD_LENGTH = 4;
+
+//session
+export const SESSION_LENGTH = 32;//count bytes for generation
