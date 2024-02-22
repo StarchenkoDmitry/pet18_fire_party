@@ -18,3 +18,14 @@ export async function signup(data: SignUpData): Promise<boolean> {
         return false;
     }
 }
+
+export async function Logged(): Promise<boolean> {
+    try {
+        const res = await api.get("auth/logged");
+        console.log("/auth/logged res: ", res.data);
+        return res.status === 200;
+    } catch (error) {
+        // console.log("Action Logged error: ", error);
+        return false;
+    }
+}

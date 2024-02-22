@@ -28,6 +28,7 @@ export class WebsocketAdapter extends IoAdapter {
 
                 const parsedCookies = cookie.parse(cookies)
                 const sessionCookie = parsedCookies.session
+                //todo:hide a cookies secret
                 const session = cookieParser.signedCookie(sessionCookie,"My_secret_1234")
                 if(session){
                     socket.userSession = session
@@ -35,14 +36,15 @@ export class WebsocketAdapter extends IoAdapter {
                     const user = await this.userRepository.findOneBySession(session)
                     // console.log("WebsocketAdapter user: ",user)
                     if(user){
-                        socket.user = user
-                        socket.userId = user.id
+                        socket.user = user;
+                        socket.userId = user.id;
+                        next();
                     }
                 }
+                //console.log("socket UserID:",socket.userId);
             } catch (error) {
                 console.log("WebsocketAdapter error: ",error)
             }
-            next();
         });
         return server;
     }

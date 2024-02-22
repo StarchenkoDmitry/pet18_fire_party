@@ -1,5 +1,5 @@
 import api from "@/api/api";
-import { IChatWithUser } from "@/common/me.interface";
+import { IChatWithUser } from "@/common/chat.interface";
 import { IUserForMe } from "@/common/user.interface";
 
 export async function GetMe(): Promise<IUserForMe | undefined> {

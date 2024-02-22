@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { io, Socket } from "socket.io-client";
 import { GetBaseIPSocket } from "@/api/api";
+import { Logged } from "@/actions/Auth.actions";
 
 export interface IUseConnect {
     onConnect: (newSocket: Socket) => void;
@@ -30,6 +31,13 @@ export const useConnect = create<IConnect>((set, get) => ({
         let { _socket } = get();
 
         if (!_socket) {
+
+            const isLogged = await Logged();
+            if(!isLogged){
+                window.location.replace("register");
+                return;
+            }
+
             _socket = io(GetBaseIPSocket(), {
                 autoConnect: false,
                 withCredentials: true,

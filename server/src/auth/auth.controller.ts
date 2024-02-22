@@ -53,4 +53,9 @@ export class AuthController {
         if(isDone) res.clearCookie(COOKIE_SESSION);
         return true;
     }
+    
+    @Get('logged')
+    async Logged(@UserDec() user:User){
+        console.log("@Logged");
+    }
 }
