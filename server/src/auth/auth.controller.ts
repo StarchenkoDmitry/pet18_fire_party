@@ -29,11 +29,10 @@ export class AuthController {
     async register(@Body() dto: SignUpDto, @Res({ passthrough: true }) res: Response) {
         const { password, ...ob } = dto;
 
-        const newSessionID = GenerateRandomSession();
         const createUserDto: CreateUserDto = {
             ...ob,
             passwordHash: await hashPassword(password),
-            session: newSessionID,
+            session: await GenerateRandomSession(),
         };
 
         const created = this.userService.create(createUserDto);
