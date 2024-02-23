@@ -238,29 +238,8 @@ export class ChatRepository {
         return this.prisma.chat.findMany();
     }
 
-    // async getChatFromMessage(messageId:string,userId:string)
-
     async removeMessage(chatId: string, messageId: string, userId: string): Promise<Message> {
-        // const message = await this.prisma.message.findFirst({
-        //   where:{
-        //     id:messageId,
-        //     onChat:{
-        //       some:{
-        //         id:chatId,
-        //         users:{
-        //           some:{
-        //             id:userId
-        //           }
-        //         }
-        //       }
-        //     }
-        //   },
-        //   include:{
-        //     nextMessage:true
-        //   }
-        // })
-
-        //TODO: доделать проверку, что это сообщение есть в том чате где есть наш пользователь
+        //TODO: finalize the check that this message is in the chat room where our user is.
         const message = await this.prisma.message.findFirst({
             where: {
                 id: messageId,
@@ -269,7 +248,7 @@ export class ChatRepository {
                 nextMessage: true,
             },
         });
-
+        
         if (!message) {
             console.error(
                 `ChatRepository removeMessage(${chatId}, ${messageId}, ${userId}) message is not exist`

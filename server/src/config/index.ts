@@ -29,16 +29,19 @@ export class Config {
         }
     }
 
+    static get COOKIE_SECRET(): string {
+        const secret = process.env.COOKIE_SECRET;
+        if (typeof secret === "string" && secret.length > 0) {
+            return secret;
+        } else {
+            throw new Error("COOKIE_SECRET is not exist");
+        }
+    }
+
     static get PORT() {
         const port = parseInt(process.env.PORT);
         console.log("POOORT: ", port);
         return port;
-    }
-
-    static get COOKIE_SECRET() {
-        const secret = process.env.COOKIE_SECRET;
-        if (!secret) throw new Error("COOKIE_SECRET is not exist");
-        return secret;
     }
 
     static get EnvName() {

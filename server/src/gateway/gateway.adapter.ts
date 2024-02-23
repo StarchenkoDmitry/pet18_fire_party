@@ -6,6 +6,7 @@ import { UserSocket } from "./gateway.interface";
 
 import * as cookieParser from "cookie-parser";
 import * as cookie from "cookie";
+import { Config } from "src/config";
 
 export class WebsocketAdapter extends IoAdapter {
     private readonly userRepository: UserRepository;
@@ -28,8 +29,7 @@ export class WebsocketAdapter extends IoAdapter {
 
                 const parsedCookies = cookie.parse(cookies);
                 const sessionCookie = parsedCookies.session;
-                //todo:hide a cookies secret
-                const session = cookieParser.signedCookie(sessionCookie, "My_secret_1234");
+                const session = cookieParser.signedCookie(sessionCookie, Config.COOKIE_SECRET);
                 if (session) {
                     socket.userSession = session;
 
