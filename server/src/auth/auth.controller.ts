@@ -56,16 +56,14 @@ export class AuthController {
     @Get("logout")
     @UseGuards(AuthGuard)
     async logout(@Res({ passthrough: true }) res: Response, @UserDec() user: User) {
-        // console.log("@logout");
-        //TODO: удалить session из базы данных User
         const isDone = await this.userService.logout(user.session);
         if (isDone) res.clearCookie(COOKIE_SESSION);
-        return true;
+        return isDone;
     }
 
     @Get("logged")
     @UseGuards(AuthGuard)
     async Logged(@UserDec() user: User) {
-        // console.log("@Logged");
+        
     }
 }
