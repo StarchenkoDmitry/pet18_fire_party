@@ -34,14 +34,13 @@ export class WebsocketAdapter extends IoAdapter {
                     socket.userSession = session;
 
                     const user = await this.userRepository.findOneBySession(session);
-                    // console.log("WebsocketAdapter user: ",user)
+
                     if (user) {
                         socket.user = user;
                         socket.userId = user.id;
                         next();
                     }
                 }
-                //console.log("socket UserID:",socket.userId);
             } catch (error) {
                 console.log("WebsocketAdapter error: ", error);
             }
