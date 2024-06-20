@@ -14,8 +14,6 @@ export interface UsersSearchStoreModel extends IConnect {
     _name: string;
     _nextName: string;
     _runningReq: boolean;
-    // _loaded:boolean
-    // _isError:boolean
 
     search: (name: string) => void;
     _runSearch: () => void;
@@ -52,22 +50,22 @@ export const useUsersSearch = create<UsersSearchStoreModel>((set, get) => ({
         set({ _runningReq: true });
 
         _socket
-            .timeout(5000)
-            .emit(
-                ServerNameActions.searchForUsers,
-                { name: _nextName },
-                (error: any, data: IUserForSearch[]) => {
-                    set({
-                        _runningReq: false,
-                        _name: _nextName,
-                        users: data,
-                    });
+        .timeout(5000)
+        .emit(
+            ServerNameActions.searchForUsers,
+            { name: _nextName },
+            (error: any, data: IUserForSearch[]) => {
+                set({
+                    _runningReq: false,
+                    _name: _nextName,
+                    users: data,
+                });
 
-                    const newName = get()._nextName;
-                    if (newName !== _nextName) {
-                        this._runSearch();
-                    }
+                const newName = get()._nextName;
+                if (newName !== _nextName) {
+                    this._runSearch();
                 }
-            );
+            }
+        );
     },
 }));
