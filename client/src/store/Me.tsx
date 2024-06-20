@@ -10,11 +10,11 @@ import {
     ME_EVENT_CHANGE_SURNAME,
     ME_EVENT_INIT,
 } from "@/common/me.interface";
-import { IUseConnect } from "./Connent";
+import { IConnect } from "./Connent";
 import { ClientNameActions, ServerNameActions } from "@/common/gateway.interfaces";
 import { IChatWithUser } from "@/common/chat.interface";
 
-export interface IMeStore extends IUseConnect {
+export interface MeStoreModel extends IConnect {
     _socket: Socket | null;
 
     me?: IUserForMe;
@@ -25,7 +25,7 @@ export interface IMeStore extends IUseConnect {
     deleteChat: (chatId: string) => void;
 }
 
-export const useMe = create<IMeStore>((set, get) => ({
+export const useMe = create<MeStoreModel>((set, get) => ({
     _socket: null,
 
     onConnect(newSocket) {

@@ -1,11 +1,11 @@
 import { create } from "zustand";
 import { Socket } from "socket.io-client";
 
-import { IUseConnect } from "./Connent";
+import { IConnect } from "./Connent";
 import { ServerNameActions } from "@/common/gateway.interfaces";
 import { IUserForSearch } from "@/common/user.interface";
 
-export interface IUsersSearchStore extends IUseConnect {
+export interface UsersSearchStoreModel extends IConnect {
     _socket: Socket | null;
     onlines: string[];
 
@@ -21,7 +21,7 @@ export interface IUsersSearchStore extends IUseConnect {
     _runSearch: () => void;
 }
 
-export const useUsersSearch = create<IUsersSearchStore>((set, get) => ({
+export const useUsersSearch = create<UsersSearchStoreModel>((set, get) => ({
     _socket: null,
     onlines: [],
 

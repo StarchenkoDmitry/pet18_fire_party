@@ -1,6 +1,6 @@
 import { Socket } from "socket.io-client";
 import { create } from "zustand";
-import { IUseConnect } from "./Connent";
+import { IConnect } from "./Connent";
 import { ClientNameActions, ServerNameActions } from "@/common/gateway.interfaces";
 import {
     CHAT_EVENT_ERROR_INIT,
@@ -12,7 +12,7 @@ import {
 } from "@/common/chat.interface";
 import { IMessage } from "@/common/message.interface";
 
-export interface IChatStore extends IUseConnect {
+export interface ChatStoreModel extends IConnect {
     id: string;
     newId: string;
 
@@ -35,12 +35,12 @@ export interface IChatStore extends IUseConnect {
     removeMessage: (messageId: string) => void;
 }
 
-type IChatGET = () => IChatStore;
+type IChatGET = () => ChatStoreModel;
 type IChatSET = (
     partial:
-        | IChatStore
-        | Partial<IChatStore>
-        | ((state: IChatStore) => IChatStore | Partial<IChatStore>),
+        | ChatStoreModel
+        | Partial<ChatStoreModel>
+        | ((state: ChatStoreModel) => ChatStoreModel | Partial<ChatStoreModel>),
     replace?: boolean | undefined
 ) => void;
 
@@ -67,7 +67,7 @@ function saveStore(get: IChatGET) {
     );
 }
 
-export const useChat = create<IChatStore>((set, get) => ({
+export const useChat = create<ChatStoreModel>((set, get) => ({
     id: "",
     newId: "",
     isLoaded: false,

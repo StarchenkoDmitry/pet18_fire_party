@@ -1,16 +1,16 @@
 import { create } from "zustand";
 import { Socket } from "socket.io-client";
 
-import { IUseConnect } from "./Connent";
+import { IConnect } from "./Connent";
 import { ClientNameActions, ServerNameActions } from "@/common/gateway.interfaces";
 import { EventFriendOnline } from "@/common/onlineUsers.interface";
 
-export interface IOnlineFriendsStore extends IUseConnect {
+export interface OnlineFriendsStoreModel extends IConnect {
     _socket: Socket | null;
     onlines: string[];
 }
 
-export const useOnlineFriends = create<IOnlineFriendsStore>((set, get) => ({
+export const useOnlineFriends = create<OnlineFriendsStoreModel>((set, get) => ({
     _socket: null,
     onlines: [],
 

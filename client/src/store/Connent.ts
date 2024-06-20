@@ -3,25 +3,25 @@ import { io, Socket } from "socket.io-client";
 import { GetBaseIPSocket } from "@/api/api";
 import { Logged } from "@/actions/Auth.actions";
 
-export interface IUseConnect {
+export interface IConnect {
     onConnect: (newSocket: Socket) => void;
     onDisconnect: () => void;
 }
 
-export interface IConnect {
+export interface ConnectStoreModel {
     isConnected: boolean;
     _socket: Socket | null;
 
-    _subscribers: IUseConnect[];
+    _subscribers: IConnect[];
 
     connect: () => void;
     disconnect: () => void;
 
-    subConnect: (newSub: IUseConnect) => void;
-    unsubConnect: (oldSub: IUseConnect) => void;
+    subConnect: (newSub: IConnect) => void;
+    unsubConnect: (oldSub: IConnect) => void;
 }
 
-export const useConnect = create<IConnect>((set, get) => ({
+export const useConnect = create<ConnectStoreModel>((set, get) => ({
     isConnected: false,
     _socket: null,
 
