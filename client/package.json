@@ -4,11 +4,14 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "build": "vite build",
+
     "dev:start": "vite --host",
+    "dev:start:ssl": "vite --host --config vite.ssl.config.js",
 
-    "prod:build": "tsc && vite build",
-    "prod:start": "vite preview",
-
+    "prod:start": "vite preview --host",
+    "prod:start:ssl": "vite preview --host --config vite.ssl.config.js",
+    
     "test:lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     
     "prettier": "prettier --write --ignore-unknown .",
