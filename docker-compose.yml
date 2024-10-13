@@ -21,7 +21,7 @@ services:
       DATABASE_NAME: "pet18"
       DATABASE_URL: "postgresql://postgres:1234@db:5432/pet18?schema=public"
 
-      SSL_SWITCH: "OFF"
+      SSL_SWITCH: "ON"
       PORT: "3000"
       COOKIE_SECRET: "supersecret1234567890"
   client:
