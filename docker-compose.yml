@@ -1,0 +1,35 @@
+services:
+  db:
+    image: "postgres:14.5"
+    ports:
+      - "5435:5432"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "1234"
+      POSTGRES_DB: "pet18"
+  server:
+    build: ./server
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
+    environment:
+      DATABASE_HOST: "db"
+      DATABASE_PORT: "5432"
+      DATABASE_USERNAME: "postgres"
+      DATABASE_PASSWORD: "1234"
+      DATABASE_NAME: "pet18"
+      DATABASE_URL: "postgresql://postgres:1234@db:5432/pet18?schema=public"
+
+      SSL_SWITCH: "OFF"
+      PORT: "3000"
+      COOKIE_SECRET: "supersecret1234567890"
+  client:
+    build: ./client
+    ports:
+      - 4173:4173
+      - 5173:5173
+      - 80:80
+      - 443:443
+    depends_on:
+      - server

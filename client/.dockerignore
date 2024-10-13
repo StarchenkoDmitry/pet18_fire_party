@@ -1,0 +1,10 @@
+# Ignore the Dockerfile
+Dockerfile
+
+.vscode/
+dist/
+node_modules/
+docs/
+
+# dotenv environment variable files
+.env

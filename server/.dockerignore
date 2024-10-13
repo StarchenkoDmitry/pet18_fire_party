@@ -1,0 +1,14 @@
+# Ignore the Dockerfile
+Dockerfile
+prepare-db.Dockerfile
+
+.vscode/
+dist/
+node_modules/
+
+# dotenv environment variable files
+.env
+.env.example
+
+#other
+README.md
