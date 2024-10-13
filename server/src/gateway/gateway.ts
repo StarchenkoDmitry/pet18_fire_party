@@ -22,7 +22,7 @@ import { MyChatsService } from "./services/myChats.service";
 
 import { IUserForSearch } from "src/common/user.interface";
 
-import { verifyName, verifySurname } from "src/utils/validations";
+import { verifyName, verifySurname } from "src/utils/Validations";
 
 import {
     ICreateMessage,
