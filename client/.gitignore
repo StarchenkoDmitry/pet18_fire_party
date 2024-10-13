@@ -24,5 +24,10 @@ dist-ssr
 *.sln
 *.sw?
 
+# Environment files
+.env
+.env.*
+!.env.example
+
 # Secret files
 /ssl
